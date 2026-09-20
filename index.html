@@ -154,12 +154,47 @@
                 Print Handout
             </button>
         </div>
+
+        <!-- Mode 4: The ORACLE (Smart Questionnaire) -->
+        <div id="oracleSection" class="p-5 hidden no-print">
+            <h2 class="text-lg font-bold text-purple-800 mb-2 flex items-center">🔮 Clinical Oracle</h2>
+            <p class="text-xs text-slate-500 mb-5">Input clinical parameters to instantly generate a guideline-backed treatment plan.</p>
+            
+            <div class="mb-5">
+                <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Select Condition</label>
+                <select id="oracleConditionSelect" onchange="renderOracleForm()" class="w-full bg-purple-50 border border-purple-200 text-purple-900 text-sm rounded-lg focus:ring-purple-600 focus:border-purple-600 block p-3.5 shadow-sm font-bold">
+                    <option value="" disabled selected>Choose condition...</option>
+                    <option value="Ca Prostate">Ca Prostate</option>
+                    <option value="Ca Bladder">Ca Bladder</option>
+                    <option value="Ca Kidney">Ca Kidney</option>
+                    <option value="Ca Testis">Ca Testis</option>
+                    <option value="Ca Penis">Ca Penis</option>
+                    <option value="Adrenal Mass">Adrenal Mass</option>
+                    <option value="BPH">BPH</option>
+                    <option value="Nocturnal Enuresis">Nocturnal Enuresis</option>
+                </select>
+            </div>
+
+            <!-- Dynamic Form Container -->
+            <div id="oracleFormContainer" class="space-y-4"></div>
+            
+            <button id="oracleGenerateBtn" class="hidden mt-6 w-full bg-purple-600 text-white font-bold py-3 rounded-lg shadow-md hover:bg-purple-700 transition flex justify-center items-center" onclick="generateOraclePlan()">
+                Generate Treatment Plan
+            </button>
+
+            <!-- Oracle Result Card -->
+            <div id="oracleResultCard" class="hidden mt-6 bg-purple-50 border border-purple-200 rounded-xl p-5 shadow-inner">
+                <h3 class="text-xs font-bold text-purple-800 uppercase tracking-wider mb-3">Suggested Pathway</h3>
+                <div id="oracleResultContent" class="text-sm text-slate-800 leading-relaxed font-medium"></div>
+            </div>
+        </div>
         
         <div class="p-6 text-center mt-8 border-t border-slate-100 no-print">
             <p class="text-xs text-slate-400 leading-relaxed">Interactive pathways compiled & developed by<br><span class="font-semibold text-slate-600">Dr. Neel Rajendra Swaminarayan</span></p>
         </div>
     </div>
 
+    <!-- JavaScript Data and Logic -->
     <script>
         const clinicalData = {
             "Drug Dosages": {
@@ -373,6 +408,7 @@
         const formSection = document.getElementById('formSection');
         const calcSection = document.getElementById('calcSection');
         const handoutSection = document.getElementById('handoutSection');
+        const oracleSection = document.getElementById('oracleSection');
         const searchResultsDiv = document.getElementById('searchResults');
         const searchResultsContent = document.getElementById('searchResultsContent');
         const navContainer = document.getElementById('navContainer');
@@ -387,7 +423,7 @@
         let currentPhase = '';
         let currentMode = 'clinical'; 
 
-        // Render Navigation Tabs dynamically from JSON
+        // Render Navigation Tabs
         Object.keys(clinicalData).forEach(disease => {
             const btn = document.createElement('button');
             btn.className = 'px-4 py-2 bg-slate-100 text-slate-600 rounded-full text-xs font-bold hover:bg-sky-100 hover:text-sky-700 transition-colors border border-slate-200 tab-btn';
@@ -407,6 +443,12 @@
         handoutBtn.textContent = '📄 Handouts';
         handoutBtn.onclick = () => selectTab('Handouts', handoutBtn, 'handout');
         tabsContainer.appendChild(handoutBtn);
+
+        const oracleBtn = document.createElement('button');
+        oracleBtn.className = 'px-4 py-2 bg-purple-50 text-purple-700 rounded-full text-xs font-bold hover:bg-purple-100 transition-colors border border-purple-200 tab-btn shadow-sm';
+        oracleBtn.textContent = '🔮 Oracle (Planner)';
+        oracleBtn.onclick = () => selectTab('Oracle', oracleBtn, 'oracle');
+        tabsContainer.appendChild(oracleBtn);
 
         // Core Text Formatter 
         function formatClinicalText(text) {
@@ -435,6 +477,7 @@
                 if(currentMode === 'clinical') formSection.classList.remove('hidden');
                 else if(currentMode === 'calculator') calcSection.classList.remove('hidden');
                 else if(currentMode === 'handout') handoutSection.classList.remove('hidden');
+                else if(currentMode === 'oracle') oracleSection.classList.remove('hidden');
                 return;
             }
 
@@ -442,6 +485,7 @@
             formSection.classList.add('hidden');
             calcSection.classList.add('hidden');
             handoutSection.classList.add('hidden');
+            oracleSection.classList.add('hidden');
             
             searchResultsDiv.classList.remove('hidden');
             searchResultsContent.innerHTML = '';
@@ -481,15 +525,17 @@
             searchResultsDiv.classList.add('hidden');
             
             document.querySelectorAll('.tab-btn').forEach(b => {
-                b.classList.remove('bg-sky-700', 'bg-indigo-600', 'bg-emerald-600', 'text-white', 'border-sky-800', 'border-indigo-800', 'border-emerald-800');
+                b.classList.remove('bg-sky-700', 'bg-indigo-600', 'bg-emerald-600', 'bg-purple-600', 'text-white', 'border-sky-800', 'border-indigo-800', 'border-emerald-800', 'border-purple-800');
                 if(b.textContent.includes('Calculators')) b.classList.add('bg-indigo-50', 'text-indigo-700');
                 else if(b.textContent.includes('Handouts')) b.classList.add('bg-emerald-50', 'text-emerald-700');
+                else if(b.textContent.includes('Oracle')) b.classList.add('bg-purple-50', 'text-purple-700');
                 else b.classList.add('bg-slate-100', 'text-slate-600');
             });
             
             formSection.classList.add('hidden');
             calcSection.classList.add('hidden');
             handoutSection.classList.add('hidden');
+            oracleSection.classList.add('hidden');
 
             if(type === 'clinical') {
                 clickedBtn.classList.remove('bg-slate-100', 'text-slate-600');
@@ -514,6 +560,10 @@
                 clickedBtn.classList.remove('bg-emerald-50', 'text-emerald-700');
                 clickedBtn.classList.add('bg-emerald-600', 'text-white', 'border-emerald-800');
                 handoutSection.classList.remove('hidden');
+            } else if (type === 'oracle') {
+                clickedBtn.classList.remove('bg-purple-50', 'text-purple-700');
+                clickedBtn.classList.add('bg-purple-600', 'text-white', 'border-purple-800');
+                oracleSection.classList.remove('hidden');
             }
         }
 
@@ -544,6 +594,258 @@
                 catch (error) { console.error('Mermaid render failed', error); }
             }
         });
+
+        // --- THE ORACLE LOGIC ---
+        function renderOracleForm() {
+            const disease = document.getElementById('oracleConditionSelect').value;
+            const container = document.getElementById('oracleFormContainer');
+            container.innerHTML = ''; 
+            document.getElementById('oracleResultCard').classList.add('hidden');
+
+            if (!disease) return;
+
+            let html = '';
+            if (disease === 'Ca Prostate') {
+                html = `
+                    <select id="o_prostate_psa" class="w-full bg-white border border-purple-200 text-sm p-3 rounded">
+                        <option value="" disabled selected>PSA Level...</option>
+                        <option value="low">< 10 ng/mL</option>
+                        <option value="int">10 - 20 ng/mL</option>
+                        <option value="high">> 20 ng/mL</option>
+                    </select>
+                    <select id="o_prostate_isup" class="w-full bg-white border border-purple-200 text-sm p-3 rounded">
+                        <option value="" disabled selected>ISUP Grade Group...</option>
+                        <option value="1">Grade Group 1 (3+3=6)</option>
+                        <option value="2">Grade Group 2 (3+4=7)</option>
+                        <option value="3">Grade Group 3 (4+3=7)</option>
+                        <option value="4">Grade Group 4 or 5 (8-10)</option>
+                    </select>
+                    <select id="o_prostate_stage" class="w-full bg-white border border-purple-200 text-sm p-3 rounded">
+                        <option value="" disabled selected>Clinical T-Stage...</option>
+                        <option value="1">T1c - T2a</option>
+                        <option value="2">T2b - T2c</option>
+                        <option value="3">T3a or higher</option>
+                    </select>`;
+            } else if (disease === 'Ca Bladder') {
+                html = `
+                    <select id="o_bladder_depth" class="w-full bg-white border border-purple-200 text-sm p-3 rounded">
+                        <option value="" disabled selected>Depth of Invasion...</option>
+                        <option value="Ta">Ta (Non-invasive papillary)</option>
+                        <option value="T1">T1 (Invades lamina propria)</option>
+                        <option value="T2">T2 or higher (Muscle invasive)</option>
+                    </select>
+                    <select id="o_bladder_grade" class="w-full bg-white border border-purple-200 text-sm p-3 rounded">
+                        <option value="" disabled selected>Histological Grade...</option>
+                        <option value="Low">Low Grade / PUNLMP</option>
+                        <option value="High">High Grade / G3</option>
+                    </select>
+                    <select id="o_bladder_cis" class="w-full bg-white border border-purple-200 text-sm p-3 rounded">
+                        <option value="" disabled selected>Concurrent CIS presence...</option>
+                        <option value="No">No CIS</option>
+                        <option value="Yes">Yes, CIS present</option>
+                    </select>`;
+            } else if (disease === 'Ca Kidney') {
+                html = `
+                    <select id="o_kidney_size" class="w-full bg-white border border-purple-200 text-sm p-3 rounded">
+                        <option value="" disabled selected>Tumor Size...</option>
+                        <option value="T1a">< 4 cm</option>
+                        <option value="T1b">4 - 7 cm</option>
+                        <option value="T2">> 7 cm</option>
+                    </select>
+                    <select id="o_kidney_endo" class="w-full bg-white border border-purple-200 text-sm p-3 rounded">
+                        <option value="" disabled selected>Tumor Location...</option>
+                        <option value="Exo">Exophytic (>50% outside)</option>
+                        <option value="Endo">Endophytic / Hilar</option>
+                    </select>`;
+            } else if (disease === 'BPH') {
+                html = `
+                    <select id="o_bph_vol" class="w-full bg-white border border-purple-200 text-sm p-3 rounded">
+                        <option value="" disabled selected>Prostate Volume...</option>
+                        <option value="small">< 30 cc</option>
+                        <option value="med">30 - 80 cc</option>
+                        <option value="large">> 80 cc</option>
+                    </select>
+                    <select id="o_bph_ret" class="w-full bg-white border border-purple-200 text-sm p-3 rounded">
+                        <option value="" disabled selected>Clinical Scenario...</option>
+                        <option value="med">Moderate LUTS (IPSS 8-19)</option>
+                        <option value="surg">Refractory Retention / Renal Failure</option>
+                    </select>`;
+            } else if (disease === 'Ca Testis') {
+                html = `
+                    <select id="o_testis_hist" class="w-full bg-white border border-purple-200 text-sm p-3 rounded">
+                        <option value="" disabled selected>Histology...</option>
+                        <option value="sem">Seminoma</option>
+                        <option value="nsgct">Non-Seminoma (NSGCT)</option>
+                    </select>
+                    <select id="o_testis_stage" class="w-full bg-white border border-purple-200 text-sm p-3 rounded">
+                        <option value="" disabled selected>Stage / LVI...</option>
+                        <option value="I_neg">Stage I (LVI Negative)</option>
+                        <option value="I_pos">Stage I (LVI Positive)</option>
+                        <option value="adv">Stage II/III (Metastatic)</option>
+                    </select>`;
+            } else if (disease === 'Ca Penis') {
+                html = `
+                    <select id="o_penis_t" class="w-full bg-white border border-purple-200 text-sm p-3 rounded">
+                        <option value="" disabled selected>Primary Tumor (T)...</option>
+                        <option value="Ta">Tis / Ta / T1a (Low Grade)</option>
+                        <option value="T1b">T1b (High Grade / LVI+) or T2</option>
+                        <option value="T3">T3 / T4</option>
+                    </select>
+                    <select id="o_penis_n" class="w-full bg-white border border-purple-200 text-sm p-3 rounded">
+                        <option value="" disabled selected>Groin Nodes (Clinical)...</option>
+                        <option value="N0">Clinically N0</option>
+                        <option value="N1">Palpable Nodes (cN1/cN2)</option>
+                    </select>`;
+            } else if (disease === 'Adrenal Mass') {
+                html = `
+                    <select id="o_adrenal_func" class="w-full bg-white border border-purple-200 text-sm p-3 rounded">
+                        <option value="" disabled selected>Endocrine Status...</option>
+                        <option value="func">Functional (Hormone Secreting)</option>
+                        <option value="non">Non-Functional</option>
+                    </select>
+                    <select id="o_adrenal_size" class="w-full bg-white border border-purple-200 text-sm p-3 rounded">
+                        <option value="" disabled selected>Size / Imaging...</option>
+                        <option value="small">< 4 cm & Benign Imaging</option>
+                        <option value="large">> 4 cm OR Suspicious Imaging</option>
+                    </select>`;
+            } else if (disease === 'Nocturnal Enuresis') {
+                html = `
+                    <select id="o_enuresis_type" class="w-full bg-white border border-purple-200 text-sm p-3 rounded">
+                        <option value="" disabled selected>Symptom Profile...</option>
+                        <option value="MNE">Monosymptomatic (MNE) - Night only</option>
+                        <option value="NMNE">Non-Monosymptomatic (NMNE) - Day+Night</option>
+                    </select>`;
+            }
+
+            container.innerHTML = html;
+            document.getElementById('oracleGenerateBtn').classList.remove('hidden');
+        }
+
+        function generateOraclePlan() {
+            const disease = document.getElementById('oracleConditionSelect').value;
+            let result = '';
+
+            try {
+                if (disease === 'Ca Prostate') {
+                    let psa = document.getElementById('o_prostate_psa').value;
+                    let isup = document.getElementById('o_prostate_isup').value;
+                    let stage = document.getElementById('o_prostate_stage').value;
+                    
+                    if(!psa || !isup || !stage) throw "Please fill all fields.";
+                    
+                    if (psa === 'high' || isup === '4' || stage === '3') {
+                        result = `<b>Risk Group:</b> HIGH RISK<br><br><b>Guideline Plan:</b><br>1. Radical Prostatectomy + <span class="text-red-600 font-bold">MANDATORY</span> Extended Pelvic LND.<br>2. ALTERNATIVE: EBRT (78-80 Gy) + Long-course ADT (18-36 months).`;
+                    } else if (isup === '3' || (psa === 'int' && stage === '2')) {
+                        result = `<b>Risk Group:</b> UNFAVORABLE INTERMEDIATE<br><br><b>Guideline Plan:</b><br>1. Radical Prostatectomy + ePLND.<br>2. ALTERNATIVE: EBRT + Short-course ADT (4-6 months).`;
+                    } else if (isup === '1' && psa === 'low' && stage === '1') {
+                        result = `<b>Risk Group:</b> LOW RISK<br><br><b>Guideline Plan:</b><br>1. Active Surveillance is the preferred standard.<br>2. Monitor PSA q6m, mpMRI at 12-18 months.`;
+                    } else {
+                        result = `<b>Risk Group:</b> FAVORABLE INTERMEDIATE<br><br><b>Guideline Plan:</b><br>1. Active Surveillance (highly selected patients).<br>2. Radical Prostatectomy.<br>3. EBRT.`;
+                    }
+                } 
+                else if (disease === 'Ca Bladder') {
+                    let depth = document.getElementById('o_bladder_depth').value;
+                    let grade = document.getElementById('o_bladder_grade').value;
+                    let cis = document.getElementById('o_bladder_cis').value;
+
+                    if(!depth || !grade || !cis) throw "Please fill all fields.";
+
+                    if (depth === 'T2') {
+                        result = `<b>Classification:</b> MUSCLE INVASIVE (MIBC)<br><br><b>Guideline Plan:</b><br>1. Neoadjuvant Chemotherapy (ddMVAC or Gem/Cis).<br>2. Radical Cystectomy + ePLND.<br>3. If unfit/refusing surgery: Trimodal Therapy (TMT).`;
+                    } else if (depth === 'T1' && (grade === 'High' || cis === 'Yes')) {
+                        result = `<b>Risk Group:</b> VERY HIGH RISK NMIBC<br><br><b>Guideline Plan:</b><br>1. Primary recommendation: Upfront Radical Cystectomy.<br>2. If unfit: <span class="text-red-600 font-bold">MANDATORY</span> Re-TURBT followed by full-dose BCG induction + 3yr maintenance.`;
+                    } else if (depth === 'T1' || grade === 'High' || cis === 'Yes') {
+                        result = `<b>Risk Group:</b> HIGH RISK NMIBC<br><br><b>Guideline Plan:</b><br>1. <span class="text-red-600 font-bold">MANDATORY</span> Re-TURBT within 2-6 weeks.<br>2. Induction BCG (weekly x6).<br>3. 3-Year Maintenance BCG (SWOG protocol).`;
+                    } else {
+                        result = `<b>Risk Group:</b> LOW / INTERMEDIATE NMIBC<br><br><b>Guideline Plan:</b><br>1. Single immediate post-op instillation (Mitomycin/Gemcitabine).<br>2. If intermediate: 1-year maintenance BCG/Chemo.`;
+                    }
+                }
+                else if (disease === 'Ca Kidney') {
+                    let size = document.getElementById('o_kidney_size').value;
+                    let endo = document.getElementById('o_kidney_endo').value;
+                    
+                    if(!size || !endo) throw "Please fill all fields.";
+
+                    if (size === 'T2') {
+                        result = `<b>Classification:</b> Stage T2 (>7 cm)<br><br><b>Guideline Plan:</b><br>1. Radical Nephrectomy is the standard of care.<br>2. Partial nephrectomy only if imperative indications exist (solitary kidney, CKD).`;
+                    } else if (size === 'T1a' && endo === 'Exo') {
+                        result = `<b>Classification:</b> Stage T1a Exophytic<br><br><b>Guideline Plan:</b><br>1. Partial Nephrectomy is the absolute standard.<br>2. If patient is elderly/frail: Active Surveillance or Thermal Ablation (Cryo/RFA).`;
+                    } else {
+                        result = `<b>Classification:</b> Stage T1b or Endophytic T1a<br><br><b>Guideline Plan:</b><br>1. Partial Nephrectomy is strongly preferred to preserve renal function.<br>2. Radical Nephrectomy only if tumor complexity absolutely precludes partial preservation.`;
+                    }
+                }
+                else if (disease === 'BPH') {
+                    let vol = document.getElementById('o_bph_vol').value;
+                    let ret = document.getElementById('o_bph_ret').value;
+                    
+                    if(!vol || !ret) throw "Please fill all fields.";
+
+                    if (ret === 'surg') {
+                        if (vol === 'large') result = `<b>Guideline Plan:</b><br>1. Absolute indication for surgery.<br>2. HoLEP or Simple Prostatectomy (Open/Robotic) due to >80cc volume.`;
+                        else result = `<b>Guideline Plan:</b><br>1. Absolute indication for surgery.<br>2. Bipolar TURP or HoLEP/ThuLEP.`;
+                    } else {
+                        if (vol === 'small') result = `<b>Guideline Plan:</b><br>1. Medical therapy: Alpha-blocker monotherapy (Tamsulosin/Silodosin).<br>2. Avoid 5-ARIs (ineffective for <30cc).`;
+                        else result = `<b>Guideline Plan:</b><br>1. Medical therapy: Combination Alpha-blocker + 5-ARI (Dutasteride/Finasteride).<br>2. <i>Remember the 50% PSA rule for 5-ARIs!</i>`;
+                    }
+                }
+                else if (disease === 'Ca Testis') {
+                    let hist = document.getElementById('o_testis_hist').value;
+                    let stage = document.getElementById('o_testis_stage').value;
+                    
+                    if(!hist || !stage) throw "Please fill all fields.";
+
+                    if (stage === 'adv') {
+                        result = `<b>Guideline Plan:</b><br>1. Systemic Chemotherapy based on IGCCCG risk group.<br>2. 3 cycles BEP (Good risk) OR 4 cycles BEP (Int/Poor risk).`;
+                    } else if (hist === 'nsgct' && stage === 'I_pos') {
+                        result = `<b>Risk Group:</b> Stage I NSGCT (High Risk LVI+)<br><br><b>Guideline Plan:</b><br>1. 1 cycle of Adjuvant BEP.<br>2. ALTERNATIVE: Primary Nerve-Sparing RPLND.`;
+                    } else if (hist === 'sem' && stage === 'I_pos') {
+                        result = `<b>Risk Group:</b> Stage I Seminoma (High Risk)<br><br><b>Guideline Plan:</b><br>1. Single dose Carboplatin (AUC 7).<br>2. ALTERNATIVE: Strict Surveillance.`;
+                    } else {
+                        result = `<b>Risk Group:</b> Stage I (Low Risk)<br><br><b>Guideline Plan:</b><br>1. Active Surveillance is the preferred standard.`;
+                    }
+                }
+                else if (disease === 'Ca Penis') {
+                    let t = document.getElementById('o_penis_t').value;
+                    let n = document.getElementById('o_penis_n').value;
+                    
+                    if(!t || !n) throw "Please fill all fields.";
+
+                    let local = t === 'Ta' ? 'Penile Sparing (Topical 5-FU, wide local excision, glansectomy).' : 'Partial or Total Penectomy.';
+                    let nodal = n === 'N1' ? '<span class="text-red-600 font-bold">MANDATORY</span> Radical Inguinal LND.' : (t === 'Ta' ? 'Watchful waiting of groins.' : '<span class="text-red-600 font-bold">MANDATORY</span> Invasive Nodal Staging (DSNB or modified ILND).');
+
+                    result = `<b>Local Tumor Plan:</b><br>${local}<br><br><b>Lymph Node Plan:</b><br>${nodal}`;
+                }
+                else if (disease === 'Adrenal Mass') {
+                    let func = document.getElementById('o_adrenal_func').value;
+                    let size = document.getElementById('o_adrenal_size').value;
+                    
+                    if(!func || !size) throw "Please fill all fields.";
+
+                    if (func === 'func' || size === 'large') {
+                        result = `<b>Guideline Plan:</b><br>1. Surgical excision (Adrenalectomy) is indicated.<br>2. <span class="text-red-600 font-bold">CRITICAL:</span> If pheochromocytoma is suspected, patient must be alpha-blocked prior to surgery.`;
+                    } else {
+                        result = `<b>Guideline Plan:</b><br>1. Benign non-functioning adenoma.<br>2. Serial imaging and biochemical surveillance. No surgery indicated.`;
+                    }
+                }
+                else if (disease === 'Nocturnal Enuresis') {
+                    let type = document.getElementById('o_enuresis_type').value;
+                    
+                    if(!type) throw "Please fill all fields.";
+
+                    if (type === 'NMNE') {
+                        result = `<b>Guideline Plan:</b><br>1. Exclude constipation / Fecal loading.<br>2. Treat daytime symptoms first (e.g., Anticholinergics for overactive bladder).<br>3. Uroflowmetry & Bladder Diary required.`;
+                    } else {
+                        result = `<b>Guideline Plan:</b><br>1. Step 1: Enuresis Conditioning Alarm (Curative intent).<br>2. Step 2: Desmopressin (Melt 120mcg at bedtime).<br>3. <span class="text-red-600 font-bold">CRITICAL:</span> Strict fluid restriction 1h before to 8h after DDAVP.`;
+                    }
+                }
+
+                document.getElementById('oracleResultContent').innerHTML = result;
+                document.getElementById('oracleResultCard').classList.remove('hidden');
+
+            } catch (err) {
+                alert(err);
+            }
+        }
 
         // --- CALCULATORS ---
         function calcPSAD() {
@@ -601,7 +903,7 @@
         // --- PWA SERVICE WORKER REGISTRATION WITH CACHE BUSTER ---
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js?v=3').then(reg => {
+                navigator.serviceWorker.register('sw.js?v=4').then(reg => {
                     console.log('ServiceWorker registered:', reg.scope);
                 }).catch(err => console.log('ServiceWorker error:', err));
             });
@@ -614,3 +916,4 @@
     </script>
 </body>
 </html>
+
