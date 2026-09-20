@@ -42,7 +42,7 @@
                 <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                     <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                 </div>
-                <input type="text" id="searchInput" onkeyup="performSearch()" placeholder="Oracle Search (e.g. 'ARASENS', 'ISUP', 'EV-302')..." class="block w-full p-3 pl-10 text-sm text-slate-900 border border-transparent rounded-lg bg-slate-50 focus:ring-sky-500 focus:border-sky-500 font-medium placeholder-slate-400 shadow-inner">
+                <input type="text" id="searchInput" onkeyup="performSearch()" placeholder="Search (e.g. 'ARASENS', 'ISUP', 'EV-302', 'TIP')..." class="block w-full p-3 pl-10 text-sm text-slate-900 border border-transparent rounded-lg bg-slate-50 focus:ring-sky-500 focus:border-sky-500 font-medium placeholder-slate-400 shadow-inner">
             </div>
         </div>
 
@@ -83,7 +83,111 @@
             </div>
         </div>
 
-        <!-- Mode 2: Patient Handout Generator -->
+        <!-- Mode 2: Interactive Calculators (Oracle) -->
+        <div id="calcSection" class="p-5 hidden no-print">
+            <h2 class="text-lg font-bold text-slate-700 mb-4 flex items-center">🧮 Oracle Dashboard</h2>
+            
+            <!-- ISUP Calculator -->
+            <div class="mb-5 p-4 border border-slate-200 rounded-xl bg-slate-50 shadow-sm">
+                <h4 class="font-bold text-sm text-sky-800 mb-2">ISUP Grade Group (Prostate)</h4>
+                <div class="grid grid-cols-2 gap-2">
+                    <select id="isupPrimary" class="border border-slate-300 p-2 rounded text-sm bg-white focus:outline-sky-500">
+                        <option value="" disabled selected>Primary Pattern</option>
+                        <option value="3">Pattern 3</option>
+                        <option value="4">Pattern 4</option>
+                        <option value="5">Pattern 5</option>
+                    </select>
+                    <select id="isupSecondary" class="border border-slate-300 p-2 rounded text-sm bg-white focus:outline-sky-500">
+                        <option value="" disabled selected>Secondary Pattern</option>
+                        <option value="3">Pattern 3</option>
+                        <option value="4">Pattern 4</option>
+                        <option value="5">Pattern 5</option>
+                    </select>
+                </div>
+                <div class="mt-2 text-xs text-slate-500 italic">*Rule: If tertiary pattern 5 is present in RP specimen >5%, enter 5 as secondary pattern.</div>
+                <button onclick="calcISUP()" class="mt-3 w-full bg-sky-600 text-white font-semibold py-2 rounded text-sm hover:bg-sky-700 transition">Calculate ISUP</button>
+                <div id="isupResult" class="mt-3 text-sm font-bold text-center"></div>
+            </div>
+
+            <!-- PSA Density -->
+            <div class="mb-5 p-4 border border-slate-200 rounded-xl bg-slate-50 shadow-sm">
+                <h4 class="font-bold text-sm text-sky-800 mb-2">PSA Density (PSAD)</h4>
+                <div class="flex gap-2">
+                    <input type="number" id="psaInput" placeholder="PSA (ng/mL)" class="border border-slate-300 p-2 rounded w-1/2 text-sm bg-white focus:outline-sky-500">
+                    <input type="number" id="volInput" placeholder="Volume (cc)" class="border border-slate-300 p-2 rounded w-1/2 text-sm bg-white focus:outline-sky-500">
+                </div>
+                <button onclick="calcPSAD()" class="mt-3 w-full bg-sky-600 text-white font-semibold py-2 rounded text-sm hover:bg-sky-700 transition">Calculate PSAD</button>
+                <div id="psadResult" class="mt-3 text-sm font-bold text-center"></div>
+            </div>
+
+            <!-- CrCl Cockcroft-Gault -->
+            <div class="mb-5 p-4 border border-slate-200 rounded-xl bg-slate-50 shadow-sm">
+                <h4 class="font-bold text-sm text-sky-800 mb-2">Cisplatin Eligibility (Cockcroft-Gault)</h4>
+                <div class="grid grid-cols-2 gap-2">
+                    <input type="number" id="cgAge" placeholder="Age" class="border border-slate-300 p-2 rounded text-sm bg-white focus:outline-sky-500">
+                    <input type="number" id="cgWeight" placeholder="Weight (kg)" class="border border-slate-300 p-2 rounded text-sm bg-white focus:outline-sky-500">
+                    <input type="number" id="cgCr" placeholder="Cr (mg/dL)" class="border border-slate-300 p-2 rounded text-sm bg-white focus:outline-sky-500">
+                    <select id="cgSex" class="border border-slate-300 p-2 rounded text-sm bg-white focus:outline-sky-500">
+                        <option value="1">Male</option>
+                        <option value="0.85">Female</option>
+                    </select>
+                </div>
+                <button onclick="calcCG()" class="mt-3 w-full bg-sky-600 text-white font-semibold py-2 rounded text-sm hover:bg-sky-700 transition">Calculate CrCl</button>
+                <div id="cgResult" class="mt-3 text-sm font-bold text-center"></div>
+            </div>
+
+            <!-- R.E.N.A.L. Score -->
+            <div class="mb-5 p-4 border border-slate-200 rounded-xl bg-slate-50 shadow-sm">
+                <h4 class="font-bold text-sm text-sky-800 mb-2">R.E.N.A.L. Nephrometry Score</h4>
+                <div class="grid grid-cols-2 gap-2 text-sm">
+                    <select id="renalR" class="border p-2 rounded bg-white"><option value="" disabled selected>(R)adius</option><option value="1">≤4 cm (1)</option><option value="2">4-7 cm (2)</option><option value="3">>7 cm (3)</option></select>
+                    <select id="renalE" class="border p-2 rounded bg-white"><option value="" disabled selected>(E)xophytic</option><option value="1">≥50% (1)</option><option value="2"><50% (2)</option><option value="3">Endo (3)</option></select>
+                    <select id="renalN" class="border p-2 rounded bg-white"><option value="" disabled selected>(N)earness to sinus</option><option value="1">≥7 mm (1)</option><option value="2">4-7 mm (2)</option><option value="3">≤4 mm (3)</option></select>
+                    <select id="renalL" class="border p-2 rounded bg-white"><option value="" disabled selected>(L)ocation</option><option value="1">Polar (1)</option><option value="2">Crosses line (2)</option><option value="3">Hilum/>50% (3)</option></select>
+                </div>
+                <button onclick="calcRenal()" class="mt-3 w-full bg-sky-600 text-white font-semibold py-2 rounded text-sm hover:bg-sky-700 transition">Calculate R.E.N.A.L.</button>
+                <div id="renalResult" class="mt-3 text-sm font-bold text-center"></div>
+            </div>
+
+            <!-- P.A.D.U.A. Score -->
+            <div class="mb-5 p-4 border border-slate-200 rounded-xl bg-slate-50 shadow-sm">
+                <h4 class="font-bold text-sm text-sky-800 mb-2">P.A.D.U.A. Score</h4>
+                <div class="grid grid-cols-2 gap-2 text-sm">
+                    <select id="paduaPolar" class="border p-2 rounded bg-white"><option value="" disabled selected>Polar Loc.</option><option value="1">Upper/Lower (1)</option><option value="2">Crosses (2)</option></select>
+                    <select id="paduaExo" class="border p-2 rounded bg-white"><option value="" disabled selected>Exophytic</option><option value="1">≥50% (1)</option><option value="2"><50% (2)</option><option value="3">Endo (3)</option></select>
+                    <select id="paduaRim" class="border p-2 rounded bg-white"><option value="" disabled selected>Renal Rim</option><option value="1">Lateral (1)</option><option value="2">Medial (2)</option></select>
+                    <select id="paduaSinus" class="border p-2 rounded bg-white"><option value="" disabled selected>Sinus</option><option value="1">No (1)</option><option value="2">Yes (2)</option></select>
+                    <select id="paduaUCS" class="border p-2 rounded bg-white"><option value="" disabled selected>Coll. Sys.</option><option value="1">Absent (1)</option><option value="2">Present (2)</option></select>
+                    <select id="paduaSize" class="border p-2 rounded bg-white"><option value="" disabled selected>Size</option><option value="1">≤4cm (1)</option><option value="2">4-7cm (2)</option><option value="3">>7cm (3)</option></select>
+                </div>
+                <button onclick="calcPadua()" class="mt-3 w-full bg-sky-600 text-white font-semibold py-2 rounded text-sm hover:bg-sky-700 transition">Calculate P.A.D.U.A.</button>
+                <div id="paduaResult" class="mt-3 text-sm font-bold text-center"></div>
+            </div>
+
+            <!-- S.T.O.N.E. Score -->
+            <div class="mb-5 p-4 border border-slate-200 rounded-xl bg-slate-50 shadow-sm">
+                <h4 class="font-bold text-sm text-sky-800 mb-2">S.T.O.N.E. Nephrolithometry</h4>
+                <div class="grid grid-cols-2 gap-2 text-sm">
+                    <select id="stoneS" class="border p-2 rounded bg-white"><option value="" disabled selected>(S)ize</option><option value="1"><400mm² (1)</option><option value="2">400-799 (2)</option><option value="3">800-1599 (3)</option><option value="4">≥1600 (4)</option></select>
+                    <select id="stoneT" class="border p-2 rounded bg-white"><option value="" disabled selected>(T)ract length</option><option value="1">≤100mm (1)</option><option value="2">>100mm (2)</option></select>
+                    <select id="stoneO" class="border p-2 rounded bg-white"><option value="" disabled selected>(O)bstruction</option><option value="1">None/Mild (1)</option><option value="2">Mod/Sev (2)</option></select>
+                    <select id="stoneN" class="border p-2 rounded bg-white"><option value="" disabled selected>(N)o. Calyces</option><option value="1">1-2 (1)</option><option value="2">3 (2)</option><option value="3">Staghorn (3)</option></select>
+                    <select id="stoneE" class="border p-2 rounded bg-white"><option value="" disabled selected>(E)ssence (HU)</option><option value="1">≤950 HU (1)</option><option value="2">>950 HU (2)</option></select>
+                </div>
+                <button onclick="calcStone()" class="mt-3 w-full bg-sky-600 text-white font-semibold py-2 rounded text-sm hover:bg-sky-700 transition">Calculate S.T.O.N.E.</button>
+                <div id="stoneResult" class="mt-3 text-sm font-bold text-center"></div>
+            </div>
+
+            <!-- Koff's Formula -->
+            <div class="mb-5 p-4 border border-slate-200 rounded-xl bg-slate-50 shadow-sm">
+                <h4 class="font-bold text-sm text-sky-800 mb-2">Koff's Formula (Exp. Bladder Cap)</h4>
+                <input type="number" id="koffAge" placeholder="Child's Age (years)" class="border border-slate-300 p-2 rounded w-full text-sm bg-white focus:outline-sky-500">
+                <button onclick="calcKoff()" class="mt-3 w-full bg-sky-600 text-white font-semibold py-2 rounded text-sm hover:bg-sky-700 transition">Calculate EBC</button>
+                <div id="koffResult" class="mt-3 text-sm font-bold text-center text-sky-700"></div>
+            </div>
+        </div>
+
+        <!-- Mode 3: Patient Handout Generator -->
         <div id="handoutSection" class="p-5 hidden">
             <h2 class="text-lg font-bold text-slate-700 mb-4 no-print flex items-center">📄 Patient Handouts</h2>
             <div class="mb-5 no-print">
@@ -121,19 +225,19 @@
         </div>
     </div>
 
-    <!-- EXHAUSTIVE CLINICAL DATABASE & INLINE CALCULATORS -->
+    <!-- EXHAUSTIVE CLINICAL DATABASE -->
     <script>
         const clinicalData = {
             "Ca Prostate": {
-                "1. Diagnostic Workup & Biomarkers": [
-                    { q: "PSA Metrics & Density (PSAD Calculator)", a: "• Total PSA Thresholds: <4 (Normal), 4-10 (Gray Zone), >10 (Suspicious), >20 (High Risk).\n• PSA Density (PSAD): Total PSA / Prostate Volume. A cut-off of ≥0.15 ng/mL/cc strongly indicates csPCa and mandates biopsy even with negative MRI.\n• Free-to-Total PSA Ratio (%fPSA): Evaluated in 4-10 ng/mL zone. %fPSA <10% indicates 56% cancer probability.\n\n<div class='mt-4 p-4 border border-slate-200 rounded-xl bg-slate-50 shadow-sm'><h4 class='font-bold text-sm text-sky-800 mb-2'>PSAD Calculator</h4><div class='flex gap-2'><input type='number' id='psaInput' placeholder='Total PSA (ng/mL)' class='border border-slate-300 p-2 rounded w-1/2 text-sm bg-white focus:outline-sky-500'><input type='number' id='volInput' placeholder='Prostate Vol (cc)' class='border border-slate-300 p-2 rounded w-1/2 text-sm bg-white focus:outline-sky-500'></div><button onclick='calcPSAD()' class='mt-3 w-full bg-sky-600 text-white font-semibold py-2 rounded text-sm hover:bg-sky-700 transition'>Calculate Density</button><div id='psadResult' class='mt-3 text-sm font-bold text-center'></div></div>" },
-                    { q: "mpMRI (PI-RADS v2.1) & Viewing Hacks", a: "• PI-RADS 1-2: Low likelihood of csPCa.\n• PI-RADS 3: Equivocal. (Tie-breaker: use PSAD or DCE).\n• PI-RADS 4-5: High/Very High likelihood of csPCa.\n\nInterpretation Hacks for Residents:\n• T2-Weighted (T2W): Best for anatomical detail and Transition Zone (TZ). Look for 'erased charcoal' smudges (tumor) against bright normal peripheral zone (PZ). TZ tumors appear as lenticular/water-drop homogeneous low-signal masses.\n• Diffusion-Weighted Imaging (DWI/ADC): The primary sequence for Peripheral Zone (PZ). Prostate cancer is highly cellular/dense, restricting water diffusion. Result: Bright on high B-value DWI (B>1400) and dark/black on ADC map. (Hack: Always match the black spot on ADC with a bright spot on DWI).\n• Dynamic Contrast Enhancement (DCE): Looks for early/rapid enhancement and washout. Used mostly as a tie-breaker for PI-RADS 3 in the PZ to upgrade it to PI-RADS 4.\n• Golden Rule: For Peripheral Zone -> rely on DWI. For Transition Zone -> rely on T2W." },
-                    { q: "Investigations: Sensitivity & Specificity", a: "Diagnostic Accuracy:\n• Total PSA (4.0 ng/mL cut-off): Sens 70%–80%, Spec 30%–40% (high false positive from BPH).\n• DRE: Sens 50%–60%, Spec 80%–90%.\n• mpMRI (PI-RADS ≥3): Sens 85%–92%, Spec 75%–85%, NPV 88%–95%.\n• Combined Targeted + Systematic Biopsy: Sens >95% for csPCa.\n• 68Ga-PSMA-11 PET-CT: Initial Nodal Staging Sens 40%–55% (limited for micromets <4 mm), Spec 95%–98%. Restaging at BCR (PSA >2.0): >90% detection." }
+                "1. Diagnostic Workup & Investigations": [
+                    { q: "PSA Metrics & Density (PSAD)", a: "• Total PSA Thresholds: <4 (Normal), 4-10 (Gray Zone), >10 (Suspicious), >20 (High Risk).\n• PSA Density (PSAD): Total PSA / Prostate Volume. A cut-off of ≥0.15 ng/mL/cc strongly indicates csPCa and mandates biopsy even with negative MRI.\n• Free-to-Total PSA Ratio (%fPSA): Evaluated in 4-10 ng/mL zone. %fPSA <10% indicates 56% cancer probability.\n• PSA Velocity: Increase of >0.75 ng/mL/year is highly suspicious." },
+                    { q: "mpMRI (PI-RADS v2.1) & Viewing Hacks", a: "• PI-RADS 1-2: Low likelihood of csPCa.\n• PI-RADS 3: Equivocal. (Tie-breaker: use PSAD or DCE).\n• PI-RADS 4-5: High/Very High likelihood of csPCa.\n\nInterpretation Hacks for Residents:\n• T2-Weighted (T2W): Best for Transition Zone (TZ). Look for 'erased charcoal' smudges against bright normal peripheral zone (PZ).\n• Diffusion-Weighted Imaging (DWI/ADC): Primary sequence for PZ. Prostate cancer restricts water diffusion -> Bright on high B-value DWI (B>1400) and dark/black on ADC map. (Hack: Always match the black spot on ADC with a bright spot on DWI).\n• Dynamic Contrast Enhancement (DCE): Upgrades PI-RADS 3 to 4 in the PZ.\n• Golden Rule: For PZ -> rely on DWI. For TZ -> rely on T2W." },
+                    { q: "Investigations: Sensitivity & Specificity", a: "Diagnostic Accuracy:\n• Total PSA (4.0 ng/mL cut-off): Sens 70%–80%, Spec 30%–40% (high false positive from BPH).\n• DRE: Sens 50%–60%, Spec 80%–90%.\n• mpMRI (PI-RADS ≥3): Sens 85%–92%, Spec 75%–85%, NPV 88%–95%.\n• Combined Targeted + Systematic Biopsy: Sens >95% for csPCa.\n• 68Ga-PSMA-11 PET-CT: Initial Nodal Staging Sens 40%–55% (misses micromets <4 mm), Spec 95%–98%. Restaging at BCR (PSA >2.0): >90% detection." }
                 ],
                 "2. TNM Staging, Histology & ISUP": [
-                    { q: "Histological Subtypes & Pathobiology", a: "Subtypes & Treatment Implications:\n• Acinar Adenocarcinoma (>95%): Standard presentation, arises from peripheral zone, graded by Gleason/ISUP.\n• Ductal Adenocarcinoma: Highly aggressive, often presents with lower PSA relative to tumor volume. Tends to spread to visceral organs (lung/liver) rather than bone. Upfront surgery or aggressive RT/ADT required.\n• Neuroendocrine / Small Cell Carcinoma: Extremely aggressive, paraneoplastic syndromes (SIADH, Cushing's). Does NOT secrete PSA (low PSA with massive metastatic burden). Treat identical to Small Cell Lung Cancer (Platinum + Etoposide chemotherapy). Pure neuroendocrine is universally resistant to ADT.\n• Mucinous (Colloid) Carcinoma: Rare variant, generally responds similarly to standard acinar adenocarcinoma." },
+                    { q: "Histological Subtypes & Pathobiology", a: "Subtypes & Treatment Implications:\n• Acinar Adenocarcinoma (>95%): Standard presentation, graded by Gleason/ISUP.\n• Ductal Adenocarcinoma: Highly aggressive, presents with lower PSA relative to tumor volume. Spreads to visceral organs (lung/liver) rather than bone. Upfront surgery or aggressive RT/ADT required.\n• Neuroendocrine / Small Cell Carcinoma: Extremely aggressive, paraneoplastic syndromes (SIADH, Cushing's). Does NOT secrete PSA (low PSA with massive metastatic burden). Treat identical to Small Cell Lung Cancer (Platinum + Etoposide chemotherapy). Pure neuroendocrine is universally resistant to ADT.\n• Mucinous (Colloid) Carcinoma: Rare variant, generally responds similarly to standard acinar adenocarcinoma." },
                     { q: "AJCC 8th Edition TNM Staging", a: "Clinical Primary Tumor (cT):\n• T1c: Needle biopsy finding (elevated PSA).\n• T2a: ≤ half of 1 lobe | T2b: > half of 1 lobe | T2c: Involves both lobes.\n• T3a: Extracapsular extension (microscopic or macroscopic) | T3b: Seminal vesicle invasion.\n• T4: Fixed to or invades adjacent structures (rectum, bladder neck, external sphincter, levator muscles, pelvic wall).\nRegional Lymph Nodes (N - True Pelvis below Aortic Bifurcation):\n• N0: No regional LN | N1: Regional nodal metastasis.\nDistant Metastasis (M):\n• M1a: Non-regional nodes (para-aortic) | M1b: Bone | M1c: Other distant visceral organs." },
-                    { q: "ISUP Grade Group Calculator & Rules", a: "Gleason Score = Primary Pattern (most prevalent) + Secondary Pattern (highest non-primary).\nMANDATORY Tertiary Pattern Rule: If tertiary pattern 5 is present in a radical prostatectomy specimen (>5%), the secondary pattern MUST be recorded as 5 to reflect true biological risk.\n\n<div class='mt-4 p-4 border border-slate-200 rounded-xl bg-slate-50 shadow-sm'><h4 class='font-bold text-sm text-sky-800 mb-2'>ISUP Calculator</h4><div class='grid grid-cols-2 gap-2'><select id='isupPrimary' class='border border-slate-300 p-2 rounded text-sm bg-white'><option value='' disabled selected>Primary Pattern</option><option value='3'>Pattern 3</option><option value='4'>Pattern 4</option><option value='5'>Pattern 5</option></select><select id='isupSecondary' class='border border-slate-300 p-2 rounded text-sm bg-white'><option value='' disabled selected>Secondary Pattern</option><option value='3'>Pattern 3</option><option value='4'>Pattern 4</option><option value='5'>Pattern 5</option></select></div><button onclick='calcISUP()' class='mt-3 w-full bg-sky-600 text-white font-semibold py-2 rounded text-sm hover:bg-sky-700 transition'>Calculate ISUP & Risk</button><div id='isupResult' class='mt-3 text-sm font-bold text-center'></div></div>" }
+                    { q: "ISUP Grade Groups (1-5) & Gleason Rules", a: "Gleason Score = Primary Pattern (most prevalent) + Secondary Pattern (highest non-primary).\n• Grade Group 1 (3+3=6): Only individual, discrete, well-formed glands. Excellent prognosis.\n• Grade Group 2 (3+4=7): Predominantly well-formed glands with a lesser component of poorly formed/cribriform glands (<50%).\n• Grade Group 3 (4+3=7): Predominantly poorly formed/fused/cribriform glands (>50%).\n• Grade Group 4 (8): 4+4, 3+5, or 5+3.\n• Grade Group 5 (9-10): Lack of gland formation, solid sheets, cords, single cells, or comedonecrosis. Very High Risk.\n• MANDATORY Tertiary Pattern Rule: If tertiary pattern 5 is present in a radical prostatectomy specimen (>5%), the secondary pattern MUST be recorded as 5 to reflect true biological risk (e.g. 3+4 with tertiary 5 becomes ISUP 4)." }
                 ],
                 "3. Risk Stratification & Local Management": [
                     { q: "NCCN / EAU Risk Stratification Matrix", a: "Risk Categorization:\n• Very Low Risk: cT1c, GG1, PSA <10, <3 positive cores, ≤50% cancer/core, PSAD <0.15.\n• Low Risk: cT1-T2a, GG1, PSA <10.\n• Favorable Intermediate Risk: 1 intermediate factor (cT2b-c OR GG2 OR PSA 10-20), GG1-2, <50% positive cores.\n• Unfavorable Intermediate Risk: GG3 OR ≥50% positive cores OR multiple intermediate factors.\n• High Risk: cT3a OR GG4-5 OR PSA >20.\n• Very High Risk: cT3b-T4, primary pattern 5, or >4 cores of GG4-5." },
@@ -166,7 +270,7 @@
                     { q: "High Risk NMIBC Protocol & BCG Schedule", a: "Management Protocol:\n• Step 1: MANDATORY Re-TURBT within 2–6 weeks.\n• Step 2: Adjuvant Induction Intravesical BCG (full standard dose: 1 vial [50 mg] in 50 mL saline weekly x 6).\n• Step 3: 3-Year Maintenance BCG (SWOG Protocol): 3 weekly instillations given at months 3, 6, 12, 18, 24, 30, and 36.\n• CRITICAL SAFETY RULE: If detrusor muscle was ABSENT in the initial T1 specimen, the risk of upstaging to muscle-invasive disease is 30-40%. Re-TURBT is critical." }
                 ],
                 "4. MIBC Local Therapy (Trials & Doses)": [
-                    { q: "Cisplatin Eligibility Criteria (CrCl Calculator)", a: "MANDATORY Criteria for Neoadjuvant Cisplatin (Galsky):\n1. eGFR/CrCl > 60 mL/min (borderline: 50-60 may receive split-dose).\n2. ECOG Performance Status 0 or 1.\n3. No Grade ≥2 peripheral neuropathy or audiometric hearing loss.\n4. No NYHA Class III/IV heart failure.\n• CONTRAINDICATED: Carboplatin is NEVER an acceptable substitute for curative neoadjuvant therapy in MIBC.\n\n<div class='mt-4 p-4 border border-slate-200 rounded-xl bg-slate-50 shadow-sm'><h4 class='font-bold text-sm text-sky-800 mb-2'>CrCl (Cockcroft-Gault)</h4><div class='grid grid-cols-2 gap-2'><input type='number' id='cgAge' placeholder='Age (years)' class='border border-slate-300 p-2 rounded text-sm bg-white'><input type='number' id='cgWeight' placeholder='Weight (kg)' class='border border-slate-300 p-2 rounded text-sm bg-white'><input type='number' id='cgCr' placeholder='Cr (mg/dL)' class='border border-slate-300 p-2 rounded text-sm bg-white'><select id='cgSex' class='border border-slate-300 p-2 rounded text-sm bg-white'><option value='1'>Male</option><option value='0.85'>Female</option></select></div><button onclick='calcCG()' class='mt-3 w-full bg-sky-600 text-white font-semibold py-2 rounded text-sm hover:bg-sky-700 transition'>Calculate Eligibility</button><div id='cgResult' class='mt-3 text-sm font-bold text-center'></div></div>" },
+                    { q: "Cisplatin Eligibility Criteria (Galsky)", a: "MANDATORY Criteria for Neoadjuvant Cisplatin:\n1. eGFR > 60 mL/min (borderline: 50-60 may receive split-dose).\n2. ECOG Performance Status 0 or 1.\n3. No Grade ≥2 peripheral neuropathy or audiometric hearing loss.\n4. No NYHA Class III/IV heart failure.\n• CONTRAINDICATED: Carboplatin is NEVER an acceptable substitute for curative neoadjuvant therapy in MIBC." },
                     { q: "Neoadjuvant Chemotherapy (VESPER Trial Doses)", a: "VESPER Trial showed superiority of Dose-Dense MVAC over standard Gem/Cis.\n• ddMVAC Protocol Exact Doses:\n  - Methotrexate: 30 mg/m² IV (Day 1)\n  - Vinblastine: 3 mg/m² IV (Day 2)\n  - Doxorubicin: 30 mg/m² IV (Day 2)\n  - Cisplatin: 70 mg/m² IV (Day 2)\n  - Support: G-CSF subcutaneously Days 4-10.\n  - Schedule: Repeated every 14 days for 4 cycles -> Proceed to Radical Cystectomy." },
                     { q: "Perioperative Immunotherapy (NIAGARA Trial)", a: "NIAGARA Trial Regimen:\n• Neoadjuvant Phase (q3w x 4 cycles): Durvalumab (1,500 mg IV D1) + Gemcitabine (1,000 mg/m² IV D1,8) + Cisplatin (70 mg/m² IV D1).\n• Definitive Surgery: Radical Cystectomy + ePLND.\n• Adjuvant Phase: Durvalumab (1,500 mg IV) monotherapy maintenance q4w x up to 8 cycles." },
                     { q: "Trimodal Preservation Therapy (TMT Doses)", a: "TMT Protocol for Bladder Preservation:\n• Step 1: Maximal complete TURBT (visible tumor completely resected down to muscle).\n• Step 2: Concurrent Chemo-Radiotherapy. Radiotherapy Dose: 55–64 Gy total dose delivered to bladder in daily fractions (1.8–2.0 Gy/day). Radiosensitizing Chemotherapy: Cisplatin weekly OR 5-FU + Mitomycin C." },
@@ -228,9 +332,7 @@
                 ],
                 "3. Localized Management & Surgery": [
                     { q: "Partial vs Radical Nephrectomy Protocols", a: "Surgical Management Rules:\n• T1 Tumors (≤7 cm): Partial Nephrectomy is the ABSOLUTE STANDARD OF CARE to preserve renal function, assuming technical feasibility.\n• T2 Tumors (>7 cm): Radical Nephrectomy is standard, though Partial can be performed for imperative indications (solitary kidney, CKD).\n• Surgical Margins: For partial nephrectomy, enucleation or a minimal 1-2 mm margin is sufficient. Positive surgical margins (PSM) do NOT mandate immediate completion nephrectomy; close active surveillance is advised.\n• Adjuvant Therapy (KEYNOTE-564): Pembrolizumab (200 mg IV q3w for 1 year) is indicated for high-risk recurrence post-nephrectomy (e.g., T3/T4, or any Grade 4, or node-positive)." },
-                    { q: "Active Surveillance & Thermal Ablation", a: "Protocol:\n• Active Surveillance: Preferred for frail or elderly patients with small renal masses (<4 cm). A growth rate >0.5 cm/year triggers active intervention.\n• Thermal Ablation (Cryoablation / RFA): Requires a prior percutaneous biopsy confirmation. Ideal for exophytic tumors ≤3 cm in patients unfit for surgery." },
-                    { q: "R.E.N.A.L. Nephrometry Score Calculator", a: "Scores Partial Nephrectomy complexity (Score 4-12). Higher scores indicate greater surgical difficulty and risk of complications.\n\n<div class='mt-4 p-4 border border-slate-200 rounded-xl bg-slate-50 shadow-sm'><h4 class='font-bold text-sm text-sky-800 mb-2'>R.E.N.A.L. Calculator</h4><div class='grid grid-cols-2 gap-2 text-sm'><select id='renalR' class='border p-2 rounded'><option value='' disabled selected>(R)adius</option><option value='1'>≤4 cm (1pt)</option><option value='2'>4-7 cm (2pt)</option><option value='3'>>7 cm (3pt)</option></select><select id='renalE' class='border p-2 rounded'><option value='' disabled selected>(E)xophytic</option><option value='1'>≥50% Exo (1pt)</option><option value='2'><50% Exo (2pt)</option><option value='3'>Endophytic (3pt)</option></select><select id='renalN' class='border p-2 rounded'><option value='' disabled selected>(N)earness to sinus</option><option value='1'>≥7 mm (1pt)</option><option value='2'>4-7 mm (2pt)</option><option value='3'>≤4 mm (3pt)</option></select><select id='renalL' class='border p-2 rounded'><option value='' disabled selected>(L)ocation</option><option value='1'>Polar lines (1pt)</option><option value='2'>Crosses line (2pt)</option><option value='3'>Hilum/>50% (3pt)</option></select></div><button onclick='calcRenal()' class='mt-3 w-full bg-sky-600 text-white font-semibold py-2 rounded text-sm hover:bg-sky-700 transition'>Calculate Score</button><div id='renalResult' class='mt-3 text-sm font-bold text-center'></div></div>" },
-                    { q: "P.A.D.U.A. Nephrometry Score Calculator", a: "Preoperative Aspects and Dimensions Used for Anatomical classification (Total 6-14 points).\n\n<div class='mt-4 p-4 border border-slate-200 rounded-xl bg-slate-50 shadow-sm'><h4 class='font-bold text-sm text-sky-800 mb-2'>P.A.D.U.A. Calculator</h4><div class='grid grid-cols-2 gap-2 text-sm'><select id='paduaPolar' class='border p-2 rounded'><option value='' disabled selected>Polar Location</option><option value='1'>Upper/Lower (1pt)</option><option value='2'>Crosses line (2pt)</option></select><select id='paduaExo' class='border p-2 rounded'><option value='' disabled selected>Exophytic Rate</option><option value='1'>≥50% (1pt)</option><option value='2'><50% (2pt)</option><option value='3'>Endo (3pt)</option></select><select id='paduaRim' class='border p-2 rounded'><option value='' disabled selected>Renal Rim</option><option value='1'>Lateral (1pt)</option><option value='2'>Medial (2pt)</option></select><select id='paduaSinus' class='border p-2 rounded'><option value='' disabled selected>Renal Sinus</option><option value='1'>No (1pt)</option><option value='2'>Yes (2pt)</option></select><select id='paduaUCS' class='border p-2 rounded'><option value='' disabled selected>Collecting System</option><option value='1'>Absent (1pt)</option><option value='2'>Present (2pt)</option></select><select id='paduaSize' class='border p-2 rounded'><option value='' disabled selected>Tumor Size</option><option value='1'>≤4cm (1pt)</option><option value='2'>4-7cm (2pt)</option><option value='3'>>7cm (3pt)</option></select></div><button onclick='calcPadua()' class='mt-3 w-full bg-sky-600 text-white font-semibold py-2 rounded text-sm hover:bg-sky-700 transition'>Calculate Score</button><div id='paduaResult' class='mt-3 text-sm font-bold text-center'></div></div>" }
+                    { q: "Active Surveillance & Thermal Ablation", a: "Protocol:\n• Active Surveillance: Preferred for frail or elderly patients with small renal masses (<4 cm). A growth rate >0.5 cm/year triggers active intervention.\n• Thermal Ablation (Cryoablation / RFA): Requires a prior percutaneous biopsy confirmation. Ideal for exophytic tumors ≤3 cm in patients unfit for surgery." }
                 ],
                 "4. Advanced Disease & Systemic Therapy": [
                     { q: "IMDC (Heng) Risk Criteria for mRCC", a: "Prognostic Risk Criteria (1 point for each unfavorable factor):\n1. Karnofsky Performance Status (KPS) < 80%\n2. Time from diagnosis to systemic treatment < 1 year\n3. Hemoglobin less than lower limit of normal\n4. Corrected calcium > upper limit of normal\n5. Neutrophils > upper limit of normal\n6. Platelets > upper limit of normal\nRisk Groups: Favorable (0 points), Intermediate (1-2 points), Poor (3-6 points)." },
@@ -248,10 +350,14 @@
             },
             "Scores & Class": {
                 "1. Stone Scoring Systems": [
-                    { q: "S.T.O.N.E. Nephrolithometry Calculator", a: "Predicts stone-free rates post-PCNL. Total score ranges from 5 to 13.\n\n<div class='mt-4 p-4 border border-slate-200 rounded-xl bg-slate-50 shadow-sm'><h4 class='font-bold text-sm text-sky-800 mb-2'>S.T.O.N.E. Calculator</h4><div class='grid grid-cols-2 gap-2 text-sm'><select id='stoneS' class='border p-2 rounded'><option value='' disabled selected>(S)ize area</option><option value='1'><400 mm² (1pt)</option><option value='2'>400-799 (2pt)</option><option value='3'>800-1599 (3pt)</option><option value='4'>≥1600 (4pt)</option></select><select id='stoneT' class='border p-2 rounded'><option value='' disabled selected>(T)ract length</option><option value='1'>≤100 mm (1pt)</option><option value='2'>>100 mm (2pt)</option></select><select id='stoneO' class='border p-2 rounded'><option value='' disabled selected>(O)bstruction</option><option value='1'>None/Mild (1pt)</option><option value='2'>Mod/Severe (2pt)</option></select><select id='stoneN' class='border p-2 rounded'><option value='' disabled selected>(N)umber calyces</option><option value='1'>1-2 (1pt)</option><option value='2'>3 (2pt)</option><option value='3'>Staghorn (3pt)</option></select><select id='stoneE' class='border p-2 rounded'><option value='' disabled selected>(E)ssence (HU)</option><option value='1'>≤950 HU (1pt)</option><option value='2'>>950 HU (2pt)</option></select></div><button onclick='calcStone()' class='mt-3 w-full bg-sky-600 text-white font-semibold py-2 rounded text-sm hover:bg-sky-700 transition'>Calculate Score</button><div id='stoneResult' class='mt-3 text-sm font-bold text-center'></div></div>" },
+                    { q: "S.T.O.N.E. Nephrolithometry Criteria", a: "Predicts stone-free rates post-PCNL. Total score ranges from 5 to 13.\n• (S)ize (Stone area): <400 mm² = 1 | 400-799 mm² = 2 | 800-1599 mm² = 3 | ≥1600 mm² = 4.\n• (T)ract length (Skin-to-stone): ≤100 mm = 1 | >100 mm = 2.\n• (O)bstruction (Hydronephrosis): None/Mild = 1 | Moderate/Severe = 2.\n• (N)umber of calyces involved: 1 to 2 calyces = 1 | 3 calyces = 2 | Staghorn = 3.\n• (E)ssence (Stone density): ≤950 HU = 1 | >950 HU = 2." },
                     { q: "Guy's Stone Score (GSS)", a: "Grades PCNL surgical complexity:\n• Grade I: Solitary stone in mid/lower pole or pelvis with normal anatomy.\n• Grade II: Solitary upper pole stone; multiple stones in normal anatomy; OR solitary stone in abnormal anatomy.\n• Grade III: Multiple stones in abnormal anatomy, stones in a caliceal diverticulum, or partial staghorn.\n• Grade IV: Complete staghorn stone, OR any stone in a patient with spina bifida / spinal cord injury." }
                 ],
-                "2. Stents & Surgical Classifications": [
+                "2. Renal Mass Scoring": [
+                    { q: "R.E.N.A.L. Nephrometry Score Criteria", a: "Scores Partial Nephrectomy complexity (Score 4-12):\n• (R)adius (max diameter): ≤4 cm = 1 | 4-7 cm = 2 | ≥7 cm = 3.\n• (E)xophytic/Endophytic: ≥50% exophytic = 1 | <50% exophytic = 2 | entirely endophytic = 3.\n• (N)earness to collecting system: ≥7 mm = 1 | 4-7 mm = 2 | ≤4 mm = 3.\n• (A)nterior (a) / Posterior (p) / Neither (x).\n• (L)ocation to polar lines: Entirely above/below polar lines = 1 | Lesion crosses polar line = 2 | >50% of mass crosses polar line OR at hilum = 3.\n• Suffix 'h': Assigned if tumor abuts main renal artery/vein." },
+                    { q: "P.A.D.U.A. Score Criteria", a: "Preoperative Aspects and Dimensions Used for Anatomical classification (Total 6-14 points):\n• Polar Location: Upper/Lower pole = 1 | Crosses polar line = 2.\n• Exophytic rate: ≥50% = 1 | <50% = 2 | Endophytic = 3.\n• Renal Rim: Lateral = 1 | Medial = 2.\n• Renal Sinus involvement: No = 1 | Yes = 2.\n• Collecting System involvement: Absent = 1 | Present = 2.\n• Tumor Size: ≤4cm = 1 | 4.1-7cm = 2 | >7cm = 3." }
+                ],
+                "3. Stents & Surgical Classifications": [
                     { q: "FECal Stent Score (Encrusted Stents)", a: "Acosta-Miranda's FECal (Forgotten, Encrusted, Calcified) Stent Score:\nPredicts surgical complexity for retained encrusted ureteral stents based on KUB X-ray.\n• Grade 1: Minimal to linear encrustations on the ureteral segment. Usually manageable with simple cystoscopic removal.\n• Grade 2: Circular encrustation/bulkiness around the stent, but no distinct large stone formation. Usually requires ureteroscopy (URS) + laser lithotripsy.\n• Grade 3: Complete calcification of the stent OR stone burden >10mm at the renal/bladder coil. Requires PCNL or cystolitholapaxy." },
                     { q: "Clavien-Dindo Surgical Complications", a: "Standardized post-operative grading:\n• Grade I: Any deviation from normal recovery (healed with bedside meds like antiemetics/analgesics, or simple wound care).\n• Grade II: Requires pharmacological treatment (blood transfusions, TPN, antibiotics).\n• Grade III: Requires surgical, endoscopic, or radiological intervention.\n  - IIIa: Intervention NOT under general anesthesia.\n  - IIIb: Intervention UNDER general anesthesia.\n• Grade IV: Life-threatening complication requiring ICU.\n  - IVa: Single organ dysfunction.\n  - IVb: Multiorgan dysfunction.\n• Grade V: Death of the patient." }
                 ]
@@ -295,8 +401,7 @@
             },
             "Enuresis": {
                 "1. Diagnostic Classification & Workup": [
-                    { q: "Classification & Bladder Diary", a: "• MNE (Monosymptomatic): No daytime symptoms.\n• NMNE: Daytime urgency/incontinence present. Must rule out constipation/fecal loading via abdominal X-ray!\n• Bladder Diary (48-72h) is MANDATORY to assess baseline capacity and polyuria." },
-                    { q: "Koff's Formula Calculator", a: "Expected Bladder Capacity (EBC) in children. Used to identify reduced functional capacity in enuresis.\n\n<div class='mt-4 p-4 border border-slate-200 rounded-xl bg-slate-50 shadow-sm'><h4 class='font-bold text-sm text-sky-800 mb-2'>Koff's Formula</h4><input type='number' id='koffAge' placeholder='Child s Age (years)' class='border border-slate-300 p-2 rounded w-full text-sm bg-white focus:outline-sky-500'><button onclick='calcKoff()' class='mt-3 w-full bg-sky-600 text-white font-semibold py-2 rounded text-sm hover:bg-sky-700 transition'>Calculate EBC</button><div id='koffResult' class='mt-3 text-sm font-bold text-center text-sky-700'></div></div>" }
+                    { q: "Classification & Bladder Diary", a: "• MNE (Monosymptomatic): No daytime symptoms.\n• NMNE: Daytime urgency/incontinence present. Must rule out constipation/fecal loading via abdominal X-ray!\n• Bladder Diary (48-72h) is MANDATORY to assess baseline capacity and polyuria." }
                 ],
                 "2. Stepwise Treatment Algorithms": [
                     { q: "Step 1: Lifestyle & Alarms", a: "• Fluid restriction 2h before bed, double voiding, treat constipation aggressively.\n• Enuresis Conditioning Alarm (Curative first-line for MNE)." },
@@ -307,6 +412,8 @@
 
         const tabsContainer = document.getElementById('diseaseTabs');
         const formSection = document.getElementById('formSection');
+        const calcSection = document.getElementById('calcSection');
+        const handoutSection = document.getElementById('handoutSection');
         const searchResultsDiv = document.getElementById('searchResults');
         const searchResultsContent = document.getElementById('searchResultsContent');
         const navContainer = document.getElementById('navContainer');
@@ -319,19 +426,32 @@
 
         let currentDisease = '';
         let currentPhase = '';
+        let currentMode = 'clinical'; 
 
         // Render Navigation Tabs dynamically from JSON
         Object.keys(clinicalData).forEach(disease => {
             const btn = document.createElement('button');
             btn.className = 'px-4 py-2 bg-slate-100 text-slate-600 rounded-full text-xs font-bold hover:bg-sky-100 hover:text-sky-700 transition-colors border border-slate-200 tab-btn';
             btn.textContent = disease;
-            btn.onclick = () => selectTab(disease, btn);
+            btn.onclick = () => selectTab(disease, btn, 'clinical');
             tabsContainer.appendChild(btn);
         });
 
+        const calcBtn = document.createElement('button');
+        calcBtn.className = 'px-4 py-2 bg-indigo-50 text-indigo-700 rounded-full text-xs font-bold hover:bg-indigo-100 transition-colors border border-indigo-200 tab-btn';
+        calcBtn.textContent = '🧮 Oracle';
+        calcBtn.onclick = () => selectTab('Calculators', calcBtn, 'calculator');
+        tabsContainer.appendChild(calcBtn);
+
+        const handoutBtn = document.createElement('button');
+        handoutBtn.className = 'px-4 py-2 bg-emerald-50 text-emerald-700 rounded-full text-xs font-bold hover:bg-emerald-100 transition-colors border border-emerald-200 tab-btn';
+        handoutBtn.textContent = '📄 Handouts';
+        handoutBtn.onclick = () => selectTab('Handouts', handoutBtn, 'handout');
+        tabsContainer.appendChild(handoutBtn);
+
         // Core Text Formatter 
         function formatClinicalText(text) {
-            let parts = text.split('<div');
+            let parts = text.split('<div class="mermaid">');
             let formattedText = parts[0].replace(/\n/g, '<br>');
             
             const redFlags = ['CRITICAL SAFETY RULE', 'MANDATORY', 'ABSOLUTE CONTRAINDICATION', 'ABSOLUTELY CONTRAINDICATED', 'CONTRAINDICATED'];
@@ -341,7 +461,7 @@
             });
             
             if (parts.length > 1) {
-                formattedText += '<div' + parts.slice(1).join('<div'); 
+                formattedText += '<div class="mermaid">' + parts[1]; 
             }
             return formattedText;
         }
@@ -353,12 +473,17 @@
             if (query.length < 2) {
                 searchResultsDiv.classList.add('hidden');
                 navContainer.classList.remove('hidden');
-                formSection.classList.remove('hidden');
+                if(currentMode === 'clinical') formSection.classList.remove('hidden');
+                else if(currentMode === 'calculator') calcSection.classList.remove('hidden');
+                else if(currentMode === 'handout') handoutSection.classList.remove('hidden');
                 return;
             }
 
             navContainer.classList.add('hidden');
             formSection.classList.add('hidden');
+            calcSection.classList.add('hidden');
+            handoutSection.classList.add('hidden');
+            
             searchResultsDiv.classList.remove('hidden');
             searchResultsContent.innerHTML = '';
             
@@ -391,30 +516,46 @@
             }
         }
 
-        function selectTab(tabName, clickedBtn) {
+        function selectTab(tabName, clickedBtn, type) {
+            currentMode = type;
             searchInput.value = ''; 
             searchResultsDiv.classList.add('hidden');
             
             document.querySelectorAll('.tab-btn').forEach(b => {
-                b.classList.remove('bg-sky-700', 'text-white', 'border-sky-800');
-                b.classList.add('bg-slate-100', 'text-slate-600');
+                b.classList.remove('bg-sky-700', 'bg-indigo-600', 'bg-emerald-600', 'text-white', 'border-sky-800', 'border-indigo-800', 'border-emerald-800');
+                if(b.textContent.includes('Oracle')) b.classList.add('bg-indigo-50', 'text-indigo-700');
+                else if(b.textContent.includes('Handouts')) b.classList.add('bg-emerald-50', 'text-emerald-700');
+                else b.classList.add('bg-slate-100', 'text-slate-600');
             });
             
-            clickedBtn.classList.remove('bg-slate-100', 'text-slate-600');
-            clickedBtn.classList.add('bg-sky-700', 'text-white', 'border-sky-800');
-            
-            formSection.classList.remove('hidden');
-            scenarioDiv.classList.add('hidden');
-            resultCard.classList.add('hidden');
-            
-            currentDisease = tabName;
-            phaseSelect.innerHTML = '<option value="" disabled selected>Choose category or phase...</option>';
-            Object.keys(clinicalData[tabName]).forEach(phase => {
-                const opt = document.createElement('option');
-                opt.value = phase;
-                opt.textContent = phase;
-                phaseSelect.appendChild(opt);
-            });
+            formSection.classList.add('hidden');
+            calcSection.classList.add('hidden');
+            handoutSection.classList.add('hidden');
+
+            if(type === 'clinical') {
+                clickedBtn.classList.remove('bg-slate-100', 'text-slate-600');
+                clickedBtn.classList.add('bg-sky-700', 'text-white', 'border-sky-800');
+                formSection.classList.remove('hidden');
+                scenarioDiv.classList.add('hidden');
+                resultCard.classList.add('hidden');
+                
+                currentDisease = tabName;
+                phaseSelect.innerHTML = '<option value="" disabled selected>Choose category or phase...</option>';
+                Object.keys(clinicalData[tabName]).forEach(phase => {
+                    const opt = document.createElement('option');
+                    opt.value = phase;
+                    opt.textContent = phase;
+                    phaseSelect.appendChild(opt);
+                });
+            } else if (type === 'calculator') {
+                clickedBtn.classList.remove('bg-indigo-50', 'text-indigo-700');
+                clickedBtn.classList.add('bg-indigo-600', 'text-white', 'border-indigo-800');
+                calcSection.classList.remove('hidden');
+            } else if (type === 'handout') {
+                clickedBtn.classList.remove('bg-emerald-50', 'text-emerald-700');
+                clickedBtn.classList.add('bg-emerald-600', 'text-white', 'border-emerald-800');
+                handoutSection.classList.remove('hidden');
+            }
         }
 
         phaseSelect.addEventListener('change', (e) => {
@@ -436,6 +577,7 @@
             const data = clinicalData[currentDisease][currentPhase][scenarioIndex];
             
             resultContent.innerHTML = formatClinicalText(data.a);
+            resultCard.classList.add('hidden');
             resultCard.classList.remove('hidden');
 
             if(data.a.includes('class="mermaid"')) {
@@ -444,19 +586,23 @@
             }
         });
 
-        // --- INLINE CALCULATOR FUNCTIONS ---
+        // --- CALCULATORS ---
         function calcISUP() {
             let prim = parseInt(document.getElementById('isupPrimary').value);
             let sec = parseInt(document.getElementById('isupSecondary').value);
             if(prim && sec) {
                 let total = prim + sec;
-                let group = 0; let risk = ""; let color = "";
+                let group = 0;
+                let risk = "";
+                let color = "";
+                
                 if (total <= 6) { group = 1; risk = "Low Risk / Excellent Prognosis"; color = "text-green-600"; }
                 else if (total === 7 && prim === 3) { group = 2; risk = "Favorable Intermediate Risk"; color = "text-yellow-600"; }
                 else if (total === 7 && prim === 4) { group = 3; risk = "Unfavorable Intermediate Risk"; color = "text-orange-500"; }
                 else if (total === 8) { group = 4; risk = "High Risk"; color = "text-red-500"; }
                 else if (total >= 9) { group = 5; risk = "Very High Risk"; color = "text-red-700"; }
-                document.getElementById('isupResult').innerHTML = `Gleason: ${prim}+${sec} = ${total}<br>ISUP Group: <span class="${color} text-lg font-bold">${group}</span><br><span class="${color} font-medium">${risk}</span>`;
+
+                document.getElementById('isupResult').innerHTML = `Gleason Score: ${prim}+${sec} = ${total}<br>ISUP Grade Group: <span class="${color} text-lg font-bold">${group}</span><br><span class="${color} font-medium">${risk}</span>`;
             }
         }
         function calcPSAD() {
@@ -466,7 +612,7 @@
                 let psad = (psa / vol).toFixed(3);
                 let color = psad >= 0.15 ? 'text-red-600' : 'text-green-600';
                 let alert = psad >= 0.15 ? '(High Risk)' : '(Low Risk)';
-                document.getElementById('psadResult').innerHTML = `Density: <span class="${color} text-lg font-bold">${psad}</span><br><span class="${color}">${alert}</span>`;
+                document.getElementById('psadResult').innerHTML = `Density: <span class="${color} text-lg font-bold">${psad} ng/mL/cc</span><br><span class="${color}">${alert}</span>`;
             }
         }
         function calcCG() {
@@ -477,13 +623,13 @@
             if(age && wt && cr && sex) {
                 let crcl = (((140 - age) * wt) / (72 * cr)) * sex;
                 let color = crcl >= 60 ? 'text-green-600' : (crcl >= 50 ? 'text-yellow-600' : 'text-red-600');
-                let status = crcl >= 60 ? 'Cisplatin Eligible' : (crcl >= 50 ? 'Borderline' : 'Cisplatin Ineligible');
+                let status = crcl >= 60 ? 'Cisplatin Eligible' : (crcl >= 50 ? 'Borderline (Split)' : 'Cisplatin Ineligible');
                 document.getElementById('cgResult').innerHTML = `CrCl: <span class="${color} text-lg font-bold">${crcl.toFixed(1)} mL/min</span><br><span class="${color}">${status}</span>`;
             }
         }
         function calcKoff() {
             let age = parseFloat(document.getElementById('koffAge').value);
-            if(age) document.getElementById('koffResult').innerHTML = `Capacity: <span class="text-lg font-bold">${(age + 1) * 30} mL</span>`;
+            if(age) document.getElementById('koffResult').innerHTML = `Capacity: <span class="text-sky-700 text-lg font-bold">${(age + 1) * 30} mL</span>`;
         }
         function calcRenal() {
             let r = parseInt(document.getElementById('renalR').value);
@@ -519,19 +665,45 @@
             let e = parseInt(document.getElementById('stoneE').value);
             if(s && t && o && n && e) {
                 let score = s + t + o + n + e;
-                document.getElementById('stoneResult').innerHTML = `S.T.O.N.E Score: <span class="text-sky-700 text-lg font-bold">${score} / 13</span>`;
+                document.getElementById('stoneResult').innerHTML = `S.T.O.N.E. Score: <span class="text-sky-700 text-lg font-bold">${score} / 13</span>`;
             }
         }
 
-        // --- PWA REGISTRATION ---
+        // --- HANDOUTS ---
+        function generateHandout() {
+            const val = document.getElementById('handoutSelect').value;
+            const content = document.getElementById('handoutContent');
+            const title = document.getElementById('handoutTitle');
+            if(val === 'bladder') {
+                title.textContent = 'Bladder Cancer: 3-Year Plan';
+                content.innerHTML = `<p><strong>Year 1:</strong></p><ul class="list-disc pl-5 mb-3"><li>Month 3, 6, 9: Cystoscopy & Urine Test</li><li>Month 12: Cystoscopy, Urine Test, CT Scan</li></ul><p><strong>Year 2:</strong></p><ul class="list-disc pl-5 mb-3"><li>Month 15, 18: Cystoscopy & Urine Test</li><li>Month 24: Cystoscopy, Urine Test, CT Scan</li></ul><p><strong>Year 3+:</strong></p><ul class="list-disc pl-5"><li>Every 6 months: Cystoscopy & Urine test</li></ul>`;
+            } else if (val === 'prostate') {
+                title.textContent = 'Prostate Cancer: 3-Year Plan';
+                content.innerHTML = `<p><strong>Year 1 & 2:</strong></p><ul class="list-disc pl-5 mb-3"><li>Every 3 months: PSA Blood Test</li></ul><p><strong>Year 3:</strong></p><ul class="list-disc pl-5 mb-3"><li>Every 6 months: PSA Blood Test</li></ul><p><strong>Year 4+:</strong></p><ul class="list-disc pl-5"><li>Annually: PSA Test and Clinical Exam</li></ul>`;
+            } else if (val === 'testis') {
+                title.textContent = 'Testicular Cancer: Surveillance';
+                content.innerHTML = `<p><strong>Year 1:</strong></p><ul class="list-disc pl-5 mb-3"><li>Every 2 months: Physical Exam & Blood Markers</li><li>Every 4 months: CT Scan</li></ul><p><strong>Year 2:</strong></p><ul class="list-disc pl-5 mb-3"><li>Every 3 months: Physical Exam & Markers</li><li>Every 6 months: CT Scan</li></ul><p><strong>Year 3+:</strong></p><ul class="list-disc pl-5"><li>Every 6 months: Physical Exam & Markers</li><li>Annually: Routine Checkup (CT scans minimized)</li></ul>`;
+            } else if (val === 'kidney') {
+                title.textContent = 'Kidney Cancer: Post-Surgery Plan';
+                content.innerHTML = `<p><strong>Year 1:</strong></p><ul class="list-disc pl-5 mb-3"><li>Month 6: Abdominal USG & Kidney Function Blood Test</li><li>Month 12: CT Scan (Chest/Abdomen) & Blood Tests</li></ul><p><strong>Year 2 & 3:</strong></p><ul class="list-disc pl-5 mb-3"><li>Month 24 & 36: CT Scan & Blood Tests</li></ul><p><strong>Year 4+:</strong></p><ul class="list-disc pl-5"><li>Annually: Abdominal USG & Routine Health Check</li></ul>`;
+            }
+            document.getElementById('printArea').classList.remove('hidden');
+            document.getElementById('printBtn').classList.remove('hidden');
+        }
+
+        // --- PWA SERVICE WORKER REGISTRATION ---
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js').catch(err => console.log(err));
+                navigator.serviceWorker.register('sw.js').then(reg => {
+                    console.log('ServiceWorker registered:', reg.scope);
+                }).catch(err => console.log('ServiceWorker error:', err));
             });
         }
+        
         window.addEventListener('offline', () => document.getElementById('offlineBadge').classList.remove('hidden'));
         window.addEventListener('online', () => document.getElementById('offlineBadge').classList.add('hidden'));
         if (!navigator.onLine) document.getElementById('offlineBadge').classList.remove('hidden');
+
     </script>
 </body>
 </html>
