@@ -1,595 +1,772 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Uro-Oncology Definitive Oracle | NCCN & EAU Compliant</title>
-    
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#0f172a">
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        body { background-color: #f1f5f9; font-family: ui-sans-serif, system-ui, -apple-system, sans-serif; }
-        .hidden { display: none !important; }
-        .trial-badge { background-color: #e0f2fe; color: #0369a1; padding: 2px 6px; border-radius: 4px; font-weight: 800; font-size: 0.75rem; letter-spacing: 0.05em; border: 1px solid #bae6fd; }
-        .danger-badge { background-color: #fee2e2; color: #b91c1c; padding: 2px 6px; border-radius: 4px; font-weight: 800; font-size: 0.75rem; letter-spacing: 0.05em; border: 1px solid #fecaca; }
-        .drug-text { font-weight: 700; color: #0f766e; }
-        @media print {
-            body * { visibility: hidden; }
-            #printArea, #printArea * { visibility: visible; }
-            #printArea { position: absolute; left: 0; top: 0; width: 100%; padding: 20px; }
-            .no-print { display: none !important; }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#0f172a">
+<title>Uro-Oncology Oracle & Definitive Navigator 2026</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+:root{--bg:#f8fafc;--ink:#0f172a;--muted:#64748b;--line:#e2e8f0;--brand:#0f766e;--accent:#0ea5e9}
+*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
+html{scroll-behavior:smooth}.hidden{display:none!important}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:0 8px 28px rgba(15,23,42,.05)}
+.chip{display:inline-flex;align-items:center;border:1px solid #cbd5e1;border-radius:999px;padding:4px 9px;font-size:11px;font-weight:700;color:#475569;background:#fff}
+.badge{display:inline-flex;align-items:center;border-radius:7px;padding:3px 7px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.05em}
+.badge-green{background:#dcfce7;color:#166534}.badge-amber{background:#fef3c7;color:#92400e}.badge-red{background:#fee2e2;color:#991b1b}.badge-blue{background:#e0f2fe;color:#075985}.badge-slate{background:#f1f5f9;color:#334155}.badge-purple{background:#f3e8ff;color:#6b21a8}
+.source-link{font-size:11px;color:#0369a1;text-decoration:underline}
+.section-title{font-size:14px;font-weight:900;letter-spacing:.02em;color:#0f172a; text-transform: uppercase;}
+.rule{border-left:4px solid #0ea5e9;background:#f0f9ff;padding:14px 16px;border-radius:10px}
+.warn{border-left:4px solid #dc2626;background:#fef2f2;padding:14px 16px;border-radius:10px}
+.ok{border-left:4px solid #16a34a;background:#f0fdf4;padding:14px 16px;border-radius:10px}
+.risk-box{border:2px solid #334155;background:#f8fafc;padding:12px;border-radius:8px; margin-bottom: 12px; font-weight: 800; display:flex; align-items:center; justify-content:space-between;}
+.kv{display:grid;grid-template-columns:minmax(120px,1fr) minmax(180px,2fr);gap:7px;border-bottom:1px solid #f1f5f9;padding:7px 0}
+.kv:last-child{border-bottom:0}.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+input,select,textarea{outline:none} input:focus,select:focus,textarea:focus{box-shadow:0 0 0 3px rgba(14,165,233,.15);border-color:#38bdf8}
+.sticky-top{position:sticky;top:0;z-index:50}
+@media print{.no-print{display:none!important}.card{box-shadow:none}.sticky-top{position:static}}
+</style>
 </head>
-<body class="text-slate-800">
-    <div class="max-w-3xl mx-auto bg-white min-h-screen shadow-2xl border-x border-slate-200 pb-10 relative">
-        
-        <!-- Header -->
-        <div class="bg-slate-900 text-white p-6 shadow-md no-print border-b-4 border-sky-500">
-            <h1 class="text-3xl font-black tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-emerald-400 uppercase">Uro-Oncology Oracle</h1>
-            <p class="text-xs text-slate-300 mt-2 leading-relaxed font-bold tracking-wide">EXHAUSTIVE NCCN / EAU ALGORITHMIC ENGINE<br>Incorporating Latest Landmark Trials (EV-302, NIAGARA, ARASENS, CheckMate)</p>
-        </div>
+<body>
+<div class="max-w-7xl mx-auto min-h-screen">
+<header class="sticky-top bg-slate-950 text-white border-b-4 border-sky-600 no-print">
+  <div class="px-4 py-3 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+    <div>
+      <div class="text-xl font-black tracking-widest uppercase text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-emerald-400">Uro-Oncology Oracle</div>
+      <div class="text-[11px] text-slate-300 font-bold tracking-wide">DEFINITIVE EDITION • STAGING • GUIDELINES • TRIALS • ALGORITHMS</div>
+    </div>
+    <div class="flex gap-2 w-full md:w-auto">
+      <input id="globalSearch" oninput="searchAll()" class="flex-1 md:w-96 rounded-xl px-3 py-2 text-sm font-bold text-slate-900 bg-white" placeholder="Search: EV-302, ARASENS, Re-TURBT, cN3...">
+      <button onclick="showHome()" class="px-4 py-2 rounded-xl bg-sky-700 hover:bg-sky-600 text-xs font-bold transition">Home</button>
+    </div>
+  </div>
+</header>
 
-        <!-- Navigation Tabs -->
-        <div class="p-5 bg-slate-100 border-b border-slate-300 no-print">
-            <div class="flex flex-wrap gap-2">
-                <button onclick="switchMode('oracle')" id="tabOracle" class="px-6 py-3 bg-sky-700 text-white rounded-lg text-sm font-black shadow-md border-b-4 border-sky-900 transition-all flex items-center">⚡ NCCN/EAU Oracle Engine</button>
-                <button onclick="switchMode('handout')" id="tabHandout" class="px-6 py-3 bg-white text-slate-600 rounded-lg text-sm font-bold shadow-sm hover:bg-emerald-50 hover:text-emerald-700 transition-all border border-slate-300">📄 Patient Handouts</button>
-            </div>
-        </div>
-
-        <!-- Mode 1: Interactive Decision Oracle (True Calculator) -->
-        <div id="oracleSection" class="p-6 no-print bg-white min-h-screen">
-            <div class="bg-slate-800 rounded-xl p-5 mb-6 text-white shadow-lg border-l-4 border-emerald-400">
-                <p class="text-sm text-slate-200 leading-relaxed font-medium">Select a malignancy and configure the exhaustive clinical parameters. The Oracle computes specific risk groups, surgical boundaries, systemic limits, and exact regimens based on current guidelines.</p>
-            </div>
-
-            <select id="oracleTypeSelect" onchange="loadOracleEngine()" class="w-full bg-slate-50 border-2 border-sky-600 text-slate-900 text-base rounded-xl focus:ring-sky-600 focus:border-sky-600 block p-4 shadow-sm font-black mb-6 uppercase tracking-wide">
-                <option value="" disabled selected>Select Cancer Algorithm...</option>
-                <option value="prostate">Ca Prostate (ISUP, Risk & mCRPC Engine)</option>
-                <option value="bladder">Ca Bladder (Cisplatin & Variant Engine)</option>
-                <option value="kidney">Ca Kidney (IMDC & Adjuvant Engine)</option>
-                <option value="testis">Ca Testis (IGCCCG & RPLND Engine)</option>
-                <option value="penis">Ca Penis (EAU Nodal Metastasis Engine)</option>
-            </select>
-
-            <div id="oracleInputArea" class="hidden bg-slate-50 border border-slate-200 rounded-xl p-6 shadow-inner mb-6"></div>
-
-            <div id="oracleOutputArea" class="hidden">
-                <div class="bg-white border-2 border-slate-800 rounded-xl shadow-2xl overflow-hidden">
-                    <div class="bg-slate-800 text-white px-5 py-3 flex items-center">
-                        <svg class="w-5 h-5 mr-2 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        <h3 class="text-sm font-black uppercase tracking-widest">Guideline Pathway Calculated</h3>
-                    </div>
-                    <div id="oracleResultContent" class="p-6 text-sm text-slate-800 space-y-5 font-medium leading-relaxed"></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Mode 2: Patient Handout Generator -->
-        <div id="handoutSection" class="p-6 hidden min-h-screen bg-slate-50">
-            <h2 class="text-xl font-black text-slate-800 mb-5 no-print flex items-center">📄 Generate Handouts</h2>
-            <div class="mb-5 no-print">
-                <select id="handoutSelect" onchange="generateHandout()" class="w-full bg-white border border-slate-300 text-slate-800 text-sm rounded-lg focus:ring-emerald-600 focus:border-emerald-600 block p-4 shadow-sm font-bold">
-                    <option value="" disabled selected>Choose condition...</option>
-                    <option value="bladder">Bladder Cancer (Post-Surgery / BCG)</option>
-                    <option value="prostate">Prostate Cancer (Post-Surgery)</option>
-                    <option value="testis">Testicular Cancer (Active Surveillance)</option>
-                </select>
-            </div>
-            
-            <div id="printArea" class="hidden mt-4 p-10 bg-white border border-slate-200 rounded-xl shadow-lg">
-                <div class="text-center border-b-2 border-slate-800 pb-6 mb-6">
-                    <h2 class="text-3xl font-black text-slate-900">DEPARTMENT OF UROLOGY</h2>
-                    <h3 class="text-lg font-bold text-slate-600 mt-2">Dr. Babasaheb Ambedkar Hospital, Govt of NCT of Delhi</h3>
-                    <div class="flex justify-between px-10 mt-8 text-sm font-bold text-slate-700">
-                        <span>Patient Name: _______________________</span> 
-                        <span>Date: _________________</span>
-                    </div>
-                </div>
-                <h3 id="handoutTitle" class="text-xl font-black text-slate-900 mb-6 text-center uppercase tracking-widest border-b pb-2 inline-block"></h3>
-                <div id="handoutContent" class="text-base text-slate-800 space-y-4 leading-relaxed font-medium"></div>
-                <div class="mt-16 pt-6 border-t-2 border-slate-200 text-xs text-slate-500 text-center font-bold">
-                    <p>Bring this schedule to every outpatient appointment.</p>
-                    <p class="text-red-700 mt-2 uppercase tracking-wide">Emergency Warning: Visit ER for severe pain, gross hematuria with clots, or fever >101°F.</p>
-                </div>
-            </div>
-            
-            <button id="printBtn" onclick="window.print()" class="no-print hidden mt-6 w-full bg-slate-800 text-white font-black py-4 rounded-xl shadow-md hover:bg-slate-900 transition flex justify-center items-center uppercase tracking-widest">
-                Print Official Handout
-            </button>
-        </div>
+<main class="px-3 md:px-6 py-5">
+  <section id="homeView">
+    <div class="card p-5 mb-5 bg-gradient-to-br from-slate-900 to-slate-800 text-white">
+      <div class="flex flex-wrap gap-2 items-center mb-3">
+        <span class="badge badge-green text-xs">NCCN & EAU Exhaustive Integration</span>
+        <span class="badge badge-blue text-xs">Latest Landmark Trials Added</span>
+      </div>
+      <h1 class="text-2xl md:text-3xl font-black mb-2 tracking-wide">The Ultimate Decision Navigator</h1>
+      <p class="text-sm text-slate-300 leading-relaxed font-medium">Use the interactive <b class="text-sky-400">Clinical Oracle</b> to calculate exact treatment pathways, risk groups, and trials based on patient criteria. Browse the Reference sections below for granular TNM staging, surgical templates, drug dosages, follow-up schedules, and exact clinical criteria.</p>
     </div>
 
-    <script>
-        function switchMode(mode) {
-            document.getElementById('oracleSection').classList.add('hidden');
-            document.getElementById('handoutSection').classList.add('hidden');
-            
-            document.getElementById('tabOracle').className = "px-6 py-3 bg-white text-slate-600 rounded-lg text-sm font-bold shadow-sm hover:bg-sky-50 transition-all border border-slate-300";
-            document.getElementById('tabHandout').className = "px-6 py-3 bg-white text-slate-600 rounded-lg text-sm font-bold shadow-sm hover:bg-emerald-50 transition-all border border-slate-300";
+    <div id="diseaseGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+  </section>
 
-            if (mode === 'oracle') {
-                document.getElementById('tabOracle').className = "px-6 py-3 bg-sky-700 text-white rounded-lg text-sm font-black shadow-md border-b-4 border-sky-900 transition-all flex items-center";
-                document.getElementById('oracleSection').classList.remove('hidden');
-            } else {
-                document.getElementById('tabHandout').className = "px-6 py-3 bg-emerald-700 text-white rounded-lg text-sm font-black shadow-md border-b-4 border-emerald-900 transition-all flex items-center";
-                document.getElementById('handoutSection').classList.remove('hidden');
-            }
-        }
+  <!-- Static Guideline View -->
+  <section id="diseaseView" class="hidden">
+    <div class="flex flex-wrap gap-2 mb-4 no-print" id="diseaseNav"></div>
+    <div id="diseaseHeader"></div>
+    <div class="grid lg:grid-cols-[310px,1fr] gap-4">
+      <aside class="card p-3 no-print h-fit lg:sticky lg:top-24 bg-slate-50 border-sky-100">
+        <div class="section-title mb-2 text-sky-800">Protocol Chapters</div>
+        <div id="sectionNav" class="space-y-1"></div>
+      </aside>
+      <div id="diseaseContent"></div>
+    </div>
+  </section>
 
-        // ==========================================
-        // UI BUILDER FOR ORACLE INPUTS
-        // ==========================================
-        const oracleInputArea = document.getElementById('oracleInputArea');
-        const oracleOutputArea = document.getElementById('oracleOutputArea');
-        const oracleResultContent = document.getElementById('oracleResultContent');
+  <!-- Interactive Oracle View -->
+  <section id="oracleView" class="hidden">
+    <div class="flex items-center justify-between mb-4">
+      <div>
+        <div class="text-2xl font-black text-slate-900 flex items-center"><span class="mr-2">⚡</span> Interactive Clinical Oracle</div>
+        <div class="text-xs text-slate-500 font-bold uppercase tracking-wider mt-1">Calculates Risk Groups, Evidence-Based Pathways, and Clinical Trials</div>
+      </div>
+      <button onclick="showHome()" class="no-print text-xs font-bold px-4 py-2 rounded-lg border bg-white shadow-sm hover:bg-slate-50">Back</button>
+    </div>
+    <div class="card p-4 mb-4 bg-sky-50 border-sky-200">
+      <label class="block text-xs font-black text-sky-800 uppercase tracking-widest mb-2">Select Malignancy Algorithm</label>
+      <select id="oracleDisease" onchange="renderOracleForm()" class="w-full border-2 border-sky-300 rounded-xl p-3 bg-white font-bold text-slate-800 focus:border-sky-500"></select>
+    </div>
+    <div class="grid lg:grid-cols-2 gap-5">
+      <div id="oracleForm" class="card p-5 shadow-md"></div>
+      <div id="oracleOutput" class="card p-5 shadow-md bg-slate-900 text-white">
+        <div class="text-sm font-black text-emerald-400 uppercase tracking-widest border-b border-slate-700 pb-2 mb-4 flex items-center">
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+          Computed Pathway Output
+        </div>
+        <div id="oracleResultText" class="text-sm text-slate-300">Complete clinical inputs to generate the evidence-linked pathway.</div>
+      </div>
+    </div>
+  </section>
 
-        function loadOracleEngine() {
-            const type = document.getElementById('oracleTypeSelect').value;
-            oracleInputArea.classList.remove('hidden');
-            oracleOutputArea.classList.add('hidden');
-            
-            let html = '';
-            if (type === 'bladder') {
-                html = `
-                    <div class="space-y-5">
-                        <div class="grid grid-cols-2 gap-4">
-                            <div><label class="text-xs font-black uppercase text-slate-500">Clinical Stage</label>
-                            <select id="bStage" class="w-full border-2 border-slate-300 p-3 rounded-lg bg-white text-sm font-bold mt-1">
-                                <option value="NMIBC_Low">Ta / Tis (Low Grade)</option>
-                                <option value="NMIBC_High">T1 / High Grade / CIS (NMIBC)</option>
-                                <option value="MIBC">T2 - T4a, N0, M0 (Localized MIBC)</option>
-                                <option value="Metastatic">T4b OR N+ OR M1 (Advanced/Metastatic)</option>
-                            </select></div>
-                            <div><label class="text-xs font-black uppercase text-slate-500">Histological Variant</label>
-                            <select id="bVar" class="w-full border-2 border-slate-300 p-3 rounded-lg bg-white text-sm font-bold mt-1">
-                                <option value="pure">Pure Urothelial</option>
-                                <option value="scc">Squamous Cell Carcinoma (SCC)</option>
-                                <option value="micro">Micropapillary / Plasmacytoid</option>
-                                <option value="neuro">Small Cell / Neuroendocrine</option>
-                            </select></div>
-                        </div>
-                        <div class="bg-slate-100 p-4 rounded-lg border border-slate-200">
-                            <label class="text-xs font-black uppercase text-slate-500 mb-2 block">Patient Fitness / Tolerability</label>
-                            <label class="flex items-center space-x-3 mb-2"><input type="checkbox" id="bCisFit" checked class="w-5 h-5 rounded text-sky-600"><span class="text-sm font-bold">Cisplatin Eligible (CrCl >60, ECOG 0-1, No Neuropathy/Hearing loss)</span></label>
-                            <label class="flex items-center space-x-3"><input type="checkbox" id="bEVFit" checked class="w-5 h-5 rounded text-sky-600"><span class="text-sm font-bold">EV Tolerable (No uncontrolled severe DM or severe neuropathy)</span></label>
-                        </div>
-                        <button onclick="calcBladder()" class="w-full bg-slate-900 text-white font-black py-4 rounded-xl shadow-lg hover:bg-sky-700 transition uppercase tracking-widest">Run Bladder Algorithm</button>
-                    </div>
-                `;
-            } else if (type === 'prostate') {
-                html = `
-                    <div class="space-y-5">
-                        <div class="grid grid-cols-2 gap-4">
-                            <div><label class="text-xs font-black uppercase text-slate-500">Disease State</label>
-                            <select id="pState" class="w-full border-2 border-slate-300 p-3 rounded-lg bg-white text-sm font-bold mt-1" onchange="toggleProstateFields()">
-                                <option value="localized">Localized (M0)</option>
-                                <option value="mHSPC">Metastatic Hormone Sensitive (mHSPC)</option>
-                                <option value="mCRPC">Metastatic Castrate Resistant (mCRPC)</option>
-                            </select></div>
-                            <div id="pTstageDiv"><label class="text-xs font-black uppercase text-slate-500">Clinical T-Stage</label>
-                            <select id="pTstage" class="w-full border-2 border-slate-300 p-3 rounded-lg bg-white text-sm font-bold mt-1">
-                                <option value="T1c">T1c (Biopsy only)</option>
-                                <option value="T2">T2 (Confined to prostate)</option>
-                                <option value="T3a">T3a (Extracapsular extension)</option>
-                                <option value="T3b">T3b (Seminal Vesicle)</option>
-                                <option value="T4">T4 (Fixed/Adjacent)</option>
-                            </select></div>
-                        </div>
-                        
-                        <div id="pLocalFields" class="space-y-4">
-                            <div class="grid grid-cols-2 gap-4">
-                                <div><label class="text-xs font-black uppercase text-slate-500">PSA (ng/mL)</label><input type="number" id="pPSA" value="5" class="w-full border-2 border-slate-300 p-3 rounded-lg bg-white text-sm font-bold mt-1"></div>
-                                <div><label class="text-xs font-black uppercase text-slate-500">Positive Cores</label>
-                                <select id="pCores" class="w-full border-2 border-slate-300 p-3 rounded-lg bg-white text-sm font-bold mt-1">
-                                    <option value="low">< 50% Positive Cores</option>
-                                    <option value="high">≥ 50% Positive Cores</option>
-                                    <option value="veryhigh">> 4 Cores of GG4/5</option>
-                                </select></div>
-                            </div>
-                            <div class="bg-slate-100 p-4 rounded-lg border border-slate-200">
-                                <label class="text-xs font-black uppercase text-slate-500 mb-2 block">ISUP Gleason Pathology</label>
-                                <div class="grid grid-cols-3 gap-2">
-                                    <select id="pPrim" class="border-2 p-2 rounded bg-white text-sm font-bold"><option value="" disabled selected>Primary</option><option value="3">Pattern 3</option><option value="4">Pattern 4</option><option value="5">Pattern 5</option></select>
-                                    <select id="pSec" class="border-2 p-2 rounded bg-white text-sm font-bold"><option value="" disabled selected>Secondary</option><option value="3">Pattern 3</option><option value="4">Pattern 4</option><option value="5">Pattern 5</option></select>
-                                    <select id="pTer" class="border-2 p-2 rounded bg-white text-sm font-bold"><option value="0">No Tertiary 5</option><option value="5">Tertiary 5 Present</option></select>
-                                </div>
-                                <p class="text-[10px] text-slate-500 mt-2 font-bold">*Include tertiary 5 in secondary if present in RP specimen >5%.</p>
-                            </div>
-                        </div>
+  <!-- Calculators View -->
+  <section id="calcView" class="hidden">
+    <div class="flex items-center justify-between mb-4 no-print">
+      <div><div class="text-2xl font-black text-slate-900">🧮 Scores & Calculators</div><div class="text-xs text-slate-500 font-bold uppercase tracking-wider mt-1">Isolated Metric Tools</div></div>
+      <button onclick="showHome()" class="text-xs font-bold px-4 py-2 rounded-lg border bg-white shadow-sm">Back</button>
+    </div>
+    <div id="calcGrid" class="grid lg:grid-cols-2 gap-4"></div>
+  </section>
 
-                        <div id="pAdvancedFields" class="hidden space-y-4 bg-slate-100 p-4 rounded-lg border border-slate-200">
-                            <div><label class="text-xs font-black uppercase text-slate-500">Metastatic Volume (CHAARTED)</label>
-                            <select id="pVol" class="w-full border-2 border-slate-300 p-3 rounded-lg bg-white text-sm font-bold mt-1">
-                                <option value="high">High Volume (Visceral OR ≥4 bone mets with ≥1 outside pelvis/spine)</option>
-                                <option value="low">Low Volume</option>
-                            </select></div>
-                            <div><label class="text-xs font-black uppercase text-slate-500">mCRPC Genomic/Imaging Status</label>
-                            <div class="space-y-2 mt-2">
-                                <label class="flex items-center space-x-3"><input type="checkbox" id="pBRCA" class="w-5 h-5 rounded text-sky-600"><span class="text-sm font-bold">HRR / BRCA1/2 Mutation Positive</span></label>
-                                <label class="flex items-center space-x-3"><input type="checkbox" id="pPSMA" class="w-5 h-5 rounded text-sky-600"><span class="text-sm font-bold">PSMA PET Positive (VISION criteria)</span></label>
-                                <label class="flex items-center space-x-3"><input type="checkbox" id="pChemo" class="w-5 h-5 rounded text-sky-600"><span class="text-sm font-bold">Prior Docetaxel Received</span></label>
-                            </div></div>
-                        </div>
-                        
-                        <button onclick="calcProstate()" class="w-full bg-slate-900 text-white font-black py-4 rounded-xl shadow-lg hover:bg-sky-700 transition uppercase tracking-widest">Run Prostate Algorithm</button>
-                    </div>
-                `;
-            } else if (type === 'kidney') {
-                // Similar robust building for Kidney
-                html = `
-                    <div class="space-y-5">
-                        <div class="grid grid-cols-2 gap-4">
-                            <div><label class="text-xs font-black uppercase text-slate-500">Stage</label>
-                            <select id="kStage" class="w-full border-2 border-slate-300 p-3 rounded-lg bg-white text-sm font-bold mt-1">
-                                <option value="localized">Localized (T1-T2, N0)</option>
-                                <option value="highrisk">Locally Adv (T3/T4, or N1, or Grade 4/Sarcomatoid)</option>
-                                <option value="metastatic">Metastatic (M1)</option>
-                            </select></div>
-                            <div><label class="text-xs font-black uppercase text-slate-500">Histology</label>
-                            <select id="kHist" class="w-full border-2 border-slate-300 p-3 rounded-lg bg-white text-sm font-bold mt-1">
-                                <option value="clear">Clear Cell</option>
-                                <option value="pap">Papillary</option>
-                                <option value="medullary">Medullary / Collecting Duct</option>
-                            </select></div>
-                        </div>
-                        <div id="kIMDC" class="bg-slate-100 p-4 rounded-lg border border-slate-200">
-                            <label class="text-xs font-black uppercase text-slate-500 mb-3 block">IMDC Risk Factors (For Metastatic)</label>
-                            <div class="grid grid-cols-2 gap-3">
-                                <label class="flex items-center space-x-2"><input type="checkbox" id="k1" class="w-4 h-4 text-sky-600"><span class="text-xs font-bold">KPS < 80%</span></label>
-                                <label class="flex items-center space-x-2"><input type="checkbox" id="k2" class="w-4 h-4 text-sky-600"><span class="text-xs font-bold">Time from Dx to Tx < 1 yr</span></label>
-                                <label class="flex items-center space-x-2"><input type="checkbox" id="k3" class="w-4 h-4 text-sky-600"><span class="text-xs font-bold">Hb < Lower Limit</span></label>
-                                <label class="flex items-center space-x-2"><input type="checkbox" id="k4" class="w-4 h-4 text-sky-600"><span class="text-xs font-bold">Calcium > Upper Limit</span></label>
-                                <label class="flex items-center space-x-2"><input type="checkbox" id="k5" class="w-4 h-4 text-sky-600"><span class="text-xs font-bold">Neutrophils > Upper Limit</span></label>
-                                <label class="flex items-center space-x-2"><input type="checkbox" id="k6" class="w-4 h-4 text-sky-600"><span class="text-xs font-bold">Platelets > Upper Limit</span></label>
-                            </div>
-                        </div>
-                        <button onclick="calcKidney()" class="w-full bg-slate-900 text-white font-black py-4 rounded-xl shadow-lg hover:bg-sky-700 transition uppercase tracking-widest">Run Kidney Algorithm</button>
-                    </div>
-                `;
-            } else if (type === 'penis') {
-                html = `
-                    <div class="space-y-5">
-                        <div class="grid grid-cols-2 gap-4">
-                            <div><label class="text-xs font-black uppercase text-slate-500">Primary Stage</label>
-                            <select id="peT" class="w-full border-2 border-slate-300 p-3 rounded-lg bg-white text-sm font-bold mt-1">
-                                <option value="Ta">Ta / Tis (Non-invasive)</option>
-                                <option value="T1a">T1a (Subepithelial, no LVI, Grade 1-2)</option>
-                                <option value="T1b">T1b (Subepithelial, LVI+ OR Grade 3/4)</option>
-                                <option value="T2">T2+ (Corpus Spongiosum or deeper)</option>
-                            </select></div>
-                            <div><label class="text-xs font-black uppercase text-slate-500">Clinical Nodal Status</label>
-                            <select id="peN" class="w-full border-2 border-slate-300 p-3 rounded-lg bg-white text-sm font-bold mt-1">
-                                <option value="cN0">cN0 (Non-palpable / Negative USG)</option>
-                                <option value="cN1">cN1 (Mobile unilateral palpable)</option>
-                                <option value="cN2">cN2 (Mobile bilateral palpable)</option>
-                                <option value="cN3">cN3 (Fixed mass OR pelvic nodes)</option>
-                            </select></div>
-                        </div>
-                        <div class="bg-slate-100 p-4 rounded-lg border border-slate-200">
-                            <label class="flex items-center space-x-3"><input type="checkbox" id="pePathN" class="w-5 h-5 rounded text-sky-600"><span class="text-sm font-bold">Pathological Post-LND: ≥2 Nodes Positive OR ENE+</span></label>
-                        </div>
-                        <button onclick="calcPenis()" class="w-full bg-slate-900 text-white font-black py-4 rounded-xl shadow-lg hover:bg-sky-700 transition uppercase tracking-widest">Run Penis Algorithm</button>
-                    </div>
-                `;
-            } else if (type === 'testis') {
-                html = `
-                    <div class="space-y-5">
-                        <div class="grid grid-cols-2 gap-4">
-                            <div><label class="text-xs font-black uppercase text-slate-500">Histology</label>
-                            <select id="tHist" class="w-full border-2 border-slate-300 p-3 rounded-lg bg-white text-sm font-bold mt-1">
-                                <option value="sem">Pure Seminoma</option>
-                                <option value="nsgct">NSGCT (Mixed/Embryonal/Yolk/Chorio)</option>
-                            </select></div>
-                            <div><label class="text-xs font-black uppercase text-slate-500">Metastasis Profile</label>
-                            <select id="tMets" class="w-full border-2 border-slate-300 p-3 rounded-lg bg-white text-sm font-bold mt-1">
-                                <option value="none">No Mets / Lung Only</option>
-                                <option value="nonpulm">Non-Pulmonary Visceral (Liver, Bone, Brain)</option>
-                            </select></div>
-                        </div>
-                        <div class="bg-slate-100 p-4 rounded-lg border border-slate-200">
-                            <label class="text-xs font-black uppercase text-slate-500 mb-3 block">Post-Orchiectomy Tumor Markers</label>
-                            <div class="grid grid-cols-3 gap-3">
-                                <div><label class="text-[10px] font-bold">AFP (ng/mL)</label><input type="number" id="tAFP" value="50" class="w-full border p-2 rounded bg-white text-sm font-bold mt-1"></div>
-                                <div><label class="text-[10px] font-bold">hCG (mIU/mL)</label><input type="number" id="thCG" value="500" class="w-full border p-2 rounded bg-white text-sm font-bold mt-1"></div>
-                                <div><label class="text-[10px] font-bold">LDH (x Normal)</label><input type="number" id="tLDH" value="1" step="0.1" class="w-full border p-2 rounded bg-white text-sm font-bold mt-1"></div>
-                            </div>
-                        </div>
-                        <div class="bg-slate-100 p-4 rounded-lg border border-slate-200">
-                            <label class="text-xs font-black uppercase text-slate-500 mb-2 block">Post-Chemo Residual Mass</label>
-                            <select id="tResid" class="w-full border-2 border-slate-300 p-3 rounded-lg bg-white text-sm font-bold">
-                                <option value="0">None / < 1cm</option>
-                                <option value="1">Mass > 1cm but < 3cm</option>
-                                <option value="3">Mass ≥ 3cm</option>
-                            </select>
-                        </div>
-                        <button onclick="calcTestis()" class="w-full bg-slate-900 text-white font-black py-4 rounded-xl shadow-lg hover:bg-sky-700 transition uppercase tracking-widest">Run Testis Algorithm</button>
-                    </div>
-                `;
-            }
-            oracleInputArea.innerHTML = html;
-        }
+  <!-- Drugs View -->
+  <section id="drugView" class="hidden">
+    <div class="flex items-center justify-between mb-4 no-print">
+      <div><div class="text-2xl font-black text-slate-900">💊 Drug & Dose Library</div><div class="text-xs text-slate-500 font-bold uppercase tracking-wider mt-1">Regimens, Instillations & Systemic Tx</div></div>
+      <button onclick="showHome()" class="text-xs font-bold px-4 py-2 rounded-lg border bg-white shadow-sm">Back</button>
+    </div>
+    <div id="drugGrid" class="grid lg:grid-cols-2 gap-4"></div>
+  </section>
 
-        // ==========================================
-        // ALGORITHMIC ENGINES (EXHAUSTIVE)
-        // ==========================================
+  <!-- Trials View -->
+  <section id="trialView" class="hidden">
+    <div class="flex items-center justify-between mb-4 no-print">
+      <div><div class="text-2xl font-black text-slate-900">📚 Landmark Trial Map</div><div class="text-xs text-slate-500 font-bold uppercase tracking-wider mt-1">Evidence Basis for Pathways</div></div>
+      <button onclick="showHome()" class="text-xs font-bold px-4 py-2 rounded-lg border bg-white shadow-sm">Back</button>
+    </div>
+    <div id="trialGrid" class="grid md:grid-cols-2 xl:grid-cols-3 gap-4"></div>
+  </section>
 
-        function displayOracle(title, content) {
-            oracleOutputArea.classList.remove('hidden');
-            oracleResultContent.innerHTML = `<h4 class="text-lg font-black text-slate-900 uppercase tracking-wide border-b-2 border-slate-200 pb-2 mb-4">${title}</h4>${content}`;
-        }
+  <!-- Search View -->
+  <section id="searchView" class="hidden">
+    <div class="flex items-center justify-between mb-4 no-print">
+      <div><div class="text-2xl font-black text-slate-900">Search Results</div><div id="searchMeta" class="text-xs text-slate-500 font-bold"></div></div>
+      <button onclick="showHome()" class="text-xs font-bold px-4 py-2 rounded-lg border bg-white shadow-sm">Close</button>
+    </div>
+    <div id="searchResults" class="space-y-4"></div>
+  </section>
+</main>
+</div>
 
-        function toggleProstateFields() {
-            const state = document.getElementById('pState').value;
-            if (state === 'localized') {
-                document.getElementById('pLocalFields').classList.remove('hidden');
-                document.getElementById('pTstageDiv').classList.remove('hidden');
-                document.getElementById('pAdvancedFields').classList.add('hidden');
-            } else {
-                document.getElementById('pLocalFields').classList.add('hidden');
-                document.getElementById('pTstageDiv').classList.add('hidden');
-                document.getElementById('pAdvancedFields').classList.remove('hidden');
-            }
-        }
+<script>
+// ==========================================
+// 1. COMPREHENSIVE STATIC DATABASE (GUIDELINES)
+// ==========================================
+const DISEASES = {
+"Ca Prostate":{
+  emoji:"🧬", color:"sky", tagline:"Localized • LND Templates • mHSPC • mCRPC",
+  sections:[
+   {title:"1. Diagnostics & Criteria",items:[
+    ["mpMRI Performance","PI-RADS v2.1. T2W for Transition Zone (charcoal smudge). DWI/ADC for Peripheral Zone. Sens 85-92%, Spec 75-85%. NPV 88-95% for csPCa."],
+    ["PSA Density (PSAD)","Calculated as PSA / Prostate Volume. PSAD ≥0.15 ng/mL/cc strongly correlates with clinically significant PCa and triggers biopsy even if PI-RADS is 3."],
+    ["Genetics & Biomarkers","Consider germline testing (BRCA1/2, ATM) in high-risk localized, strong family history, or any metastatic PCa. Decipher/OncotypeDX post-biopsy aids Active Surveillance vs Surgery decisions."]
+   ]},
+   {title:"2. Histology & Pathology",items:[
+    ["Standard & Variant Subtypes","Acinar Adenocarcinoma (>95%). Ductal Adenocarcinoma (aggressive, central, low PSA relative to volume -> upfront surgery). Neuroendocrine/Small Cell (highly aggressive, does not secrete PSA -> SCLC protocol: Platinum + Etoposide)."],
+    ["ISUP Grade Group & Rules","Primary pattern (most extensive) + Secondary (highest non-primary). GG1=6, GG2=3+4, GG3=4+3, GG4=8, GG5=9-10. Tertiary pattern 5 in radical prostatectomy (>5%) upgrades clinical biological risk significantly."]
+   ]},
+   {title:"3. TNM Staging & Risk Stratification",items:[
+    ["TNM Basics","T1c: Biopsy only. T2a/b/c: Confined. T3a: Extracapsular (EPE). T3b: Seminal Vesicle (SVI). T4: Fixed. N1: Regional nodes. M1a: Non-regional LN. M1b: Bone. M1c: Visceral."],
+    ["NCCN / EAU Risk Groups","Low: T1-T2a, GG1, PSA <10. Favorable Int: 1 int factor, GG1-2, <50% positive cores. Unfavorable Int: GG3 or ≥50% cores or multiple int factors. High: T3a or GG4-5 or PSA >20. Very High: T3b-T4, primary 5, >4 cores of GG4-5."]
+   ]},
+   {title:"4. Localized Treatment & LN Templates",items:[
+    ["Active Surveillance Protocol","Curative intent for Low Risk. Protocol: PSA q6mo, DRE annually, confirmatory mpMRI/Biopsy at 12-24 months. Trigger for Tx: Upgrade to GG ≥2 or volume progression."],
+    ["Definitive Treatment","Favorable Int: AS or RP or EBRT alone. Unfavorable Int: RP+ePLND or EBRT+Short-course ADT (4-6mo). High/Very High: RP+ePLND (expect salvage) or EBRT+Long-course ADT (18-36mo) ± Brachytherapy boost."],
+    ["Extended Pelvic LND (ePLND) Boundaries","MANDATORY for High/Very High risk. Cranial: Common iliac bifurcation. Lateral: Genitofemoral nerve & psoas. Medial: Internal iliac (hypogastric). Distal: Node of Cloquet / femoral ring. Dorsal: Obturator fossa."]
+   ]},
+   {title:"5. Advanced: mHSPC & mCRPC",items:[
+    ["mHSPC Doublet & Triplet Therapy","Continuous ADT backbone (surgical or medical). High Volume (CHAARTED - visceral or ≥4 bone mets): TRIPLET -> ADT + Docetaxel + Darolutamide (ARASENS) or Abiraterone (PEACE-1). Low Volume: DOUBLET -> ADT + Enzalutamide/Apalutamide (ENZAMET/TITAN) + MANDATORY RT to primary (STAMPEDE)."],
+    ["mCRPC Targeted Selection","Maintain castrate testosterone. HRR/BRCA Mutated -> PARP Inhibitor (Olaparib - PROfound). PSMA PET+ -> Lu-177 PSMA-617 (VISION). Post-Docetaxel -> Cabazitaxel (TROPIC)."],
+    ["Biochemical Recurrence (BCR)","Post-RP: PSA ≥0.2 confirmed. Post-RT: Phoenix (Nadir + 2.0). Action: PSMA PET-CT restaging. Salvage RT (64-70 Gy) best given early (PSA <0.5)."]
+   ]},
+   {title:"6. Follow-up Protocol",items:[
+    ["Post-Treatment Surveillance","Post-RP/RT: PSA every 3-6 months for 2 years, then every 6 months for years 3-4, then annually. Imaging only indicated if BCR criteria are met. Monitor bone health (DEXA) and metabolic syndrome during ADT."]
+   ]}
+  ]
+},
+"Ca Bladder":{
+  emoji:"🫧",color:"indigo",tagline:"Variant Histology • Re-TURBT • Cystectomy • MIBC • EV-302",
+  sections:[
+   {title:"1. Diagnostics & Re-TURBT Rules",items:[
+    ["Workup","CT Urogram (split-bolus) mandatory for upper tracts. Cytology (Paris 2.0 requires N:C ratio ≥0.7 for HG)."],
+    ["TURBT Principles","Resect exophytic tumor and detrusor muscle separately. MANDATORY Re-TURBT within 2-6 weeks if: 1. Detrusor muscle absent in initial specimen (30-40% upstaging risk). 2. Any T1 tumor. 3. High Grade disease."]
+   ]},
+   {title:"2. Histological Variants (CRITICAL)",items:[
+    ["Variant-Specific Pathways","Squamous Cell (SCC) & Urachal Adeno: Chemoresistant -> Upfront Radical Cystectomy (RC). Micropapillary / Plasmacytoid: Highly aggressive early micromets -> Upfront RC (BCG discouraged). Small Cell/Neuroendocrine: Treat as systemic SCLC -> Neoadj Platinum+Etoposide -> Local consolidation."]
+   ]},
+   {title:"3. NMIBC Management & Dosages",items:[
+    ["Immediate Post-Op Instillation (SIO)","Give within 2-6 hrs post-TURBT to destroy floating cells. Doses: Mitomycin C 40mg in 40mL saline OR Gemcitabine 2000mg in 100mL. CONTRAINDICATION: Bladder perforation or severe hematuria."],
+    ["BCG Protocol (High Risk)","For T1, High Grade, or CIS. Induction: Full dose weekly x 6. Maintenance (SWOG): 3 weekly doses at months 3, 6, 12, 18, 24, 30, 36 (Total 3 years)."]
+   ]},
+   {title:"4. MIBC & Perioperative Trials",items:[
+    ["Cisplatin Eligibility","MANDATORY Criteria: CrCl >60 mL/min, ECOG 0-1, no Grade ≥2 neuropathy/hearing loss. Do not use Carboplatin as a neoadjuvant substitute."],
+    ["Neoadjuvant Therapies","Cis-Eligible: Dose-Dense MVAC (VESPER Trial) is superior to standard Gem/Cis. Perioperative IO: Durvalumab + Gem/Cis -> Surgery -> Adj Durvalumab (NIAGARA Trial). Cis-Ineligible: Perioperative Enfortumab Vedotin + Pembrolizumab (EV-302 / KEYNOTE-905)."],
+    ["Adjuvant Therapy","Nivolumab (CheckMate-274) for high-risk pathology (ypT2+ or pT3/T4/N+) if cisplatin-ineligible or post-NACT."]
+   ]},
+   {title:"5. Metastatic Urothelial Carcinoma",items:[
+    ["First-Line Standard","EV-302 Trial fundamentally changed practice: Enfortumab Vedotin + Pembrolizumab is the new standard of care, offering superior OS over chemotherapy."],
+    ["Alternative Lines","If treated with 1st line Platinum chemo (Gem/Cis) and achieved stable disease -> Avelumab Maintenance (JAVELIN Bladder 100). FGFR3 Mutated -> Erdafitinib (THOR Trial)."]
+   ]},
+   {title:"6. Surveillance",items:[
+    ["Post-TURBT (NMIBC)","Cystoscopy & Cytology at 3, 6, 9, 12 months, then every 6 months for 2 years, then annually."],
+    ["Post-Cystectomy","CT C/A/P every 3-6 months for 2 years, then annually. Monitor upper tracts, Vitamin B12, and metabolic acidosis (especially with colon conduits)."]
+   ]}
+  ]
+},
+"Ca Penis":{
+  emoji:"⚕️",color:"rose",tagline:"Organ Sparing • Nodal Templates • Contralateral Rules • NACT TIP",
+  sections:[
+   {title:"1. Histology & Staging",items:[
+    ["Subtypes","Usual SCC (>80%). HPV-Associated (Basaloid, Warty - p16+). Verrucous (Buschke-Löwenstein - destructive but rarely metastasizes). Sarcomatoid (highly aggressive)."],
+    ["TNM Highlights","T1a: Subepithelial, LVI negative, Grade 1-2. T1b: LVI+ or Grade 3/4. T2: Corpus Spongiosum. T3: Corpus Cavernosum. cN1: Unilateral mobile. cN2: Bilateral/multiple mobile. cN3: Fixed mass or pelvic nodes."]
+   ]},
+   {title:"2. Primary Management",items:[
+    ["Low Risk (PeIN, Ta, T1a)","Topical (Imiquimod 5% or 5-FU 5%), laser, or wide local excision with 3-5mm negative margins."],
+    ["Invasive (T1b - T3)","Partial Penectomy (requires 2-3 cm functional stump to allow upright micturition). Total Penectomy with Perineal Urethrostomy for proximal/massive tumors."]
+   ]},
+   {title:"3. Inguinal Node Management (Strict Rules)",items:[
+    ["cN0 (Non-palpable)","Low Risk primary: Surveillance. Intermediate/High Risk (≥T1b, G3, or LVI+): Occult metastasis risk >20%. Surveillance is CONTRAINDICATED. MANDATORY Dynamic Sentinel Node Biopsy (DSNB) or modified Inguinal LND."],
+    ["cN1 / cN2 (Palpable Mobile)","Upfront Radical Inguinal LND (Superficial + Deep packets)."],
+    ["Contralateral Groin Rule","MANDATORY: If ipsilateral ILND yields ≥2 positive nodes OR any Extranodal Extension (ENE+), a prophylactic contralateral staging ILND must be performed."],
+    ["Pelvic LND Indications","MANDATORY: If ≥2 inguinal nodes positive, OR ENE+ present, OR Cloquet's node positive."]
+   ]},
+   {title:"4. Advanced cN3 Management",items:[
+    ["Fixed Nodes (cN3) Protocol","CRITICAL RULE: Upfront surgery is contraindicated (high risk of fungation/necrosis). Protocol (InPACT Guidelines): Neoadjuvant Chemotherapy with TIP regimen (Paclitaxel, Ifosfamide, Cisplatin) x 4 cycles. If objective response -> Radical Consolidative ILND + PLND."]
+   ]}
+  ]
+},
+"Ca Testis":{
+  emoji:"🥚",color:"amber",tagline:"Tumor Markers • IGCCCG • Stage I • Post-Chemo RPLND",
+  sections:[
+   {title:"1. Diagnostics & Strict Rules",items:[
+    ["Pre-Orchiectomy","Mandatory: High-frequency scrotal Doppler USG and Serum Tumor Markers (AFP, beta-hCG, LDH)."],
+    ["CRITICAL SAFETY RULE","Scrotal violation, FNAC, or trans-scrotal biopsy is ABSOLUTELY CONTRAINDICATED. It causes aberrant lymphatic drainage to inguinal nodes instead of retroperitoneal nodes. Standard is Radical Inguinal Orchiectomy."]
+   ]},
+   {title:"2. Histology & Marker Dynamics",items:[
+    ["Seminoma (50%)","Highly radiosensitive, lymphatic spread. NEVER secretes AFP. (If pathology says Seminoma but AFP >10, treat entirely as NSGCT). hCG elevated in ~15%."],
+    ["NSGCT (50%)","Embryonal (highly malignant, secretes hCG/AFP). Yolk Sac (prepubertal, secretes AFP). Choriocarcinoma (pure is rare, early hematogenous brain/lung mets, sky-high hCG). Teratoma (Chemo/Radio-resistant, requires surgical excision)."]
+   ]},
+   {title:"3. IGCCCG Risk & Systemic Therapy",items:[
+    ["Good Risk","Seminoma (no non-pulmonary visceral mets). NSGCT (AFP <1k, hCG <5k, LDH <1.5x normal). Tx: 3 cycles BEP or 4 cycles EP."],
+    ["Intermediate & Poor Risk","Int: Seminoma (with non-pulm visceral mets) or NSGCT (moderate markers). Poor (NSGCT only): Mediastinal primary, Liver/Brain/Bone mets, or AFP >10k, hCG >50k. Tx: 4 cycles BEP or 4 cycles VIP (if Bleomycin contraindicated)."]
+   ]},
+   {title:"4. Post-Chemotherapy Residual Mass",items:[
+    ["NSGCT Rule","MANDATORY: If mass >1 cm and markers have normalized, Nerve-Sparing RPLND is required. (Pathology: 50% Teratoma, 35% Necrosis, 15% Viable cancer). PET-CT has high false-negative rates for Teratoma, do not use it to avoid surgery."],
+    ["Seminoma Rule","If mass ≥3 cm, perform 18F-FDG PET-CT minimum 6-8 weeks post-chemo to prevent false positives. If PET+, perform biopsy/resection."]
+   ]}
+  ]
+},
+"Ca Kidney":{
+  emoji:"🫘",color:"emerald",tagline:"Bosniak • Histology Variants • Adjuvant Pembro • IMDC First-Line",
+  sections:[
+   {title:"1. Diagnostics & Bosniak Criteria",items:[
+    ["Workup","Multiphasic CT Urogram (unenhanced, corticomedullary, nephrographic, excretory). Enhancement ≥15-20 HU confirms solid renal malignancy."],
+    ["Bosniak 2019 (Cystic Masses)","I/II: Simple/Minimally complex (~0% malignant). IIF: Thin septa, follow-up required (~5% malignant). III: Irregular thick walls with MEASURABLE enhancement (~50% malignant, surgical). IV: Enhancing nodular tissue (~90% malignant, surgical)."]
+   ]},
+   {title:"2. Histology & WHO/ISUP Grading",items:[
+    ["Subtypes","Clear Cell (75%): VHL mutation, highly vascular, responds to IO/TKIs. Papillary (15%): Type 1 MET mutated (responds to Cabozantinib - SWOG 1500). Chromophobe: BHD syndrome, good prognosis. Medullary/Collecting Duct: Aggressive, sickle-cell trait link, requires Platinum-chemo."],
+    ["ISUP Grade","Grade 1-3 based on nucleolar prominence at 400x/100x. Grade 4: Extreme pleomorphism, sarcomatoid or rhabdoid differentiation (triggers high-risk pathways)."]
+   ]},
+   {title:"3. Surgical & Adjuvant Guidelines",items:[
+    ["Surgery","Partial Nephrectomy standard for T1 (≤7 cm); minimal 1-2mm margin safe. Radical Nephrectomy for T2+ or complex cases. Adrenal/LND only if clinically involved/suspicious."],
+    ["Adjuvant Therapy (KEYNOTE-564)","Pembrolizumab 200mg q3w for 1 year is MANDATORY for Clear Cell RCC with high-risk features: Grade 4, Sarcomatoid, pT3/T4, or N+. Markedly improves DFS/OS."]
+   ]},
+   {title:"4. Metastatic (IMDC) Treatment",items:[
+    ["IMDC (Heng) Criteria","1 point each: KPS <80%, Time Dx to Tx <1 yr, Low Hb, High Ca, High Neutrophils, High Platelets. Fav (0), Int (1-2), Poor (3-6)."],
+    ["First-Line Systemic","Favorable: Pembro+Axitinib (KEYNOTE-426) or Pembro+Lenvatinib (CLEAR). Int/Poor: Nivolumab+Ipilimumab (CheckMate-214, IO-IO doublet preferred)."],
+    ["Cytoreductive Nephrectomy (CN)","CARMENA trial discouraged upfront CN. CN is now reserved ONLY for highly selected Favorable risk patients or those with excellent response to initial systemic therapy."]
+   ]}
+  ]
+}
+};
 
-        function calcBladder() {
-            let stage = document.getElementById('bStage').value;
-            let variant = document.getElementById('bVar').value;
-            let cisFit = document.getElementById('bCisFit').checked;
-            let evFit = document.getElementById('bEVFit').checked;
-            
-            let path = "";
-            
-            if (variant === 'neuro') {
-                path = `<span class="danger-badge">CRITICAL</span> Treat Small Cell / Neuroendocrine purely as systemic disease.<br><br><b>Protocol:</b> Neoadjuvant Platinum + Etoposide chemotherapy (SCLC protocols). Do NOT use BCG or upfront surgery. Proceed to local consolidation (RC or RT) only after systemic therapy.`;
-            } else if ((variant === 'scc' || variant === 'micro') && stage !== 'Metastatic') {
-                path = `<span class="danger-badge">VARIANT HISTOLOGY</span> Squamous cell is highly chemoresistant. Micropapillary/Plasmacytoid spreads aggressively via micrometastasis.<br><br><b>Protocol:</b> Upfront Radical Cystectomy + ePLND is strongly preferred. Intravesical BCG is historically ineffective and contraindicated.`;
-            } else if (stage === 'Metastatic') {
-                path = `<span class="trial-badge">METASTATIC PATHWAY</span><br><br><b>First-Line Standard:</b><br>`;
-                if (evFit) {
-                    path += `• <span class="drug-text">Enfortumab Vedotin + Pembrolizumab</span> <span class="trial-badge">EV-302 Trial</span>. This has supplanted pure chemotherapy as the new standard of care, offering superior OS (31.5 mo vs 16.1 mo).`;
-                } else if (cisFit) {
-                    path += `• <span class="danger-badge">EV INELIGIBLE</span> -> Treat with <span class="drug-text">Gemcitabine + Cisplatin + Nivolumab</span> <span class="trial-badge">CheckMate-901</span>.<br>• Alternative: Gem/Cis followed by Avelumab maintenance <span class="trial-badge">JAVELIN Bladder 100</span>.`;
-                } else {
-                    path += `• <span class="danger-badge">EV & CIS INELIGIBLE</span> -> Treat with <span class="drug-text">Gemcitabine + Carboplatin</span> followed by Avelumab maintenance if stable <span class="trial-badge">JAVELIN Bladder 100</span>, OR upfront Pembrolizumab monotherapy (if PD-L1 high).`;
-                }
-            } else if (stage === 'MIBC') {
-                path = `<span class="trial-badge">LOCALIZED MIBC PATHWAY</span><br><br>`;
-                if (cisFit) {
-                    path += `<b>Standard Protocol:</b><br>1. <span class="drug-text">Neoadjuvant Chemotherapy:</span> Dose-Dense MVAC (superior to Gem/Cis) <span class="trial-badge">VESPER Trial</span>. Alternatively, Neoadj Gem/Cis + Durvalumab <span class="trial-badge">NIAGARA Trial</span>.<br>2. Radical Cystectomy + extended PLND.<br>3. <span class="drug-text">Adjuvant Therapy:</span> Nivolumab <span class="trial-badge">CheckMate-274</span> if high risk pathology (ypT2+ or pT3/T4/N+).`;
-                } else {
-                    path += `<b>Protocol <span class="danger-badge">CISPLATIN INELIGIBLE</span>:</b><br>Do NOT use Carboplatin as a neoadjuvant substitute.<br>1. Upfront Radical Cystectomy + extended PLND.<br>2. Consider Adjuvant Nivolumab <span class="trial-badge">CheckMate-274</span> or Pembrolizumab <span class="trial-badge">AMBASSADOR Trial</span> if high-risk post-surgery.<br><i>*Alternative: Trimodal Preservation (TMT) with 5-FU/Mitomycin C.</i>`;
-                }
-            } else if (stage === 'NMIBC_High') {
-                path = `<span class="trial-badge">HIGH RISK NMIBC</span><br>1. <span class="danger-badge">MANDATORY</span> Re-TURBT within 2-6 weeks to rule out occult MIBC (30-40% upstaging risk if muscle absent initially).<br>2. <b>Adjuvant Induction:</b> BCG weekly x 6 doses.<br>3. <b>Maintenance:</b> SWOG Protocol (3 weekly doses at 3, 6, 12, 18, 24, 30, 36 months). Total 3 years.`;
-            } else {
-                path = `<b>Low / Intermediate Risk NMIBC</b><br>Immediate post-op single instillation (SIO) of Mitomycin C or Gemcitabine (within 2-6 hours). Ensure no bladder perforation. Subsequent intravesical chemo tailored to full pathology.`;
-            }
+// ==========================================
+// 2. DRUG DOSAGES & PROTOCOLS
+// ==========================================
+const DRUGS = [
+["Enfortumab Vedotin + Pembrolizumab","EV-302 mUC Standard","EV: 1.25 mg/kg IV on Days 1, 8, 15 of 28-day cycle. Pembro: 200mg IV q3w. Monitor for severe neuropathy and hyperglycemia."],
+["Durvalumab (NIAGARA)","Perioperative MIBC","Neoadjuvant: 1500mg IV q3w + Gem/Cis x 4 cycles. Adjuvant: 1500mg IV q4w x 8 cycles."],
+["Darolutamide (ARASENS)","mHSPC Triplet","600mg PO BID with food. Given alongside continuous ADT and Docetaxel (75 mg/m2 q3w x 6)."],
+["Mitomycin C (NMIBC)","Immediate Post-Op (SIO)","40 mg diluted in 40 mL sterile water. Instill within 2-6 hrs post-TURBT. Retain for 1-2 hours."],
+["Gemcitabine (NMIBC)","Immediate Post-Op (SIO)","2000 mg diluted in 100 mL normal saline. Equivalent efficacy to MMC with less chemical cystitis."],
+["BCG (NMIBC High Risk)","Induction & SWOG Maintenance","Induction: 1 vial (~5x10^8 CFU) in 50mL saline weekly x 6. Maintenance: Weekly x 3 at months 3, 6, 12, 18, 24, 30, 36."],
+["TIP (Penile cN3 NACT)","InPACT Protocol","Paclitaxel 175 mg/m2 (D1) + Ifosfamide 1200 mg/m2 (D1-3, with Mesna) + Cisplatin 25 mg/m2 (D1-3). q21d x 4 cycles."],
+["Pembrolizumab (Adjuvant RCC)","KEYNOTE-564","200 mg IV q3w OR 400 mg IV q6w for exactly 1 year. For high-risk post-nephrectomy ccRCC."],
+["BEP (Testis Good/Int/Poor)","Standard Germ Cell","Bleomycin 30k IU (D1, 8, 15) + Etoposide 100 mg/m2 (D1-5) + Cisplatin 20 mg/m2 (D1-5). q21d x 3 or 4 cycles."]
+];
 
-            displayOracle("Bladder Cancer Precision Engine", path);
-        }
+// ==========================================
+// 3. LANDMARK TRIALS
+// ==========================================
+const TRIALS = [
+["Prostate","ARASENS","ADT + Darolutamide + Docetaxel vs ADT + Docetaxel in mHSPC. Proved OS benefit of triplet therapy.","mHSPC"],
+["Prostate","STAMPEDE","Multi-arm trial proving RT to primary in low-volume mHSPC improves survival, and Abiraterone utility.","mHSPC / High Risk"],
+["Prostate","VISION","Lu-177 PSMA-617 significantly improves OS in PSMA+ mCRPC post-ARPI and Docetaxel.","mCRPC"],
+["Bladder","EV-302 / KEYNOTE-A39","Enfortumab Vedotin + Pembrolizumab vs Platinum Chemo. Nearly doubled OS (31.5 vs 16.1 mo), becoming new 1L standard.","mUC 1st Line"],
+["Bladder","NIAGARA","Perioperative Durvalumab + Gem/Cis vs Gem/Cis alone in MIBC. Improved EFS and OS.","MIBC"],
+["Bladder","VESPER","Dose-dense MVAC vs standard Gem/Cis neoadjuvant. ddMVAC showed superior progression-free survival.","MIBC"],
+["Bladder","JAVELIN Bladder 100","Avelumab maintenance therapy post-platinum chemotherapy significantly improves OS.","mUC Maintenance"],
+["Kidney","KEYNOTE-564","Adjuvant Pembrolizumab post-nephrectomy for high-risk clear cell RCC reduces risk of death by 38%.","Adjuvant RCC"],
+["Kidney","CARMENA","Sunitinib alone vs Cytoreductive Nephrectomy -> Sunitinib. Proved upfront surgery is not required for intermediate/poor risk.","Metastatic RCC"],
+["Penis","InPACT / TIP Phase II","Neoadjuvant TIP chemotherapy for bulky/fixed cN2-cN3 penile cancer to enable surgical consolidation.","Advanced Penile"]
+];
 
-        function calcProstate() {
-            let state = document.getElementById('pState').value;
-            let path = "";
+// ==========================================
+// UI LOGIC & NAVIGATION
+// ==========================================
+function showHome() {
+  ['diseaseView','oracleView','calcView','drugView','trialView','searchView'].forEach(id => document.getElementById(id).classList.add('hidden'));
+  document.getElementById('homeView').classList.remove('hidden');
+  document.getElementById('globalSearch').value = "";
+}
 
-            if (state === 'mHSPC') {
-                let vol = document.getElementById('pVol').value;
-                path = `<span class="trial-badge">mHSPC PATHWAY</span> Backbone: Continuous ADT (surgical/medical) with target testosterone <50 ng/dL.<br><br>`;
-                if (vol === 'high') {
-                    path += `<b>High Volume Disease (CHAARTED Criteria):</b><br>Triplet therapy strongly recommended.<br>• <span class="drug-text">ADT + Darolutamide + Docetaxel</span> <span class="trial-badge">ARASENS</span><br>• <span class="drug-text">ADT + Abiraterone + Docetaxel</span> <span class="trial-badge">PEACE-1</span><br><i>*RT to primary prostate NOT indicated for high volume.</i>`;
-                } else {
-                    path += `<b>Low Volume Disease:</b><br>Doublet therapy + Primary RT.<br>• <span class="drug-text">ADT + Apalutamide/Enzalutamide/Abiraterone</span> <span class="trial-badge">TITAN / ENZAMET / LATITUDE</span>.<br>• <span class="danger-badge">MANDATORY</span> RT to the primary prostate <span class="trial-badge">STAMPEDE H</span> to improve OS.`;
-                }
-            } else if (state === 'mCRPC') {
-                let brca = document.getElementById('pBRCA').checked;
-                let psma = document.getElementById('pPSMA').checked;
-                let chemo = document.getElementById('pChemo').checked;
-                
-                path = `<span class="trial-badge">mCRPC PATHWAY</span> Maintain castrate testosterone levels while adding therapies.<br><br><b>Targeted Lines:</b><br>`;
-                if (brca) path += `• <span class="drug-text">PARP Inhibitor:</span> Olaparib or Rucaparib <span class="trial-badge">PROfound Trial</span> for BRCA1/2 or ATM mutations.<br>`;
-                if (psma && chemo) path += `• <span class="drug-text">Radioligand Therapy:</span> Lutetium-177 PSMA-617 (7.4 GBq q6w) <span class="trial-badge">VISION Trial</span> for PSMA+ progressing post-ARPI and Docetaxel.<br>`;
-                if (chemo) path += `• <span class="drug-text">Chemotherapy:</span> Cabazitaxel 20-25 mg/m² <span class="trial-badge">TROPIC Trial</span> for docetaxel-refractory.<br>`;
-                if (!brca && !psma && !chemo) path += `• Standard sequence: If ARPI (Abi/Enza) was used in mHSPC, switch mechanism to Docetaxel. If Chemo was used in mHSPC, use an ARPI. (Do not sequence Abi directly into Enza).`;
-            } else {
-                // Localized Logic
-                let prim = parseInt(document.getElementById('pPrim').value);
-                let sec = parseInt(document.getElementById('pSec').value);
-                let ter = parseInt(document.getElementById('pTer').value);
-                if (!prim || !sec) { alert('Enter ISUP grades.'); return; }
-                
-                let t = document.getElementById('pTstage').value;
-                let psa = parseFloat(document.getElementById('pPSA').value);
-                let cores = document.getElementById('pCores').value;
-                
-                let total = prim + sec;
-                let isup = total <= 6 ? 1 : (total === 7 && prim === 3 ? 2 : (total === 7 ? 3 : (total === 8 ? 4 : 5)));
-                
-                let intFactors = 0;
-                if (t === 'T2') intFactors++;
-                if (isup === 2 || isup === 3) intFactors++;
-                if (psa >= 10 && psa < 20) intFactors++;
+function openSection(viewId) {
+  ['homeView','diseaseView','oracleView','calcView','drugView','trialView','searchView'].forEach(id => document.getElementById(id).classList.add('hidden'));
+  document.getElementById(viewId).classList.remove('hidden');
+}
 
-                let risk = "";
-                let tx = "";
+function esc(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));}
+function formatText(t){
+  let text = t.replace(/\n/g,'<br>');
+  const redFlags = ['MANDATORY', 'CONTRAINDICATED', 'ABSOLUTELY CONTRAINDICATED', 'CRITICAL RULE', 'CRITICAL SAFETY RULE'];
+  redFlags.forEach(flag => {
+    const regex = new RegExp(`(${flag})`, 'g');
+    text = text.replace(regex, '<span class="text-red-700 font-black bg-red-100 px-1.5 py-0.5 rounded shadow-sm border border-red-200 tracking-wide">$1</span>');
+  });
+  return text;
+}
 
-                if (t === 'T3b' || t === 'T4' || prim === 5 || cores === 'veryhigh') {
-                    risk = "Very High Risk";
-                    tx = `<b>Primary Options:</b><br>1. EBRT (78-80 Gy) + Long-course ADT (18-36 mo) + Abiraterone <span class="trial-badge">STAMPEDE</span>.<br>2. Radical Prostatectomy + <span class="danger-badge">MANDATORY</span> Extended Pelvic LND. (High likelihood of needing salvage RT).`;
-                } else if (t === 'T3a' || isup >= 4 || psa > 20) {
-                    risk = "High Risk";
-                    tx = `<b>Primary Options:</b><br>1. EBRT + Long-course ADT (18-36 mo) ± Brachytherapy boost.<br>2. Radical Prostatectomy + ePLND.`;
-                } else if (isup === 3 || cores === 'high' || intFactors >= 2) {
-                    risk = "Unfavorable Intermediate Risk";
-                    tx = `<b>Primary Options:</b><br>1. EBRT + Short-course ADT (4-6 mo).<br>2. Radical Prostatectomy + ePLND.<br><span class="danger-badge">CONTRAINDICATED</span> Active Surveillance is generally not recommended.`;
-                } else if (intFactors === 1) {
-                    risk = "Favorable Intermediate Risk";
-                    tx = `<b>Primary Options:</b><br>1. Active Surveillance (Preferred for low volume).<br>2. RP alone or EBRT alone (no ADT required).`;
-                } else {
-                    risk = "Low Risk";
-                    tx = `<b>Standard:</b> Active Surveillance (PSA q6mo, DRE annually, confirmatory MRI/Biopsy at 1-2 years).`;
-                }
+// Render Home Grid
+document.getElementById('diseaseGrid').innerHTML = [
+  ...Object.keys(DISEASES).map(n=>`<button onclick="openDisease('${n.replace(/'/g,"\\'")}')" class="card p-5 text-left hover:-translate-y-1 transition shadow-md border-b-4 border-slate-200 hover:border-sky-500"><div class="text-3xl mb-2">${DISEASES[n].emoji}</div><div class="font-black text-lg text-slate-800">${esc(n)}</div><div class="text-xs text-slate-500 mt-1 font-semibold leading-relaxed">${esc(DISEASES[n].tagline)}</div></button>`),
+  `<button onclick="openOracleView()" class="card p-5 text-left bg-gradient-to-br from-sky-900 to-sky-700 text-white hover:-translate-y-1 transition shadow-lg"><div class="text-3xl mb-2">⚡</div><div class="font-black text-lg text-sky-100">Interactive Oracle</div><div class="text-xs text-sky-200 mt-1 font-semibold leading-relaxed">Enter patient criteria to calculate exact NCCN/EAU risk groups & pathways</div></button>`,
+  `<button onclick="openCalcView()" class="card p-5 text-left hover:-translate-y-1 transition shadow-md border-b-4 border-slate-200 hover:border-emerald-500"><div class="text-3xl mb-2">🧮</div><div class="font-black text-lg text-slate-800">Metrics & Calculators</div><div class="text-xs text-slate-500 mt-1 font-semibold leading-relaxed">ISUP, PSAD, Cisplatin CrCl, Koff's Formula</div></button>`,
+  `<button onclick="openDrugView()" class="card p-5 text-left hover:-translate-y-1 transition shadow-md border-b-4 border-slate-200 hover:border-purple-500"><div class="text-3xl mb-2">💊</div><div class="font-black text-lg text-slate-800">Drug Library & Dosages</div><div class="text-xs text-slate-500 mt-1 font-semibold leading-relaxed">Systemic therapies, post-op instillations, antibiotics</div></button>`,
+  `<button onclick="openTrialView()" class="card p-5 text-left hover:-translate-y-1 transition shadow-md border-b-4 border-slate-200 hover:border-amber-500"><div class="text-3xl mb-2">📚</div><div class="font-black text-lg text-slate-800">Landmark Trial Map</div><div class="text-xs text-slate-500 mt-1 font-semibold leading-relaxed">Evidence basis: EV-302, NIAGARA, ARASENS, KEYNOTE</div></button>`
+].join("");
 
-                let tertText = (ter === 5 && isup < 4) ? `<br><span class="danger-badge">TERTIARY 5</span> Upgrades biological behavior risk substantially.` : "";
-                path = `<div class="bg-slate-100 p-3 rounded mb-3"><b>Pathology:</b> Gleason ${prim}+${sec}=${total} (ISUP ${isup})${tertText}</div><div class="text-xl font-black text-sky-700 mb-3">${risk}</div>${tx}`;
-            }
+// Render Static Disease View
+function openDisease(name) {
+  openSection('diseaseView');
+  const d = DISEASES[name];
+  
+  // Navigation Tabs for quick switching
+  document.getElementById("diseaseNav").innerHTML = Object.keys(DISEASES).map(n=>`<button onclick="openDisease('${n.replace(/'/g,"\\'")}')" class="px-4 py-2 rounded-full border ${n===name ? 'bg-sky-700 text-white border-sky-800' : 'bg-white text-slate-700'} text-xs font-black transition shadow-sm">${DISEASES[n].emoji} ${esc(n)}</button>`).join("");
+  
+  document.getElementById("diseaseHeader").innerHTML=`<div class="card p-6 mb-5 border-l-4 border-${d.color}-500 bg-slate-900 text-white shadow-md"><div class="flex flex-wrap gap-2 items-center mb-2"><span class="badge badge-green text-[10px]">EAU / NCCN 2026</span><span class="badge badge-blue text-[10px]">Definitive Guidelines</span></div><h2 class="text-3xl font-black">${esc(name)}</h2><div class="text-sm text-slate-300 mt-2 font-bold tracking-wide">${esc(d.tagline)}</div></div>`;
+  
+  const nav = document.getElementById("sectionNav");
+  nav.innerHTML = d.sections.map((s,i)=>`<button onclick="document.getElementById('sec-${i}').scrollIntoView({behavior:'smooth',block:'start'})" class="w-full text-left p-3 rounded-lg text-xs font-bold text-slate-700 hover:bg-sky-100 hover:text-sky-800 transition">${i+1}. ${esc(s.title.replace(/^\d+\.\s*/,''))}</button>`).join("");
+  
+  document.getElementById("diseaseContent").innerHTML = d.sections.map((s,i)=>`
+    <section id="sec-${i}" class="mb-6">
+      <div class="text-lg font-black text-slate-800 mb-3 uppercase tracking-wider border-b-2 border-slate-200 pb-2">${esc(s.title)}</div>
+      <div class="space-y-4">
+        ${s.items.map(it => `
+          <article class="card p-5 shadow-sm border-l-2 border-sky-400">
+            <div class="flex gap-2 items-center mb-3"><span class="badge badge-slate">${esc(name)}</span><span class="text-[10px] font-black text-sky-600 uppercase tracking-widest">${esc(s.title.replace(/^\d+\.\s*/,''))}</span></div>
+            <h3 class="font-black text-base text-slate-900 mb-2">${esc(it[0])}</h3>
+            <div class="text-sm text-slate-700 leading-relaxed font-medium">${formatText(it[1])}</div>
+          </article>
+        `).join("")}
+      </div>
+    </section>`).join("");
+  window.scrollTo({top:0,behavior:"smooth"});
+}
 
-            displayOracle("Prostate Algorithmic Result", path);
-        }
+// Render Drugs & Trials
+function openDrugView() {
+  openSection('drugView');
+  document.getElementById("drugGrid").innerHTML = DRUGS.map(d => `<article class="card p-5 border-l-4 border-purple-500 shadow-sm"><span class="badge badge-purple mb-2">${esc(d[1])}</span><h3 class="font-black text-base text-slate-900 mb-2">${esc(d[0])}</h3><div class="text-sm text-slate-700 leading-relaxed font-medium">${formatText(d[2])}</div></article>`).join("");
+}
 
-        function calcKidney() {
-            let stage = document.getElementById('kStage').value;
-            let hist = document.getElementById('kHist').value;
-            let path = "";
+function openTrialView() {
+  openSection('trialView');
+  document.getElementById("trialGrid").innerHTML = TRIALS.map(t => `<article class="card p-5 border-l-4 border-amber-500 shadow-sm"><div class="flex gap-2 mb-3"><span class="badge badge-slate">${esc(t[0])}</span><span class="badge badge-amber">${esc(t[3])}</span></div><h3 class="font-black text-base text-slate-900 mb-2">${esc(t[1])}</h3><div class="text-sm text-slate-700 leading-relaxed font-medium">${formatText(t[2])}</div></article>`).join("");
+}
 
-            if (stage === 'metastatic') {
-                let score = 0;
-                for(let i=1; i<=6; i++) { if(document.getElementById(`k${i}`).checked) score++; }
-                
-                let imdc = score === 0 ? "Favorable Risk" : (score <= 2 ? "Intermediate Risk" : "Poor Risk");
-                path = `<div class="text-xl font-black text-sky-700 mb-3">IMDC: ${imdc} (${score} factors)</div>`;
-                
-                if (hist === 'clear') {
-                    if (score === 0) {
-                        path += `<b>Standard First-Line Systemic:</b><br>• <span class="drug-text">Pembrolizumab + Axitinib</span> <span class="trial-badge">KEYNOTE-426</span><br>• <span class="drug-text">Pembrolizumab + Lenvatinib</span> <span class="trial-badge">CLEAR</span><br><i>*Highly selected Favorable risk patients may undergo upfront Cytoreductive Nephrectomy.</i>`;
-                    } else {
-                        path += `<b>Standard First-Line Systemic:</b><br>• <span class="drug-text">Nivolumab + Ipilimumab</span> (IO/IO doublet) <span class="trial-badge">CheckMate-214</span>.<br>• <span class="drug-text">Cabozantinib + Nivolumab</span> <span class="trial-badge">CheckMate-9ER</span>.<br><span class="danger-badge">CARMENA TRIAL</span> Upfront cytoreductive nephrectomy generally discouraged.`;
-                    }
-                } else if (hist === 'pap') {
-                    path += `<b>Non-Clear Cell Pathway (Papillary):</b><br>• Clinical trial preferred. MET-driven tumors may respond to <span class="drug-text">Cabozantinib</span> or <span class="drug-text">Savolitinib</span> <span class="trial-badge">SWOG 1500</span>.`;
-                } else {
-                    path += `<b>Collecting Duct / Medullary:</b><br>• Highly aggressive, TKI-resistant. Treat with Platinum-based chemotherapy.`;
-                }
-            } else if (stage === 'highrisk') {
-                path = `<b>Locally Advanced Pathway:</b><br>1. Radical Nephrectomy.<br>2. <span class="danger-badge">MANDATORY ADJUVANT</span> If Clear Cell histology with high-risk features (Grade 4, Sarcomatoid, pT3/T4, or N+), administer <span class="drug-text">Pembrolizumab (200mg q3w for 1 year)</span> <span class="trial-badge">KEYNOTE-564</span> to improve DFS and OS.`;
-            } else {
-                path = `<b>Localized Pathway (T1/T2):</b><br>1. Partial Nephrectomy (Standard for T1, minimal 1-2mm margin is sufficient).<br>2. If Positive Surgical Margin (PSM), active surveillance is safe; completion nephrectomy is NOT immediately required.`;
-            }
+// Global Search
+function searchAll() {
+  const q = document.getElementById("globalSearch").value.trim().toLowerCase(); 
+  if(q.length < 2) { if(document.getElementById("searchView").classList.contains("hidden") === false) showHome(); return; }
+  
+  openSection('searchView');
+  let rows = [];
+  Object.entries(DISEASES).forEach(([d,dat]) => dat.sections.forEach(s => s.items.forEach(it => {
+    if ((d+" "+s.title+" "+it[0]+" "+it[1]).toLowerCase().includes(q)) rows.push({type: 'Guideline', d, s: s.title, q: it[0], a: it[1], c: 'blue'});
+  })));
+  DRUGS.forEach(x => { if (x.join(" ").toLowerCase().includes(q)) rows.push({type: 'Drug', d: 'Drug Library', s: x[1], q: x[0], a: x[2], c: 'purple'}); });
+  TRIALS.forEach(x => { if (x.join(" ").toLowerCase().includes(q)) rows.push({type: 'Trial', d: x[0], s: x[3], q: x[1], a: x[2], c: 'amber'}); });
+  
+  document.getElementById("searchMeta").textContent = `${rows.length} result(s) found`;
+  document.getElementById("searchResults").innerHTML = rows.length ? rows.map(r => `
+    <article class="card p-5 shadow-sm border-l-4 border-${r.c}-500">
+      <div class="flex gap-2 items-center mb-2"><span class="badge badge-${r.c}">${esc(r.type)}</span><span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">${esc(r.d)} > ${esc(r.s)}</span></div>
+      <h3 class="font-black text-base text-slate-900 mb-2">${esc(r.q)}</h3>
+      <div class="text-sm text-slate-700 leading-relaxed font-medium">${formatText(r.a)}</div>
+    </article>
+  `).join("") : `<div class="card p-6 text-sm font-bold text-slate-500 text-center">No matching protocols found in the 2026 database.</div>`;
+}
 
-            displayOracle("Kidney Algorithmic Result", path);
-        }
-
-        function calcTestis() {
-            let hist = document.getElementById('tHist').value;
-            let mets = document.getElementById('tMets').value;
-            let afp = parseFloat(document.getElementById('tAFP').value);
-            let hcg = parseFloat(document.getElementById('thCG').value);
-            let ldh = parseFloat(document.getElementById('tLDH').value);
-            let resid = document.getElementById('tResid').value;
-            
-            let path = "";
-
-            if (hist === 'sem' && afp > 10) {
-                path = `<span class="danger-badge">CRITICAL ERROR</span> Pure Seminoma NEVER secretes AFP. Elevated AFP >10 indicates occult NSGCT elements. Treat entirely via NSGCT protocol.`;
-                displayOracle("Testis Algorithmic Result", path);
-                return;
-            }
-
-            // IGCCCG
-            let igcccg = "";
-            let tx = "";
-            if (hist === 'sem') {
-                igcccg = (mets === 'nonpulm') ? "Intermediate Risk" : "Good Risk";
-                tx = (igcccg === "Good Risk") ? "3 cycles BEP or 4 cycles EP." : "4 cycles BEP or 4 cycles VIP.";
-            } else {
-                let s1 = (afp < 1000 && hcg < 5000 && ldh < 1.5);
-                let s3 = (afp > 10000 || hcg > 50000 || ldh > 10);
-                if (mets === 'nonpulm' || s3) {
-                    igcccg = "Poor Risk"; tx = "4 cycles BEP or 4 cycles VIP.";
-                } else if (!s1 && !s3) {
-                    igcccg = "Intermediate Risk"; tx = "4 cycles BEP or 4 cycles VIP.";
-                } else {
-                    igcccg = "Good Risk"; tx = "3 cycles BEP or 4 cycles EP.";
-                }
-            }
-
-            path = `<div class="text-xl font-black text-sky-700 mb-2">IGCCCG: ${igcccg}</div><b>Systemic Therapy:</b> ${tx}<br><br>`;
-
-            // RPLND rules
-            if (resid === '0') {
-                path += `<b>Post-Chemo Management:</b> Complete response. Proceed to Active Surveillance.`;
-            } else if (hist === 'sem') {
-                if (resid === '3') {
-                    path += `<b>Post-Chemo Management (Seminoma):</b> Residual mass ≥ 3cm requires <span class="danger-badge">18F-FDG PET-CT</span> at minimum 6-8 weeks post-chemo. If PET+, resect or biopsy.`;
-                } else {
-                    path += `<b>Post-Chemo Management (Seminoma):</b> Mass < 3cm. Surveillance preferred (low risk of viable tumor).`;
-                }
-            } else {
-                // NSGCT
-                if (resid === '1' || resid === '3') {
-                    path += `<b>Post-Chemo Management (NSGCT):</b> <span class="danger-badge">MANDATORY RULE</span> If mass > 1cm and markers have normalized, Nerve-Sparing RPLND is absolutely required. Do NOT use PET-CT (high false negative for teratoma). Pathology will likely yield 50% teratoma, 35% necrosis, 15% viable cancer.`;
-                }
-            }
-
-            displayOracle("Testis Algorithmic Result", path);
-        }
-
-        function calcPenis() {
-            let t = document.getElementById('peT').value;
-            let n = document.getElementById('peN').value;
-            let pathN = document.getElementById('pePathN').checked;
-
-            let path = "";
-
-            if (n === 'cN3') {
-                path = `<span class="danger-badge">FIXED NODES (cN3)</span> Upfront surgery is CONTRAINDICATED due to massive fungation and wound breakdown risk.<br><br><b>Protocol:</b><br>1. Neoadjuvant Chemotherapy (NACT) with <span class="drug-text">TIP Regimen</span> (Paclitaxel, Ifosfamide, Cisplatin) <span class="trial-badge">InPACT Trial Pathway</span>.<br>2. If objective response occurs -> Radical Consolidative ILND + PLND.`;
-            } else if (n === 'cN1' || n === 'cN2') {
-                path = `<b>Protocol (Palpable Mobile Nodes):</b> Upfront Radical Inguinal LND (Superficial + Deep packets).<br><br>`;
-                if (pathN || n === 'cN2') {
-                    path += `<span class="danger-badge">MANDATORY CONTRALATERAL RULE</span> If ≥2 positive nodes or ENE+ on ipsilateral side, contralateral prophylactic ILND is required.<br><span class="danger-badge">MANDATORY PELVIC LND</span> Ipsilateral Pelvic LND is required if ≥2 inguinal nodes positive, or ENE+, or Cloquet's node positive.`;
-                }
-            } else if (n === 'cN0') {
-                if (t === 'Ta' || t === 'T1a') {
-                    path = `<b>Low Risk cN0:</b> Clinical surveillance of the groins. Risk of occult micrometastasis is <15%.`;
-                } else {
-                    path = `<span class="danger-badge">INTERMEDIATE/HIGH RISK cN0</span> Occult metastasis risk >20%. Surveillance is strictly CONTRAINDICATED.<br><br><b>Protocol:</b> Invasive Nodal Staging is MANDATORY via:<br>1. Dynamic Sentinel Node Biopsy (DSNB) with 99mTc (Sens 88-95%).<br>-- OR --<br>2. Modified Inguinal LND.`;
-                }
-            }
-
-            displayOracle("Penile Algorithmic Result", path);
-        }
-
-        // ==========================================
-        // HANDOUT GENERATOR
-        // ==========================================
-        function generateHandout() {
-            const val = document.getElementById('handoutSelect').value;
-            const content = document.getElementById('handoutContent');
-            const title = document.getElementById('handoutTitle');
-            if(val === 'bladder') {
-                title.textContent = 'Bladder Cancer: Post-Surgery Protocol';
-                content.innerHTML = `<ul class="list-disc pl-5 space-y-3">
-                    <li><b>Months 3, 6, 9:</b> Cystoscopy (camera test) and urine cytology.</li>
-                    <li><b>Month 12:</b> Cystoscopy, urine cytology, and full CT Scan of Abdomen/Pelvis (with contrast).</li>
-                    <li><b>Year 2:</b> Cystoscopy every 6 months. CT Scan at 24 months.</li>
-                    <li><b>Year 3+:</b> Annual checkups. <i>If you received BCG therapy, you may require maintenance installations as scheduled by your doctor.</i></li>
-                </ul>`;
-            } else if (val === 'prostate') {
-                title.textContent = 'Prostate Cancer: Post-Treatment Plan';
-                content.innerHTML = `<ul class="list-disc pl-5 space-y-3">
-                    <li><b>Year 1 & 2:</b> PSA Blood Test every 3 months.</li>
-                    <li><b>Year 3 & 4:</b> PSA Blood Test every 6 months.</li>
-                    <li><b>Year 5+:</b> Annual PSA Test and physical exam.</li>
-                    <li><b>Important:</b> Do not take testosterone supplements or unregulated herbal energy boosters, as they can stimulate cancer recurrence.</li>
-                </ul>`;
-            } else if (val === 'testis') {
-                title.textContent = 'Testicular Cancer: Active Surveillance';
-                content.innerHTML = `<ul class="list-disc pl-5 space-y-3">
-                    <li><b>Year 1:</b> Physical exam and Blood Markers (AFP, hCG, LDH) every 2 months. CT Scan of Abdomen/Pelvis every 4 months.</li>
-                    <li><b>Year 2:</b> Physical exam and Markers every 3 months. CT Scan every 6 months.</li>
-                    <li><b>Year 3+:</b> Exams every 6 months. CT scans are minimized to protect you from unnecessary radiation.</li>
-                    <li><b>Self-Care:</b> Perform monthly self-examinations on the remaining testicle.</li>
-                </ul>`;
-            }
-            document.getElementById('printArea').classList.remove('hidden');
-            document.getElementById('printBtn').classList.remove('hidden');
-        }
+// ==========================================
+// 4. INTERACTIVE DECISION ORACLE ENGINE
+// ==========================================
+const ORACLE_CONFIG = {
+  "Ca Prostate": {
+    html: `
+      <div class="space-y-4">
+        <label class="block text-xs font-black uppercase text-slate-500">Disease State</label>
+        <select id="pState" class="w-full border-2 border-slate-300 p-3 rounded-lg text-sm font-bold" onchange="toggleProstateFields()">
+          <option value="localized">Localized (M0)</option>
+          <option value="mHSPC">Metastatic Hormone Sensitive (mHSPC)</option>
+          <option value="mCRPC">Metastatic Castrate Resistant (mCRPC)</option>
+        </select>
         
-        // Initial state
-        switchMode('oracle');
-    </script>
+        <div id="pLocalFields" class="space-y-4">
+          <div class="grid grid-cols-2 gap-3">
+            <div><label class="text-[10px] font-black uppercase text-slate-500">Clinical T-Stage</label>
+            <select id="pT" class="w-full border-2 border-slate-300 p-2 rounded text-sm font-bold mt-1">
+              <option value="T1c">T1c (Biopsy)</option><option value="T2a">T2a</option><option value="T2b">T2b</option><option value="T2c">T2c</option><option value="T3a">T3a (EPE)</option><option value="T3b">T3b (SVI)</option><option value="T4">T4 (Fixed)</option>
+            </select></div>
+            <div><label class="text-[10px] font-black uppercase text-slate-500">PSA (ng/mL)</label><input type="number" id="pPSA" value="5" class="w-full border-2 border-slate-300 p-2 rounded text-sm font-bold mt-1"></div>
+          </div>
+          
+          <div class="bg-slate-100 p-3 rounded-lg border border-slate-200">
+            <label class="text-[10px] font-black uppercase text-slate-500 mb-2 block">ISUP Gleason Pathology</label>
+            <div class="grid grid-cols-3 gap-2">
+              <select id="pPrim" class="border-2 border-slate-300 p-2 rounded text-sm font-bold"><option value="">Primary</option><option value="3">Pattern 3</option><option value="4">Pattern 4</option><option value="5">Pattern 5</option></select>
+              <select id="pSec" class="border-2 border-slate-300 p-2 rounded text-sm font-bold"><option value="">Secondary</option><option value="3">Pattern 3</option><option value="4">Pattern 4</option><option value="5">Pattern 5</option></select>
+              <select id="pTer" class="border-2 border-slate-300 p-2 rounded text-sm font-bold"><option value="0">No Tertiary 5</option><option value="5">Tertiary 5 (+)</option></select>
+            </div>
+          </div>
+          
+          <div><label class="text-[10px] font-black uppercase text-slate-500">Positive Cores</label>
+          <select id="pCores" class="w-full border-2 border-slate-300 p-2 rounded text-sm font-bold mt-1">
+            <option value="low">< 50% Cores Positive</option><option value="high">≥ 50% Cores Positive</option><option value="veryhigh">> 4 Cores of Grade Group 4/5</option>
+          </select></div>
+        </div>
+
+        <div id="pAdvancedFields" class="hidden space-y-4 bg-slate-100 p-4 rounded-lg border border-slate-200">
+          <div><label class="text-[10px] font-black uppercase text-slate-500">Metastatic Volume (CHAARTED)</label>
+          <select id="pVol" class="w-full border-2 border-slate-300 p-2 rounded text-sm font-bold mt-1">
+            <option value="high">High Vol (Visceral OR ≥4 bone mets, 1 outside spine/pelvis)</option><option value="low">Low Vol</option>
+          </select></div>
+          <div><label class="text-[10px] font-black uppercase text-slate-500 mt-2">mCRPC Genomic/Imaging Status (Check all that apply)</label>
+          <div class="space-y-1 mt-1">
+            <label class="flex items-center space-x-2"><input type="checkbox" id="pBRCA" class="w-4 h-4"><span class="text-xs font-bold">BRCA1/2 / HRR Mutated</span></label>
+            <label class="flex items-center space-x-2"><input type="checkbox" id="pPSMA" class="w-4 h-4"><span class="text-xs font-bold">PSMA PET Positive</span></label>
+            <label class="flex items-center space-x-2"><input type="checkbox" id="pChemo" class="w-4 h-4"><span class="text-xs font-bold">Prior Docetaxel Received</span></label>
+          </div></div>
+        </div>
+      </div>
+    `
+  },
+  "Ca Bladder": {
+    html: `
+      <div class="space-y-4">
+        <div class="grid grid-cols-2 gap-3">
+          <div><label class="text-[10px] font-black uppercase text-slate-500">Clinical Stage</label>
+          <select id="bStage" class="w-full border-2 border-slate-300 p-2 rounded text-sm font-bold mt-1">
+            <option value="NMIBC_Low">Ta / Tis (Low Grade)</option>
+            <option value="NMIBC_High">T1 / High Grade / CIS</option>
+            <option value="MIBC">T2 - T4a, N0, M0 (MIBC)</option>
+            <option value="Metastatic">T4b OR N+ OR M1 (Metastatic)</option>
+          </select></div>
+          <div><label class="text-[10px] font-black uppercase text-slate-500">Variant Histology</label>
+          <select id="bVar" class="w-full border-2 border-slate-300 p-2 rounded text-sm font-bold mt-1">
+            <option value="pure">Pure Urothelial</option>
+            <option value="scc">Squamous / Adeno</option>
+            <option value="micro">Micropapillary / Plasmacytoid</option>
+            <option value="small">Small Cell / Neuroendocrine</option>
+          </select></div>
+        </div>
+        <div class="bg-slate-100 p-4 rounded-lg border border-slate-200">
+          <label class="text-[10px] font-black uppercase text-slate-500 mb-2 block">Patient Fitness (Crucial for MIBC/Mets)</label>
+          <label class="flex items-center space-x-2 mb-2"><input type="checkbox" id="bCisFit" checked class="w-4 h-4"><span class="text-xs font-bold">Cisplatin Eligible (CrCl >60, ECOG 0-1)</span></label>
+          <label class="flex items-center space-x-2"><input type="checkbox" id="bEVFit" checked class="w-4 h-4"><span class="text-xs font-bold">Enfortumab Vedotin Tolerable (No severe neuropathy/DM)</span></label>
+        </div>
+        <div class="bg-slate-100 p-3 rounded-lg border border-slate-200">
+          <label class="text-[10px] font-black uppercase text-slate-500 block mb-1">NMIBC Specific: Re-TURBT Status</label>
+          <label class="flex items-center space-x-2"><input type="checkbox" id="bMuscle"><span class="text-xs font-bold">Detrusor Muscle ABSENT in initial specimen</span></label>
+        </div>
+      </div>
+    `
+  },
+  "Ca Penis": {
+    html: `
+      <div class="space-y-4">
+        <div class="grid grid-cols-2 gap-3">
+          <div><label class="text-[10px] font-black uppercase text-slate-500">Primary Stage</label>
+          <select id="peT" class="w-full border-2 border-slate-300 p-2 rounded text-sm font-bold mt-1">
+            <option value="Ta">Ta / Tis</option>
+            <option value="T1a">T1a (No LVI, Grade 1-2)</option>
+            <option value="T1b">T1b (LVI+ OR Grade 3-4)</option>
+            <option value="T2">T2+ (Invasive)</option>
+          </select></div>
+          <div><label class="text-[10px] font-black uppercase text-slate-500">Clinical Nodal Status</label>
+          <select id="peN" class="w-full border-2 border-slate-300 p-2 rounded text-sm font-bold mt-1">
+            <option value="cN0">cN0 (Non-palpable / Neg USG)</option>
+            <option value="cN1">cN1 (Unilateral mobile)</option>
+            <option value="cN2">cN2 (Bilateral/Multiple mobile)</option>
+            <option value="cN3">cN3 (Fixed mass OR Pelvic nodes)</option>
+          </select></div>
+        </div>
+        <div class="bg-slate-100 p-4 rounded-lg border border-slate-200">
+          <label class="text-[10px] font-black uppercase text-slate-500 mb-2 block">Post-ILND Surgical Pathology (For Contralateral/Pelvic Rules)</label>
+          <label class="flex items-center space-x-2"><input type="checkbox" id="pePath"><span class="text-xs font-bold">≥ 2 nodes positive OR Extranodal Extension (ENE+)</span></label>
+        </div>
+      </div>
+    `
+  }
+};
+
+function openOracleView() {
+  openSection('oracleView');
+  document.getElementById("oracleDisease").innerHTML = `<option value="" disabled selected>Select Cancer...</option>` + Object.keys(ORACLE_CONFIG).map(k=>`<option value="${k}">${esc(k)}</option>`).join("");
+}
+
+function renderOracleForm() {
+  const d = document.getElementById("oracleDisease").value;
+  document.getElementById("oracleForm").innerHTML = ORACLE_CONFIG[d].html + `<button onclick="runOracle('${d}')" class="mt-5 w-full bg-slate-900 text-white font-black py-4 rounded-xl shadow-lg hover:bg-sky-700 transition uppercase tracking-widest">Calculate Optimal Pathway</button>`;
+  document.getElementById("oracleOutput").classList.remove('hidden');
+  document.getElementById("oracleResultText").innerHTML = "Awaiting computation...";
+}
+
+function toggleProstateFields() {
+  const state = document.getElementById('pState').value;
+  if (state === 'localized') {
+    document.getElementById('pLocalFields').classList.remove('hidden');
+    document.getElementById('pAdvancedFields').classList.add('hidden');
+  } else {
+    document.getElementById('pLocalFields').classList.add('hidden');
+    document.getElementById('pAdvancedFields').classList.remove('hidden');
+  }
+}
+
+function runOracle(d) {
+  let riskTitle = "";
+  let riskColor = "";
+  let html = "";
+
+  if(d === "Ca Prostate") {
+    let state = document.getElementById('pState').value;
+    if(state === 'mHSPC') {
+      let vol = document.getElementById('pVol').value;
+      riskTitle = vol === 'high' ? "High Volume mHSPC" : "Low Volume mHSPC";
+      riskColor = vol === 'high' ? "red" : "amber";
+      
+      html = `<div class="rule text-sm leading-relaxed"><b>Systemic Backbone:</b> Continuous ADT (medical/surgical) to maintain testosterone <50 ng/dL.<br><br>`;
+      if(vol === 'high') {
+        html += `<b>Guideline Pathway (TRIPLET THERAPY):</b><br>Strongly recommended to use Triplet Therapy: ADT + Docetaxel + <span class="font-bold text-sky-700">Darolutamide (ARASENS Trial)</span> or <span class="font-bold text-sky-700">Abiraterone (PEACE-1 Trial)</span>.<br><i>*RT to the primary prostate is NOT indicated for high-volume disease.</i></div>`;
+      } else {
+        html += `<b>Guideline Pathway (DOUBLET THERAPY):</b><br>Use ADT + ARPI (<span class="font-bold text-sky-700">Enzalutamide [ENZAMET]</span> or <span class="font-bold text-sky-700">Apalutamide [TITAN]</span>).<br><span class="text-red-700 font-bold bg-red-100 px-1 rounded">MANDATORY RULE</span> You MUST offer Radiotherapy to the primary prostate <span class="font-bold text-sky-700">(STAMPEDE H)</span> to improve overall survival in low-volume disease.</div>`;
+      }
+    } else if (state === 'mCRPC') {
+      let brca = document.getElementById('pBRCA').checked;
+      let psma = document.getElementById('pPSMA').checked;
+      let chemo = document.getElementById('pChemo').checked;
+      
+      riskTitle = "mCRPC Targeted Pathway"; riskColor = "purple";
+      html = `<div class="rule text-sm leading-relaxed"><b>Sequence Directives:</b><br>`;
+      if(brca) html += `• <b>HRR/BRCA+</b>: Initiate PARP Inhibitor (<span class="font-bold text-sky-700">Olaparib - PROfound Trial</span>).<br>`;
+      if(psma && chemo) html += `• <b>PSMA PET+</b>: Initiate Radioligand Therapy (<span class="font-bold text-sky-700">Lu-177 PSMA-617 - VISION Trial</span>).<br>`;
+      if(chemo) html += `• <b>Post-Docetaxel</b>: <span class="font-bold text-sky-700">Cabazitaxel (TROPIC Trial)</span> is superior to switching to an alternate ARPI.<br>`;
+      if(!brca && !psma && !chemo) html += `• If prior ARPI (Abi/Enza) was given in mHSPC, switch mechanism to <span class="font-bold text-sky-700">Docetaxel</span>. (Do not sequence Abi directly into Enza).`;
+      html += `</div>`;
+    } else {
+      let p = parseInt(document.getElementById('pPrim').value);
+      let s = parseInt(document.getElementById('pSec').value);
+      let ter = parseInt(document.getElementById('pTer').value);
+      if(!p || !s) return alert("Select Primary and Secondary ISUP patterns.");
+      
+      let t = document.getElementById('pT').value;
+      let psa = parseFloat(document.getElementById('pPSA').value);
+      let cores = document.getElementById('pCores').value;
+      
+      let total = p + s;
+      let isup = total <= 6 ? 1 : (total === 7 && p === 3 ? 2 : (total === 7 ? 3 : (total === 8 ? 4 : 5)));
+      
+      let intFactors = 0;
+      if (['T2b','T2c'].includes(t)) intFactors++;
+      if (isup === 2 || isup === 3) intFactors++;
+      if (psa >= 10 && psa < 20) intFactors++;
+
+      if (['T3b','T4'].includes(t) || p === 5 || cores === 'veryhigh') {
+        riskTitle = "Very High Risk"; riskColor = "red";
+      } else if (t === 'T3a' || isup >= 4 || psa > 20) {
+        riskTitle = "High Risk"; riskColor = "red";
+      } else if (isup === 3 || cores === 'high' || intFactors >= 2) {
+        riskTitle = "Unfavorable Intermediate Risk"; riskColor = "amber";
+      } else if (intFactors === 1) {
+        riskTitle = "Favorable Intermediate Risk"; riskColor = "green";
+      } else {
+        riskTitle = "Low Risk"; riskColor = "green";
+      }
+
+      let tertFlag = (ter === 5 && isup < 4) ? `<br><span class="text-red-700 font-bold bg-red-100 px-1 rounded">TERTIARY 5</span> Upgrades biological risk significantly.` : "";
+      
+      html = `<div class="mb-4 p-3 bg-slate-800 rounded-lg text-sm text-slate-300"><b>Pathology Engine:</b> Gleason ${p}+${s}=${total} -> ISUP Grade Group ${isup}${tertFlag}</div>`;
+      
+      if(riskTitle.includes("Very High") || riskTitle === "High Risk") {
+        html += `<div class="rule text-sm leading-relaxed"><b>Pathway 1 (Surgical):</b> Radical Prostatectomy + <span class="text-red-700 font-bold bg-red-100 px-1 rounded">MANDATORY</span> Extended Pelvic LND. High likelihood of requiring multi-modal salvage RT.<br><br><b>Pathway 2 (Radiation):</b> EBRT (78-80 Gy) + Long-course ADT (18-36 months) + <span class="font-bold text-sky-700">Abiraterone (STAMPEDE protocol)</span> ± Brachytherapy boost.</div>`;
+      } else if (riskTitle.includes("Unfavorable")) {
+        html += `<div class="rule text-sm leading-relaxed"><b>Pathway 1:</b> Radical Prostatectomy + ePLND.<br><b>Pathway 2:</b> EBRT + Short-course ADT (4-6 months).<br><span class="text-red-700 font-bold bg-red-100 px-1 rounded">CONTRAINDICATED</span> Active Surveillance is generally not recommended.</div>`;
+      } else {
+        html += `<div class="ok text-sm leading-relaxed"><b>Preferred Pathway:</b> Active Surveillance is strongly recommended to preserve QoL. Protocol requires PSA q6mo, DRE annually, and confirmatory mpMRI/Biopsy at 12-24 months.<br><b>Alternatives:</b> RP alone or EBRT alone (no ADT required).</div>`;
+      }
+    }
+  } else if (d === "Ca Bladder") {
+    let st = document.getElementById('bStage').value;
+    let varH = document.getElementById('bVar').value;
+    let cisFit = document.getElementById('bCisFit').checked;
+    let evFit = document.getElementById('bEVFit').checked;
+    let muscle = document.getElementById('bMuscle').checked;
+
+    if(varH === 'small') {
+      riskTitle = "Systemic Disease (Small Cell)"; riskColor = "purple";
+      html = `<div class="warn text-sm leading-relaxed"><span class="font-black text-red-700">CRITICAL:</span> Treat as systemic disease immediately. Neoadjuvant Platinum + Etoposide (SCLC protocols). Upfront surgery and BCG are CONTRAINDICATED.</div>`;
+    } else if (varH === 'scc' || varH === 'micro') {
+      riskTitle = "Aggressive Variant Histology"; riskColor = "red";
+      html = `<div class="warn text-sm leading-relaxed">High risk of chemoresistance (SCC) or early micromets (Micropapillary/Plasmacytoid). <span class="font-black text-red-700">MANDATORY RULE:</span> Upfront Radical Cystectomy + ePLND is strongly preferred. BCG is highly discouraged.</div>`;
+    } else if (st === 'Metastatic') {
+      riskTitle = "Advanced / Metastatic Urothelial"; riskColor = "purple";
+      if(evFit) {
+        html = `<div class="rule text-sm leading-relaxed"><b>1st Line Standard:</b> <span class="font-bold text-sky-700">Enfortumab Vedotin + Pembrolizumab (EV-302 / KEYNOTE-A39 Trial)</span>. This has completely supplanted pure chemotherapy as the new standard of care, nearly doubling OS (31.5 mo vs 16.1 mo).</div>`;
+      } else if (cisFit) {
+        html = `<div class="rule text-sm leading-relaxed"><b>1st Line (EV-Ineligible):</b> <span class="font-bold text-sky-700">Gemcitabine + Cisplatin + Nivolumab (CheckMate-901 Trial)</span>.<br>Alternative: Gem/Cis x 6 cycles followed by <span class="font-bold text-sky-700">Avelumab Maintenance (JAVELIN Bladder 100)</span> if stable disease is achieved.</div>`;
+      } else {
+        html = `<div class="rule text-sm leading-relaxed"><b>1st Line (EV & Cis-Ineligible):</b> Gemcitabine + Carboplatin followed by Avelumab maintenance, OR upfront Pembrolizumab monotherapy (if PD-L1 high).</div>`;
+      }
+    } else if (st === 'MIBC') {
+      riskTitle = "Localized MIBC"; riskColor = "red";
+      if(cisFit) {
+        html = `<div class="rule text-sm leading-relaxed"><b>Guideline Protocol:</b><br>1. <span class="font-bold text-sky-700">Neoadjuvant Therapy:</span> Dose-Dense MVAC (<span class="font-bold text-sky-700">VESPER Trial</span> - superior to Gem/Cis) OR Durvalumab + Gem/Cis (<span class="font-bold text-sky-700">NIAGARA Trial</span>).<br>2. Radical Cystectomy + extended PLND.<br>3. <span class="font-bold text-sky-700">Adjuvant Therapy:</span> Nivolumab (<span class="font-bold text-sky-700">CheckMate-274</span>) if high-risk pathology (ypT2+ or pT3/T4/N+) or Durvalumab maintenance (if NIAGARA pathway used).</div>`;
+      } else {
+        html = `<div class="warn text-sm leading-relaxed"><span class="text-red-700 font-bold bg-red-100 px-1 rounded">CISPLATIN INELIGIBLE</span> Do NOT use Carboplatin as a neoadjuvant substitute.<br><b>Protocol:</b> Upfront Radical Cystectomy + ePLND, or consider Enfortumab Vedotin + Pembrolizumab perioperatively (<span class="font-bold text-sky-700">EV-302 / KEYNOTE-905</span> where approved).</div>`;
+      }
+    } else if (st === 'NMIBC_High') {
+      riskTitle = "High Risk NMIBC"; riskColor = "amber";
+      html = `<div class="rule text-sm leading-relaxed">`;
+      if(muscle) html += `<span class="text-red-700 font-bold bg-red-100 px-1 rounded">CRITICAL RULE:</span> Detrusor muscle absent! MANDATORY Re-TURBT within 2-6 weeks to rule out occult MIBC (30-40% upstaging risk).<br><br>`;
+      html += `<b>Protocol:</b> Adjuvant Induction BCG (Weekly x 6 doses). If responsive, proceed to <span class="font-bold text-sky-700">SWOG Maintenance Protocol</span> (3 weekly doses at 3, 6, 12, 18, 24, 30, 36 months).</div>`;
+    } else {
+      riskTitle = "Low Risk NMIBC"; riskColor = "green";
+      html = `<div class="ok text-sm leading-relaxed"><b>Protocol:</b> Immediate post-op single instillation (SIO) of <span class="font-bold text-sky-700">Mitomycin C (40mg/40mL)</span> or <span class="font-bold text-sky-700">Gemcitabine (2000mg/100mL)</span> within 2-6 hours. No further maintenance required. Ensure no bladder perforation prior to instillation.</div>`;
+    }
+  } else if (d === "Ca Penis") {
+    let t = document.getElementById('peT').value;
+    let n = document.getElementById('peN').value;
+    let path = document.getElementById('pePath').checked;
+
+    if (n === 'cN3') {
+      riskTitle = "Bulky / Fixed cN3 Nodes"; riskColor = "purple";
+      html = `<div class="warn text-sm leading-relaxed"><span class="font-black text-red-700">CRITICAL:</span> Upfront surgery is CONTRAINDICATED due to high risk of wound breakdown and fungation.<br><br><b>Protocol (InPACT Guidelines):</b><br>1. Neoadjuvant Chemotherapy (NACT) with <span class="font-bold text-sky-700">TIP Regimen</span> (Paclitaxel, Ifosfamide, Cisplatin).<br>2. If objective response occurs -> Radical Consolidative ILND + PLND.</div>`;
+    } else if (n === 'cN1' || n === 'cN2') {
+      riskTitle = "Palpable Mobile Nodes"; riskColor = "red";
+      html = `<div class="rule text-sm leading-relaxed"><b>Protocol:</b> Upfront Radical Inguinal LND (Superficial + Deep packets).<br><br>`;
+      if(path || n === 'cN2') {
+        html += `<span class="text-red-700 font-bold bg-red-100 px-1 rounded">MANDATORY CONTRALATERAL RULE</span> ≥2 positive nodes or ENE+ requires prophylactic contralateral ILND.<br><span class="text-red-700 font-bold bg-red-100 px-1 rounded">MANDATORY PELVIC LND</span> Ipsilateral Pelvic LND is required if ≥2 inguinal nodes positive, or ENE+, or Cloquet's node positive.</div>`;
+      } else {
+        html += `Ensure strict histological evaluation for ENE.</div>`;
+      }
+    } else {
+      if (t === 'Ta' || t === 'T1a') {
+        riskTitle = "Low Risk cN0"; riskColor = "green";
+        html = `<div class="ok text-sm leading-relaxed"><b>Protocol:</b> Clinical surveillance of the groins (exam + USG). Risk of occult micrometastasis is <15%.</div>`;
+      } else {
+        riskTitle = "Intermediate / High Risk cN0"; riskColor = "amber";
+        html = `<div class="warn text-sm leading-relaxed">Occult metastasis risk >20%. Surveillance is strictly <span class="font-black text-red-700">CONTRAINDICATED</span>.<br><br><b>Protocol:</b> Invasive Nodal Staging is MANDATORY via:<br>1. Dynamic Sentinel Node Biopsy (DSNB) with 99mTc (Sens 88-95%).<br>-- OR --<br>2. Modified Inguinal LND.</div>`;
+      }
+    }
+  }
+
+  let finalOutput = `
+    <div class="risk-box border-${riskColor}-500 bg-${riskColor}-50 text-${riskColor}-900">
+      <div class="text-sm uppercase tracking-widest flex items-center">
+        <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        Assigned Group:
+      </div>
+      <div class="text-lg font-black">${riskTitle}</div>
+    </div>
+    ${html}
+  `;
+  
+  document.getElementById("oracleResultText").innerHTML = finalOutput;
+}
+
+// ==========================================
+// 5. CALCULATORS MODULE (Metrics)
+// ==========================================
+const CALCULATORS = {
+  isup: {
+    title: "ISUP / Gleason Interpreter", html: () => `
+    <div class="grid grid-cols-2 gap-2 mb-3">
+      <select id="igPrim" class="border rounded-lg p-2 text-sm"><option value="">Primary</option><option>3</option><option>4</option><option>5</option></select>
+      <select id="igSec" class="border rounded-lg p-2 text-sm"><option value="">Secondary</option><option>3</option><option>4</option><option>5</option></select>
+    </div>
+    <select id="igTer" class="border rounded-lg p-2 text-sm w-full mb-3"><option value="0">Tertiary Pattern 5 (No)</option><option value="5">Tertiary Pattern 5 (>5% in RP)</option></select>
+    <button onclick="runISUP()" class="w-full bg-emerald-700 text-white font-bold py-2 rounded-lg">Interpret Risk</button>
+    <div id="isupRes" class="mt-3"></div>`
+  },
+  psad: {
+    title: "PSA Density (PSAD)", html: () => `
+    <div class="grid grid-cols-2 gap-2 mb-3">
+      <input id="psadP" type="number" step="0.1" class="border rounded-lg p-2 text-sm" placeholder="PSA (ng/mL)">
+      <input id="psadV" type="number" step="1" class="border rounded-lg p-2 text-sm" placeholder="Volume (cc)">
+    </div>
+    <button onclick="runPSAD()" class="w-full bg-emerald-700 text-white font-bold py-2 rounded-lg">Calculate</button>
+    <div id="psadRes" class="mt-3"></div>`
+  },
+  crcl: {
+    title: "Cisplatin Eligibility (CrCl)", html: () => `
+    <div class="grid grid-cols-2 gap-2 mb-3">
+      <input id="cgA" type="number" class="border rounded-lg p-2 text-sm" placeholder="Age">
+      <input id="cgW" type="number" class="border rounded-lg p-2 text-sm" placeholder="Weight (kg)">
+      <input id="cgC" type="number" step="0.1" class="border rounded-lg p-2 text-sm" placeholder="Creatinine (mg/dL)">
+      <select id="cgS" class="border rounded-lg p-2 text-sm"><option value="1">Male</option><option value="0.85">Female</option></select>
+    </div>
+    <button onclick="runCrCl()" class="w-full bg-emerald-700 text-white font-bold py-2 rounded-lg">Calculate</button>
+    <div id="crclRes" class="mt-3"></div>`
+  },
+  koff: {
+    title: "Koff's Formula (Bladder Cap)", html: () => `
+    <input id="koffA" type="number" class="border rounded-lg p-2 text-sm w-full mb-3" placeholder="Child's Age (years)">
+    <button onclick="runKoff()" class="w-full bg-emerald-700 text-white font-bold py-2 rounded-lg">Calculate</button>
+    <div id="koffRes" class="mt-3"></div>`
+  }
+};
+
+function openCalcView() {
+  openSection('calcView');
+  document.getElementById('calcGrid').innerHTML = Object.entries(CALCULATORS).map(([k,v]) => `
+    <article class="card p-5 border-l-4 border-emerald-500 shadow-sm">
+      <h3 class="font-black text-base text-slate-900 mb-3">${esc(v.title)}</h3>
+      ${v.html()}
+    </article>
+  `).join("");
+}
+
+function runISUP() {
+  let p = parseInt(document.getElementById('igPrim').value);
+  let s = parseInt(document.getElementById('igSec').value);
+  let t = parseInt(document.getElementById('igTer').value);
+  if(!p || !s) return;
+  let tot = p+s;
+  let gg = tot<=6?1: (tot===7&&p===3?2: (tot===7?3: (tot===8?4:5)));
+  let note = `<div class="ok text-sm mt-2"><b>Gleason ${p}+${s}=${tot} -> ISUP ${gg}</b></div>`;
+  if(t===5 && gg<4) note += `<div class="warn text-sm mt-2">Tertiary 5 present: significantly upgrades biological aggressiveness despite numeric GG.</div>`;
+  document.getElementById('isupRes').innerHTML = note;
+}
+function runPSAD() {
+  let p = parseFloat(document.getElementById('psadP').value);
+  let v = parseFloat(document.getElementById('psadV').value);
+  if(!p||!v) return;
+  let d = (p/v).toFixed(3);
+  let note = d >= 0.15 ? `<div class="warn text-sm mt-2"><b>Density: ${d} ng/mL/cc</b> (High Risk: ≥0.15 indicates csPCa)</div>` : `<div class="ok text-sm mt-2"><b>Density: ${d} ng/mL/cc</b> (Low Risk)</div>`;
+  document.getElementById('psadRes').innerHTML = note;
+}
+function runCrCl() {
+  let a = parseFloat(document.getElementById('cgA').value);
+  let w = parseFloat(document.getElementById('cgW').value);
+  let c = parseFloat(document.getElementById('cgC').value);
+  let s = parseFloat(document.getElementById('cgS').value);
+  if(!a||!w||!c||!s) return;
+  let crcl = (((140 - a) * w) / (72 * c)) * s;
+  let note = crcl >= 60 ? `<div class="ok text-sm mt-2"><b>CrCl: ${crcl.toFixed(1)} mL/min</b><br>Cisplatin Eligible (>60)</div>` : `<div class="warn text-sm mt-2"><b>CrCl: ${crcl.toFixed(1)} mL/min</b><br>Cisplatin Ineligible (<60). Consider EV-302 pathway in bladder cancer.</div>`;
+  document.getElementById('crclRes').innerHTML = note;
+}
+function runKoff() {
+  let a = parseFloat(document.getElementById('koffA').value);
+  if(!a) return;
+  document.getElementById('koffRes').innerHTML = `<div class="ok text-sm mt-2"><b>Expected Capacity: ${(a+1)*30} mL</b></div>`;
+}
+
+// Init
+showHome();
+</script>
 </body>
 </html>
