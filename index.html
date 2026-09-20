@@ -1,688 +1,944 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Uro-Oncology Definitive Navigator & Oracle</title>
-    
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#0f172a">
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
-    <script>mermaid.initialize({ startOnLoad: false, theme: 'base', themeVariables: { primaryColor: '#f0f9ff', lineColor: '#0284c7', fontFamily: 'ui-sans-serif' } });</script>
-    <style>
-        body { background-color: #f8fafc; font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
-        .hidden { display: none !important; }
-        .mermaid { background: white; padding: 10px; border-radius: 8px; border: 1px solid #e2e8f0; margin-top: 10px; text-align: center; }
-        @media print {
-            body * { visibility: hidden; }
-            #printArea, #printArea * { visibility: visible; }
-            #printArea { position: absolute; left: 0; top: 0; width: 100%; padding: 20px; }
-            .no-print { display: none !important; }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#0f172a">
+<title>Uro-Oncology Oracle — Guideline Navigator 2026</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+:root{--bg:#f8fafc;--ink:#0f172a;--muted:#64748b;--line:#e2e8f0;--brand:#0f766e;--accent:#0ea5e9}
+*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
+html{scroll-behavior:smooth}.hidden{display:none!important}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:0 8px 28px rgba(15,23,42,.05)}
+.chip{display:inline-flex;align-items:center;border:1px solid #cbd5e1;border-radius:999px;padding:4px 9px;font-size:11px;font-weight:700;color:#475569;background:#fff}
+.badge{display:inline-flex;align-items:center;border-radius:7px;padding:3px 7px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.05em}
+.badge-green{background:#dcfce7;color:#166534}.badge-amber{background:#fef3c7;color:#92400e}.badge-red{background:#fee2e2;color:#991b1b}.badge-blue{background:#e0f2fe;color:#075985}.badge-slate{background:#f1f5f9;color:#334155}
+.source-link{font-size:11px;color:#0369a1;text-decoration:underline}
+.section-title{font-size:14px;font-weight:900;letter-spacing:.02em;color:#0f172a}
+.rule{border-left:4px solid #0ea5e9;background:#f0f9ff;padding:12px 14px;border-radius:10px}
+.warn{border-left:4px solid #dc2626;background:#fef2f2;padding:12px 14px;border-radius:10px}
+.ok{border-left:4px solid #16a34a;background:#f0fdf4;padding:12px 14px;border-radius:10px}
+.kv{display:grid;grid-template-columns:minmax(120px,1fr) minmax(180px,2fr);gap:7px;border-bottom:1px solid #f1f5f9;padding:7px 0}
+.kv:last-child{border-bottom:0}.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+input,select,textarea{outline:none} input:focus,select:focus,textarea:focus{box-shadow:0 0 0 3px rgba(14,165,233,.15);border-color:#38bdf8}
+.sticky-top{position:sticky;top:0;z-index:50}
+@media print{.no-print{display:none!important}.card{box-shadow:none}.sticky-top{position:static}}
+</style>
 </head>
-<body class="text-slate-800">
-    <div class="max-w-2xl mx-auto bg-white min-h-screen shadow-2xl border-x border-slate-200 pb-10 relative">
-        
-        <!-- Header -->
-        <div class="bg-slate-900 text-white p-5 shadow-md no-print border-b-4 border-sky-600">
-            <div class="flex justify-between items-center">
-                <h1 class="text-2xl font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-emerald-400">URO-ONCOLOGY ORACLE</h1>
-                <span id="offlineBadge" class="hidden bg-red-500 text-white text-[10px] px-2 py-1 rounded-full font-bold animate-pulse">OFFLINE</span>
-            </div>
-            <p class="text-xs text-slate-300 mt-1 leading-relaxed font-medium">Exhaustive NCCN & EAU Guidelines Engine<br>Dept of Urology, Dr Babasaheb Ambedkar Hospital</p>
-        </div>
+<body>
+<div class="max-w-7xl mx-auto min-h-screen">
+<header class="sticky-top bg-slate-950 text-white border-b border-slate-800 no-print">
+  <div class="px-4 py-3 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+    <div>
+      <div class="text-lg font-black tracking-wide">Uro-Oncology Oracle</div>
+      <div class="text-[11px] text-slate-300">Decision navigator • staging • pathology • scores • trials • dose references • follow-up</div>
+    </div>
+    <div class="flex gap-2 w-full md:w-auto">
+      <input id="globalSearch" oninput="searchAll()" class="flex-1 md:w-96 rounded-xl px-3 py-2 text-sm text-slate-900 bg-white" placeholder="Search: ARASENS, ISUP 4+3, cN3 penis, VESPER, EORTC…">
+      <button onclick="showHome()" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold">Home</button>
+    </div>
+  </div>
+</header>
 
-        <!-- Global Search Bar -->
-        <div class="p-4 bg-slate-800 no-print">
-            <div class="relative">
-                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                    <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                </div>
-                <input type="text" id="searchInput" onkeyup="performSearch()" placeholder="Search Library (e.g. 'EV-302', 'Sarcomatoid')..." class="block w-full p-3 pl-10 text-sm text-slate-900 border border-transparent rounded-lg bg-slate-100 focus:ring-sky-500 focus:border-sky-500 font-medium placeholder-slate-500 shadow-inner">
-            </div>
-        </div>
-
-        <!-- Navigation Tabs -->
-        <div class="p-5 bg-slate-50 border-b border-slate-200 no-print" id="navContainer">
-            <div class="flex flex-wrap gap-2">
-                <button onclick="switchMode('clinical')" id="tabClinical" class="px-5 py-2.5 bg-slate-800 text-white rounded-lg text-sm font-bold shadow transition-all border border-slate-900">📚 Reference Library</button>
-                <button onclick="switchMode('oracle')" id="tabOracle" class="px-5 py-2.5 bg-white text-slate-600 rounded-lg text-sm font-bold shadow-sm hover:bg-sky-50 hover:text-sky-700 transition-all border border-slate-300 flex items-center">⚡ Interactive Oracle (Engine)</button>
-                <button onclick="switchMode('handout')" id="tabHandout" class="px-5 py-2.5 bg-white text-slate-600 rounded-lg text-sm font-bold shadow-sm hover:bg-emerald-50 hover:text-emerald-700 transition-all border border-slate-300">📄 Handouts</button>
-            </div>
-        </div>
-
-        <!-- Search Results Container -->
-        <div id="searchResults" class="p-5 hidden no-print bg-slate-50 min-h-screen">
-            <h2 class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-4 border-b border-slate-200 pb-2">Search Results</h2>
-            <div id="searchResultsContent"></div>
-        </div>
-
-        <!-- Mode 1: Static Reference Library -->
-        <div id="clinicalSection" class="p-5 no-print">
-            <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Select Malignancy / Topic</label>
-            <div id="diseaseTabs" class="flex flex-wrap gap-2 mb-6"></div>
-            
-            <div id="formSection" class="hidden">
-                <div class="mb-5">
-                    <select id="phaseSelect" class="w-full bg-white border border-slate-300 text-slate-800 text-sm rounded-lg focus:ring-sky-600 focus:border-sky-600 block p-3.5 shadow-sm appearance-none font-medium">
-                        <option value="" disabled selected>Choose category or phase...</option>
-                    </select>
-                </div>
-                <div id="scenarioDiv" class="mb-5 hidden">
-                    <select id="scenarioSelect" class="w-full bg-white border border-slate-300 text-slate-800 text-sm rounded-lg focus:ring-sky-600 focus:border-sky-600 block p-3.5 shadow-sm appearance-none font-medium">
-                        <option value="" disabled selected>Choose specific topic...</option>
-                    </select>
-                </div>
-                <div id="resultCard" class="hidden mt-6 bg-slate-50 border border-slate-200 rounded-xl p-5 shadow-sm transition-all">
-                    <div id="resultContent" class="text-sm text-slate-800 leading-relaxed font-medium"></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Mode 2: Interactive Decision Oracle (True Calculator) -->
-        <div id="oracleSection" class="p-5 hidden no-print bg-slate-50 min-h-screen">
-            <div class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl p-5 mb-6 text-white shadow-lg">
-                <h2 class="text-lg font-black flex items-center tracking-wide"><span class="text-2xl mr-2">⚡</span> Algorithmic Decision Engine</h2>
-                <p class="text-xs text-slate-300 mt-2 leading-relaxed">Select a cancer type and input patient parameters. The Oracle will compute precise TNM stage, risk stratification, and exact guideline-directed treatment pathways.</p>
-            </div>
-
-            <select id="oracleTypeSelect" onchange="loadOracleEngine()" class="w-full bg-white border-2 border-sky-600 text-slate-900 text-sm rounded-lg focus:ring-sky-600 focus:border-sky-600 block p-4 shadow-md font-bold mb-6">
-                <option value="" disabled selected>Select Cancer Algorithm...</option>
-                <option value="prostate">Ca Prostate (ISUP & NCCN Risk Engine)</option>
-                <option value="bladder">Ca Bladder (Risk & Variant Engine)</option>
-                <option value="kidney">Ca Kidney (IMDC Systemic & Surgical Engine)</option>
-                <option value="testis">Ca Testis (IGCCCG & Residual Mass Engine)</option>
-                <option value="penis">Ca Penis (Nodal Metastasis Engine)</option>
-            </select>
-
-            <!-- Dynamic Input Area for Oracle -->
-            <div id="oracleInputArea" class="hidden bg-white border border-slate-200 rounded-xl p-5 shadow-sm mb-6"></div>
-
-            <!-- Output Card for Oracle -->
-            <div id="oracleOutputArea" class="hidden">
-                <div class="bg-emerald-50 border-2 border-emerald-500 rounded-xl p-6 shadow-lg">
-                    <h3 class="text-sm font-black text-emerald-800 uppercase tracking-widest mb-4 border-b border-emerald-200 pb-2 flex items-center">
-                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        Calculated Pathway
-                    </h3>
-                    <div id="oracleResultContent" class="text-sm text-slate-800 space-y-4"></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Mode 3: Patient Handout Generator -->
-        <div id="handoutSection" class="p-5 hidden min-h-screen bg-slate-50">
-            <h2 class="text-lg font-bold text-slate-700 mb-4 no-print flex items-center">📄 Patient Handouts</h2>
-            <div class="mb-5 no-print">
-                <select id="handoutSelect" onchange="generateHandout()" class="w-full bg-white border border-slate-300 text-slate-800 text-sm rounded-lg focus:ring-emerald-600 focus:border-emerald-600 block p-3.5 shadow-sm appearance-none font-medium">
-                    <option value="" disabled selected>Choose condition...</option>
-                    <option value="bladder">Bladder Cancer (Post-Surgery)</option>
-                    <option value="prostate">Prostate Cancer (Post-Surgery)</option>
-                    <option value="testis">Testicular Cancer (Surveillance)</option>
-                </select>
-            </div>
-            
-            <div id="printArea" class="hidden mt-4 p-8 bg-white border border-slate-200 rounded-xl shadow-lg">
-                <div class="text-center border-b border-slate-300 pb-6 mb-6">
-                    <h2 class="text-2xl font-black text-slate-800">Department of Urology</h2>
-                    <h3 class="text-lg font-bold text-slate-600 mt-1">Dr. Babasaheb Ambedkar Hospital, Delhi</h3>
-                    <p class="text-sm text-slate-500 mt-4 font-medium flex justify-between px-10">
-                        <span>Patient Name: _________________</span> 
-                        <span>Date: _____________</span>
-                    </p>
-                </div>
-                <h3 id="handoutTitle" class="text-xl font-black text-slate-800 mb-5 text-center uppercase tracking-wide"></h3>
-                <div id="handoutContent" class="text-base text-slate-700 space-y-4 leading-relaxed font-medium"></div>
-                <div class="mt-12 pt-6 border-t border-slate-300 text-xs text-slate-500 text-center font-bold">
-                    <p>Please bring this schedule to all your appointments.</p>
-                    <p class="text-red-600 mt-1">If you experience severe pain, bleeding, or fever, please visit the emergency department immediately.</p>
-                </div>
-            </div>
-            
-            <button id="printBtn" onclick="window.print()" class="no-print hidden mt-6 w-full bg-slate-800 text-white font-bold py-4 rounded-xl shadow-md hover:bg-slate-900 transition flex justify-center items-center">
-                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
-                Print Official Handout
-            </button>
-        </div>
-        
-        <div class="p-6 text-center mt-8 border-t border-slate-200 no-print">
-            <p class="text-xs text-slate-400 leading-relaxed font-medium">Algorithmic Engine & Pathways compiled by<br><span class="font-bold text-slate-500">Dr. Neel Rajendra Swaminarayan</span></p>
-        </div>
+<main class="px-3 md:px-6 py-5">
+  <section id="homeView">
+    <div class="card p-5 mb-4">
+      <div class="flex flex-wrap gap-2 items-center mb-3">
+        <span class="badge badge-blue">2026 content baseline</span>
+        <span class="chip">EAU 2026</span>
+        <span class="chip">NCCN 2026 verified versions</span>
+        <span class="chip">Rule-based Oracle</span>
+      </div>
+      <h1 class="text-2xl md:text-3xl font-black mb-2">Urology-first, uro-oncology-depth navigator</h1>
+      <p class="text-sm text-slate-600 leading-6">Use the Oracle to derive a management plan from the entered clinical criteria. Use Calculators for scores/metrics only. The app intentionally summarizes guideline recommendations; it does not reproduce copyrighted guideline books verbatim.</p>
+      <div class="warn mt-4 text-xs leading-5"><b>Clinical safety:</b> Drug doses and algorithms are reference protocols, not patient-specific prescriptions. Confirm current product label, renal/hepatic function, interactions, laboratory criteria, institutional chemotherapy order set, MDT decision and the latest live NCCN/EAU version before treatment.</div>
     </div>
 
-    <script>
-        // --- 1. EXHAUSTIVE STATIC REFERENCE LIBRARY (clinicalData) ---
-        const clinicalData = {
-            "Ca Prostate": {
-                "Diagnostics & Biomarkers": [
-                    { q: "mpMRI Prostate (PI-RADS v2.1)", a: "• T2-Weighted (T2W): Primary for Transition Zone (TZ).\n• DWI/ADC: Primary for Peripheral Zone (PZ). Restricted diffusion = bright on high b-value DWI, dark on ADC.\n• Sens 85-92%, Spec 75-85%, NPV 88-95% for csPCa." },
-                    { q: "Biomarker Panels", a: "• PSAD: ≥0.15 ng/mL/cc strongly predictive of csPCa.\n• PHI / 4Kscore: Used to avoid biopsy in PSA 4-10 range.\n• Decipher / Oncotype DX: Genomic classifiers post-biopsy to aid Active Surveillance vs Surgery decisions." }
-                ],
-                "Histological Subtypes": [
-                    { q: "Standard & Variant Histology", a: "• Acinar Adenocarcinoma (>95%): Standard.\n• Ductal Adenocarcinoma: Aggressive, central location, lower PSA relative to tumor volume. Upfront surgery/aggressive therapy.\n• Small Cell / Neuroendocrine: Non-PSA secreting, paraneoplastic. Highly aggressive, castrate-resistant. Treat with SCLC protocols (Platinum + Etoposide).\n• Mucinous / Colloid: Rare, responds to standard therapies." }
-                ],
-                "Advanced & mCRPC Trials": [
-                    { q: "mHSPC Landmark Trials (Triplets & Doublets)", a: "• ARASENS (Triplet): ADT + Darolutamide + Docetaxel (For high/low volume mHSPC).\n• PEACE-1 (Triplet): ADT + Abiraterone + Docetaxel + RT to primary.\n• CHAARTED / STAMPEDE: ADT + Docetaxel (Doublet).\n• TITAN / ENZAMET / LATITUDE: ADT + Apalutamide / Enzalutamide / Abiraterone." },
-                    { q: "mCRPC Targeted Trials", a: "• VISION: Lu-177 PSMA-617 for PSMA+ mCRPC post-ARPI & Docetaxel.\n• PROfound: Olaparib for BRCA1/2 or ATM mutated mCRPC.\n• TROPIC: Cabazitaxel 20-25mg/m2 for Docetaxel-refractory." }
-                ]
-            },
-            "Ca Bladder": {
-                "Workup & Staging": [
-                    { q: "TURBT Principles & Paris System", a: "• TURBT must resect muscle separately. Re-TURBT MANDATORY for T1, high grade, or if no muscle in specimen (30-40% upstaging risk).\n• Paris 2.0: HGUC requires N:C ratio ≥0.7. Cytology Sens 80-90% for HG/CIS, Spec >95%." }
-                ],
-                "Histological Variants (CRITICAL)": [
-                    { q: "Variant-Specific Treatments", a: "• Squamous Cell (SCC): Chemoresistant. Upfront Radical Cystectomy (RC).\n• Micropapillary / Plasmacytoid: Extremely aggressive early micromets. Upfront RC preferred; BCG heavily discouraged.\n• Adenocarcinoma: Urachal (resect umbilicus) vs Non-urachal. Upfront RC.\n• Small Cell / Neuroendocrine: Systemic disease. Neoadjuvant Etoposide/Platinum -> local consolidation." }
-                ],
-                "MIBC & Metastatic Trials": [
-                    { q: "Perioperative & Systemic Regimens", a: "• VESPER Trial: Dose-dense MVAC (ddMVAC) superior to Gem/Cis for neoadjuvant MIBC.\n• NIAGARA Trial: Neoadjuvant Durvalumab + Gem/Cis -> RC -> Adjuvant Durvalumab.\n• CheckMate-274: Adjuvant Nivolumab for high-risk MIBC post-RC.\n• EV-302 (mUC 1st Line Standard): Enfortumab Vedotin + Pembrolizumab (completely supplanted pure chemo).\n• JAVELIN 100: Avelumab maintenance after stable disease on 1st line platinum chemo." }
-                ]
-            },
-            "Ca Kidney": {
-                "Histology & Genetic Links": [
-                    { q: "Subtypes & Targeted Treatments", a: "• Clear Cell (75%): VHL mutation (3p-). Highly vascular, responds to VEGFR TKIs & Immunotherapy.\n• Papillary Type 1: MET mutation. Responds to Cabozantinib / Savolitinib (SWOG 1500).\n• Chromophobe (5%): Birt-Hogg-Dubé. Excellent prognosis.\n• Collecting Duct / Medullary: Sickle cell trait link. Highly aggressive, requires Platinum-based chemo (TKI resistant)." }
-                ],
-                "Surgical & Systemic Guidelines": [
-                    { q: "Adjuvant & Metastatic Trials", a: "• KEYNOTE-564: Adjuvant Pembrolizumab x 1 year for High-Risk (Grade 4, T3/T4, Node+).\n• Metastatic 1st Line IO/IO (CheckMate-214): Nivo + Ipi for Intermediate/Poor risk.\n• Metastatic 1st Line IO/TKI: Pembro + Axitinib (KEYNOTE-426), Pembro + Lenvatinib (CLEAR).\n• CARMENA: Upfront Sunitinib vs Cytoreductive Nephrectomy (CN reserved for highly selected Favorable risk)." }
-                ]
-            },
-            "Ca Penis": {
-                "Surgical Nodal Rules": [
-                    { q: "Inguinal & Pelvic Dissection Criteria", a: "• cN0 High Risk (≥T1G2, LVI+): Occult mets >20%. DSNB or mILND MANDATORY.\n• Contralateral Groin Rule: If ipsilateral has ≥2 positive nodes or ENE+, prophylactic contralateral ILND MANDATORY.\n• Pelvic LND Rule: MANDATORY if ≥2 inguinal nodes positive or ENE+ or Cloquet's node positive." }
-                ],
-                "Advanced Disease": [
-                    { q: "cN3 / Unresectable Fixed Nodes", a: "• Upfront surgery CONTRAINDICATED (fungation risk).\n• Neoadjuvant Chemotherapy (NACT) with InPACT / TIP Regimen (Paclitaxel, Ifosfamide, Cisplatin).\n• If response occurs -> Radical Consolidative ILND + PLND." }
-                ]
-            },
-            "Ca Testis": {
-                "Histology & Markers": [
-                    { q: "Subtypes & Tumor Markers", a: "• Seminoma: Spreads lymphatically, highly radiosensitive. NEVER secretes AFP. hCG elevated in 15%.\n• Embryonal (NSGCT): Highly malignant, secretes hCG/AFP.\n• Yolk Sac: Prepubertal children, secretes AFP.\n• Choriocarcinoma: Pure is rare. Early hematogenous brain/lung mets. Sky-high hCG.\n• Teratoma: Chemo/Radio-resistant. Requires surgical RPLND excision." }
-                ],
-                "RPLND Rules": [
-                    { q: "Post-Chemotherapy Residual Mass", a: "• NSGCT: If mass >1cm and markers normal -> Nerve-Sparing RPLND MANDATORY. (Path yields: 50% teratoma, 35% necrosis, 15% viable).\n• Seminoma: If mass ≥3cm -> wait 6-8 weeks -> FDG PET-CT. If PET positive -> Resect/Biopsy." }
-                ]
-            }
-        };
+    <div id="diseaseGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3"></div>
 
-        // UI State Management
-        const tabsContainer = document.getElementById('diseaseTabs');
-        const clinicalSection = document.getElementById('clinicalSection');
-        const oracleSection = document.getElementById('oracleSection');
-        const handoutSection = document.getElementById('handoutSection');
-        const searchResultsDiv = document.getElementById('searchResults');
-        
-        let currentMode = 'clinical'; 
+    <div class="card p-4 mt-4">
+      <div class="section-title mb-2">How the Oracle is structured</div>
+      <div class="grid md:grid-cols-5 gap-2 text-xs">
+        <div class="p-3 rounded-xl bg-slate-50"><b>1. Diagnose</b><br>work-up + accuracy</div>
+        <div class="p-3 rounded-xl bg-slate-50"><b>2. Classify</b><br>TNM + histology + grade</div>
+        <div class="p-3 rounded-xl bg-slate-50"><b>3. Stratify</b><br>risk groups + prognostic scores</div>
+        <div class="p-3 rounded-xl bg-slate-50"><b>4. Treat</b><br>primary → nodes → M1</div>
+        <div class="p-3 rounded-xl bg-slate-50"><b>5. Follow</b><br>response + recurrence</div>
+      </div>
+    </div>
+  </section>
 
-        function switchMode(mode) {
-            currentMode = mode;
-            document.getElementById('searchInput').value = ''; 
-            searchResultsDiv.classList.add('hidden');
-            
-            // Reset Tab Styling
-            document.getElementById('tabClinical').className = "px-5 py-2.5 bg-white text-slate-600 rounded-lg text-sm font-bold shadow-sm hover:bg-slate-100 transition-all border border-slate-300";
-            document.getElementById('tabOracle').className = "px-5 py-2.5 bg-white text-slate-600 rounded-lg text-sm font-bold shadow-sm hover:bg-sky-50 transition-all border border-slate-300 flex items-center";
-            document.getElementById('tabHandout').className = "px-5 py-2.5 bg-white text-slate-600 rounded-lg text-sm font-bold shadow-sm hover:bg-emerald-50 transition-all border border-slate-300";
+  <section id="diseaseView" class="hidden">
+    <div class="flex flex-wrap gap-2 mb-4 no-print" id="diseaseNav"></div>
+    <div id="diseaseHeader"></div>
+    <div class="grid lg:grid-cols-[310px,1fr] gap-4">
+      <aside class="card p-3 no-print h-fit lg:sticky lg:top-24">
+        <div class="section-title mb-2">Jump to</div>
+        <div id="sectionNav" class="space-y-1"></div>
+      </aside>
+      <div id="diseaseContent"></div>
+    </div>
+  </section>
 
-            clinicalSection.classList.add('hidden');
-            oracleSection.classList.add('hidden');
-            handoutSection.classList.add('hidden');
+  <section id="oracleView" class="hidden">
+    <div class="flex items-center justify-between mb-4">
+      <div>
+        <div class="section-title text-lg">Clinical Oracle — treatment plan</div>
+        <div class="text-xs text-slate-500">This is the decision engine. It does not calculate a score unless a score is explicitly requested.</div>
+      </div>
+      <button onclick="showHome()" class="no-print text-xs font-bold px-3 py-2 rounded-lg border bg-white">Back</button>
+    </div>
+    <div class="card p-4 mb-4">
+      <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Cancer</label>
+      <select id="oracleDisease" onchange="renderOracleForm()" class="w-full border rounded-xl p-3 bg-white"></select>
+    </div>
+    <div class="grid lg:grid-cols-2 gap-4">
+      <div id="oracleForm" class="card p-4"></div>
+      <div id="oracleOutput" class="card p-4">
+        <div class="text-sm font-black">Management output</div>
+        <div class="text-xs text-slate-500 mt-1">Complete the clinical inputs to generate an evidence-linked pathway.</div>
+      </div>
+    </div>
+  </section>
 
-            if(mode === 'clinical') {
-                document.getElementById('tabClinical').className = "px-5 py-2.5 bg-slate-800 text-white rounded-lg text-sm font-bold shadow transition-all border border-slate-900";
-                clinicalSection.classList.remove('hidden');
-            } else if(mode === 'oracle') {
-                document.getElementById('tabOracle').className = "px-5 py-2.5 bg-sky-700 text-white rounded-lg text-sm font-bold shadow transition-all border border-sky-900 flex items-center";
-                oracleSection.classList.remove('hidden');
-            } else if(mode === 'handout') {
-                document.getElementById('tabHandout').className = "px-5 py-2.5 bg-emerald-600 text-white rounded-lg text-sm font-bold shadow transition-all border border-emerald-900";
-                handoutSection.classList.remove('hidden');
-            }
-        }
+  <section id="calcView" class="hidden">
+    <div class="flex items-center justify-between mb-4 no-print">
+      <div><div class="section-title text-lg">Scores & calculators</div><div class="text-xs text-slate-500">Separate from the treatment Oracle.</div></div>
+      <button onclick="showHome()" class="text-xs font-bold px-3 py-2 rounded-lg border bg-white">Back</button>
+    </div>
+    <div id="calcGrid" class="grid lg:grid-cols-2 gap-4"></div>
+  </section>
 
-        // --- RENDER CLINICAL TABS ---
-        Object.keys(clinicalData).forEach(disease => {
-            const btn = document.createElement('button');
-            btn.className = 'px-4 py-2 bg-white text-slate-700 rounded-full text-xs font-bold hover:bg-sky-100 hover:text-sky-800 transition-all border border-slate-300 clin-tab-btn shadow-sm';
-            btn.textContent = disease;
-            btn.onclick = () => selectClinicalTab(disease, btn);
-            tabsContainer.appendChild(btn);
-        });
+  <section id="drugView" class="hidden">
+    <div class="flex items-center justify-between mb-4 no-print">
+      <div><div class="section-title text-lg">Protocol / dose library</div><div class="text-xs text-slate-500">Common uro-oncology regimen references.</div></div>
+      <button onclick="showHome()" class="text-xs font-bold px-3 py-2 rounded-lg border bg-white">Back</button>
+    </div>
+    <div id="drugGrid" class="grid lg:grid-cols-2 gap-4"></div>
+  </section>
 
-        const phaseSelect = document.getElementById('phaseSelect');
-        const scenarioSelect = document.getElementById('scenarioSelect');
-        let currentDisease = '';
+  <section id="trialView" class="hidden">
+    <div class="flex items-center justify-between mb-4 no-print">
+      <div><div class="section-title text-lg">Trial map</div><div class="text-xs text-slate-500">Landmark trials linked to the disease context.</div></div>
+      <button onclick="showHome()" class="text-xs font-bold px-3 py-2 rounded-lg border bg-white">Back</button>
+    </div>
+    <div id="trialGrid" class="grid md:grid-cols-2 xl:grid-cols-3 gap-3"></div>
+  </section>
 
-        function selectClinicalTab(disease, clickedBtn) {
-            document.querySelectorAll('.clin-tab-btn').forEach(b => {
-                b.classList.remove('bg-sky-700', 'text-white', 'border-sky-900');
-                b.classList.add('bg-white', 'text-slate-700');
-            });
-            clickedBtn.classList.remove('bg-white', 'text-slate-700');
-            clickedBtn.classList.add('bg-sky-700', 'text-white', 'border-sky-900');
+  <section id="searchView" class="hidden">
+    <div class="flex items-center justify-between mb-4 no-print">
+      <div><div class="section-title text-lg">Search results</div><div id="searchMeta" class="text-xs text-slate-500"></div></div>
+      <button onclick="showHome()" class="text-xs font-bold px-3 py-2 rounded-lg border bg-white">Close</button>
+    </div>
+    <div id="searchResults"></div>
+  </section>
+</main>
 
-            document.getElementById('formSection').classList.remove('hidden');
-            document.getElementById('scenarioDiv').classList.add('hidden');
-            document.getElementById('resultCard').classList.add('hidden');
-            
-            currentDisease = disease;
-            phaseSelect.innerHTML = '<option value="" disabled selected>Select Clinical Phase...</option>';
-            Object.keys(clinicalData[disease]).forEach(phase => {
-                const opt = document.createElement('option');
-                opt.value = phase;
-                opt.textContent = phase;
-                phaseSelect.appendChild(opt);
-            });
-        }
+<footer class="px-6 pb-10 pt-6 text-xs text-slate-500">
+  <div class="border-t pt-4">Content baseline verified against publicly accessible 2026 EAU pages and 2026 NCCN-version references available during this build. NCCN professional guidelines are access-controlled and may have newer point releases; the app's version registry is designed to be updated independently.</div>
+</footer>
+</div>
 
-        phaseSelect.addEventListener('change', (e) => {
-            document.getElementById('scenarioDiv').classList.remove('hidden');
-            document.getElementById('resultCard').classList.add('hidden');
-            scenarioSelect.innerHTML = '<option value="" disabled selected>Select Specific Rule / Topic...</option>';
-            clinicalData[currentDisease][e.target.value].forEach((item, index) => {
-                const opt = document.createElement('option');
-                opt.value = index;
-                opt.textContent = item.q;
-                scenarioSelect.appendChild(opt);
-            });
-        });
+<script>
+const META = {
+  lastVerified: "2026-09-20",
+  guidelineBaseline: {
+    EAU: {
+      prostate:"2026", bladderNMIBC:"2026", bladderMIBC:"2026", UTUC:"2026", RCC:"2026", penis:"2026", testis:"2026"
+    },
+    NCCN: {
+      prostate:"5.2026", bladder:"2.2026", kidney:"2.2026", penile:"2.2026", testicular:"1.2026"
+    }
+  },
+  sources: [
+    {name:"EAU Prostate Cancer 2026",url:"https://uroweb.org/guidelines/prostate-cancer"},
+    {name:"EAU NMIBC 2026",url:"https://uroweb.org/guidelines/non-muscle-invasive-bladder-cancer"},
+    {name:"EAU MIBC 2026",url:"https://uroweb.org/guidelines/muscle-invasive-and-metastatic-bladder-cancer"},
+    {name:"EAU UTUC 2026",url:"https://uroweb.org/guidelines/upper-urinary-tract-urothelial-cell-carcinoma"},
+    {name:"EAU RCC 2026",url:"https://uroweb.org/guidelines/renal-cell-carcinoma"},
+    {name:"EAU Penile Cancer 2026",url:"https://uroweb.org/guidelines/penile-cancer"},
+    {name:"EAU Testicular Cancer 2026",url:"https://uroweb.org/guidelines/testicular-cancer"},
+    {name:"NCCN",url:"https://www.nccn.org/guidelines/guidelines-detail"},
+    {name:"NCCN prostate guideline PDF",url:"https://www.nccn.org/professionals/physician_gls/pdf/prostate.pdf"},
+    {name:"NCCN bladder guideline PDF",url:"https://www.nccn.org/professionals/physician_gls/pdf/bladder.pdf"},
+    {name:"NCCN kidney guideline PDF",url:"https://www.nccn.org/professionals/physician_gls/pdf/kidney.pdf"},
+    {name:"NCCN penile guideline PDF",url:"https://www.nccn.org/professionals/physician_gls/pdf/penile.pdf"},
+    {name:"NCCN testicular guideline PDF",url:"https://www.nccn.org/professionals/physician_gls/pdf/testicular.pdf"}
+  ]
+};
 
-        scenarioSelect.addEventListener('change', (e) => {
-            const data = clinicalData[currentDisease][phaseSelect.value][e.target.value];
-            document.getElementById('resultContent').innerHTML = formatText(data.a);
-            document.getElementById('resultCard').classList.remove('hidden');
-        });
+const DISEASES = {
+"Ca Prostate":{
+  emoji:"🧬", color:"sky", tagline:"Localized • regional • BCR • mHSPC • nmCRPC • mCRPC",
+  sections:[
+   {title:"1. Diagnostic pathway",items:[
+    ["Core work-up","PSA → repeat PSA when appropriate → DRE → mpMRI before biopsy in suspected organ-confined disease → MRI-targeted biopsy (plus perilesional sampling for PI-RADS ≥4) with systematic cores according to pathway; stage higher-risk disease with appropriate cross-sectional/bone/PSMA-PET imaging when it changes management."],
+    ["MRI performance","EAU 2026 reports pooled mpMRI sensitivity 0.91 and specificity 0.37 for ISUP GG≥2 in biopsy-naïve/prior-negative settings; for ISUP GG≥3 sensitivity 0.95 and specificity 0.35. PI-RADS v2.1 patient-level detection of GG≥2 was approximately 6%, 6%, 20%, 55%, 83% for PI-RADS 1–5 in a cited meta-analysis."],
+    ["PI-RADS × PSA density","EAU 2026 risk-adapted table: PI-RADS 1–2 with PSA-D <0.20 can often avoid biopsy when clinical suspicion is low; PI-RADS 4–5 → biopsy. For PI-RADS 3, PSA-D <0.10 is a very-low-risk setting for considering surveillance rather than biopsy; higher PSA-D increases csPCa risk."],
+    ["Genetics / tissue","For clinically significant/high-risk disease, assess hereditary risk. Germline testing is particularly relevant with multiple affected relatives, early deaths, high-risk germline family history or somatic BRCA mutation; somatic HRR testing becomes important in advanced disease. Always document family history and the exact tissue tested."]
+   ]},
+   {title:"2. Histology • ISUP • pathology",items:[
+    ["Common subtype","Acinar adenocarcinoma is the dominant phenotype. Ductal adenocarcinoma, mucinous/colloid, and rare neuroendocrine, small-cell, large-cell, amphicrine, adenosquamous/squamous, sarcomatoid, pleomorphic giant-cell and basal-cell/adenoid-cystic carcinomas require variant-specific interpretation."],
+    ["ISUP Grade Group","GG1 = Gleason 3+3; GG2 = 3+4; GG3 = 4+3; GG4 = 4+4 or 3+5 or 5+3; GG5 = 4+5, 5+4 or 5+5."],
+    ["Biopsy Gleason rules","Primary pattern = most extensive pattern; secondary = second most common. If only one pattern is present, double it. When 3 patterns are present on biopsy, score the most common + highest grade regardless of extent. Cribriform/intraductal carcinoma intermixed with invasive cancer is incorporated according to underlying architecture."],
+    ["Radical prostatectomy reporting","Record overall GS/GG, pattern 4 percentage, cribriform/IDC, tertiary pattern 5, pT stage, EPE, SVI, margins, LVI/PNI, nodes, nodal burden and extranodal extension. A tertiary pattern 5 can materially alter grade interpretation and risk; do not reduce it to a simple arithmetic calculator."],
+    ["Rare aggressive histology","Neuroendocrine transformation may be small-cell, large-cell or amphicrine and is often seen in CRPC. These subtypes have limited sensitivity to conventional ADT and should prompt expert pathology review and lineage-appropriate therapy." ]
+   ]},
+   {title:"3. TNM staging & risk",items:[
+    ["T category","T1: clinically inapparent/biopsy-detected or incidental categories; T2: organ-confined; T3a: extraprostatic extension; T3b: seminal-vesicle invasion; T4: fixation/invasion of adjacent structures. Record imaging-based EPE/SVI separately from formal cT based on DRE where required by the staging system."],
+    ["N / M","N1 = regional pelvic nodes. M1a = non-regional nodes; M1b = bone; M1c = visceral metastasis."],
+    ["NCCN localized risk","2026 NCCN moved away from a separate very-low-risk group. Risk assessment uses PSA, Grade Group, T category and tumor burden/cores; clinically meaningful categories include low, favorable-intermediate, unfavorable-intermediate, high and very-high risk. Use the current NCCN table rather than a legacy 3-tier shortcut."],
+    ["EAU risk","EAU uses PSA, ISUP Grade Group and clinical T stage; the 2026 guideline further refined risk grouping and incorporates emerging tools such as Cambridge Prognostic Groups and selected risk calculators."],
+    ["Pathologic prognostic factors","Cribriform/IDC, percentage pattern 4, EPE, SVI, positive margins, nodal burden, genomic alterations and treatment context can change management even when the headline GG is unchanged."]
+   ]},
+   {title:"4. Localized / locally advanced treatment",items:[
+    ["Very-low / low risk","Use shared decision-making with life expectancy. Active surveillance is a curative-intent strategy for appropriately selected low-risk and selected favorable-intermediate disease; watchful waiting is palliative/conservative management for limited life expectancy."],
+    ["Favorable intermediate","Options can include AS in selected men, radical prostatectomy, external-beam RT, or brachytherapy-based approaches depending on burden, anatomy and life expectancy. Avoid making focal therapy the default standard."],
+    ["Unfavorable intermediate","Definitive local therapy with RP ± ePLND or RT plus short-course ADT is typical. RT approaches may combine EBRT and/or brachytherapy in selected men."],
+    ["High / very-high risk","Multimodality treatment: RP with appropriate nodal staging in selected fit men, or definitive RT with long-course ADT. Intensification with an AR-pathway agent is increasingly incorporated in selected high-risk/locally advanced pathways; use the current guideline criteria, not a generic 'ADT for everyone' rule."],
+    ["Surgery","Robot/open RP should document nerve-sparing decision, bladder neck, apical dissection, margins and lymph-node template. ePLND is used when nodal risk crosses the guideline threshold; it is primarily staging and should not be performed indiscriminately."],
+    ["Radiotherapy","Modern EBRT generally uses image-guided, intensity-modulated techniques; dose/fractionation should come from the RT protocol. Brachytherapy boost is a selected high-risk option rather than a universal requirement."]
+   ]},
+   {title:"5. Biochemical recurrence / salvage",items:[
+    ["After RP","EAU notes that detectable PSA after RP must be differentiated from clinically meaningful relapse; treat based on PSA kinetics, pathology, prior local therapy and imaging. Salvage RT is most useful while PSA is low rather than waiting for bulky disease."],
+    ["After RT","Phoenix definition = PSA nadir + 2 ng/mL. Restage with PSMA PET/CT when results will change treatment."],
+    ["Salvage intensification","Selected patients with adverse pathology/high PSA kinetics may need ADT with salvage RT; nodal or oligometastatic recurrence can require targeted local therapy plus systemic treatment in an MDT setting."]
+   ]},
+   {title:"6. mHSPC • doublet • triplet • emerging biomarker-driven therapy",items:[
+    ["Backbone","Continuous ADT remains the backbone of metastatic hormone-sensitive disease. For impending spinal cord compression/ureteral obstruction or severe symptomatic disease, a rapid castration strategy is preferred; avoid LHRH agonist flare where clinically dangerous."],
+    ["ARPI doublets","Abiraterone + ADT (LATITUDE/STAMPEDE), enzalutamide + ADT (ENZAMET/ARCHES), apalutamide + ADT (TITAN), darolutamide + ADT and other approved ARPI strategies are guideline-based options selected according to patient/disease factors."],
+    ["Docetaxel","Docetaxel 75 mg/m² IV every 3 weeks for 6 cycles can be combined with ADT, with current guidelines generally preferring ARPI + docetaxel triplet regimens for patients fit for chemotherapy where criteria are met."],
+    ["Triplet therapy","ARASENS = ADT + docetaxel + darolutamide. PEACE-1 = ADT + docetaxel + abiraterone/prednisone, with prostate RT studied in defined low-volume disease. The decision is not simply 'high-volume = triplet': disease volume, timing, fitness and prior therapy matter."],
+    ["BRCA/HRR","The 2026 EAU update adds HRR-directed strategies including ADT + ARPI + PARP inhibition in selected molecularly defined disease (AMPLITUDE). CAPItello-281 evaluated AKT-pathway inhibition in a molecularly selected population; treat only according to current regulatory/guideline status."],
+    ["Prostate RT in M1","For men presenting with low-volume metastatic disease, prostate-directed RT remains a guideline-supported option in combination with systemic therapy."]
+   ]},
+   {title:"7. nmCRPC • mCRPC",items:[
+    ["nmCRPC","Continue ADT. For M0 CRPC at high risk of metastasis (classically PSA-DT <10 months), ARPI options include darolutamide, apalutamide or enzalutamide."],
+    ["mCRPC principle","Maintain castrate testosterone and select therapy according to prior ARPI/taxane exposure, visceral disease, symptoms, PSMA expression and molecular profile."],
+    ["PARP inhibitors","For eligible HRR-altered disease, PARP inhibitor choices are biomarker- and prior-treatment-dependent. PROfound supports olaparib in selected HRR-mutated mCRPC. Other PARP strategies require exact gene/line-of-therapy eligibility."],
+    ["Radioligand","VISION established Lu-177 PSMA-617 in PSMA-positive mCRPC after ARPI and taxane exposure. Common reference regimen is 7.4 GBq IV every 6 weeks for up to 6 doses, subject to label and eligibility."],
+    ["Taxane sequencing","CARD supports cabazitaxel after docetaxel + an ARPI when the clinical scenario fits. Docetaxel/cabazitaxel dosing must follow current label and prior-toxicity criteria."],
+    ["Neuroendocrine transformation","If progression is discordant with PSA, rapid visceral progression or lineage shift is suspected, obtain biopsy of a progressing lesion when feasible and treat the emerging phenotype rather than continuing an ineffective AR pathway strategy."]
+   ]},
+   {title:"8. Trials you should recognize",items:[
+    ["Diagnostics / AS","PRECISION, PRECISION-PC, FUTURE, MRI-FIRST, MR PROPER, ProtecT, PROTECT/AS literature."],
+    ["Localized intensification","ProtecT; modern RT/RP comparative datasets; focal-therapy studies remain distinct from guideline-standard whole-gland definitive therapy."],
+    ["mHSPC","CHAARTED, STAMPEDE, LATITUDE, TITAN, ENZAMET, ARCHES, ARASENS, PEACE-1, AMPLITUDE, PEACE-1 prostate RT component."],
+    ["BCR / high-risk","EMBARK and contemporary salvage-RT trials/series."],
+    ["mCRPC","PROfound, MAGNITUDE, TALAPRO-2, VISION, TheraP, CARD, PREVAIL, AFFIRM, COU-AA studies." ]
+   ]},
+   {title:"9. Follow-up / supportive care",items:[
+    ["After curative therapy","At minimum history + PSA; image at recurrence only when it affects treatment planning. Use modality-specific surveillance schedules rather than a one-size-fits-all calendar."],
+    ["During ADT","Monitor response, testosterone when CRPC is considered, metabolic effects, bone health, cardiovascular risk and treatment-specific toxicities. EAU recommends attention to weight, diabetes/lipid screening and bone-protective measures where indicated."],
+    ["ADT bone health","Assess fracture risk/BMD when appropriate, use calcium/vitamin D to meet recommended intake, and select denosumab/bisphosphonate according to indication and renal/dental considerations."]
+   ]}
+  ]
+},
+"Ca Bladder":{
+ emoji:"🫧",color:"indigo",tagline:"NMIBC • MIBC • nodal disease • metastatic urothelial carcinoma",
+ sections:[
+  {title:"1. Diagnostic pathway",items:[
+   ["Hematuria work-up","Cystoscopy remains central. Upper-tract imaging is selected according to risk/presentation; CT urography is preferred in many high-risk hematuria pathways. Record tumour number, site, size, morphology and completeness."],
+   ["TURBT quality","Resect visible tumour and obtain detrusor muscle where required. Send tumour fractions/base separately when appropriate. Pathology should report stage, grade, CIS, LVI, variant histology and detrusor muscle."],
+   ["Second TURBT","EAU 2026: after incomplete resection/doubt about completeness; if detrusor muscle is absent (except selected Ta LG/G1 or primary CIS situations); or for T1 tumours. When indicated, perform within 2–6 weeks."],
+   ["Urine cytology","Most useful for high-grade disease/CIS. Cytology has high specificity for HGUC; a positive cytology with negative cystoscopy triggers evaluation of bladder CIS, upper tract and prostatic urethra."],
+   ["Molecular / biomarker use","Do not let a urinary biomarker replace cystoscopy as the primary diagnostic test. Molecular testing has expanding roles in molecular residual disease and selected systemic/targeted therapy contexts."]
+  ]},
+  {title:"2. Histological subtypes & grading",items:[
+   ["Urothelial carcinoma","Pure urothelial carcinoma is the canonical pathway. Report papillary architecture, CIS, grade, depth and variant differentiation."],
+   ["Important variants","Micropapillary, plasmacytoid/signet-ring-like, sarcomatoid, nested, glandular, squamous, lymphoepithelioma-like, neuroendocrine/small-cell and trophoblastic differentiation can alter risk and treatment."],
+   ["Non-urothelial carcinomas","Squamous carcinoma and adenocarcinoma require histology-specific management; urachal adenocarcinoma follows a separate urachal pathway. Small-cell/neuroendocrine disease generally requires systemic therapy and multimodality planning."],
+   ["WHO grade","Modern pathology uses WHO 2004/2016/2022 low-grade vs high-grade frameworks; historic WHO 1973 G1–G3 remains relevant for older risk calculators such as EORTC/CUETO."]
+  ]},
+  {title:"3. NMIBC risk & treatment",items:[
+   ["EAU 2026 risk groups","Four-group EAU risk stratification: low, intermediate, high, very high. Very-high-risk features include selected high-grade/T1/CIS combinations, plus LVI, CIS in the prostatic urethra and selected aggressive variant histologies."],
+   ["Low risk","Complete TURBT followed by a single immediate intravesical chemotherapy instillation when safe/indicated."],
+   ["Intermediate risk","Repeat TURBT when indicated, then adjuvant chemotherapy and/or BCG according to recurrence/progression risk and patient factors."],
+   ["High risk","BCG induction with maintenance is a key bladder-preserving strategy; early radical cystectomy should be discussed in very-high-risk disease, selected variant histology and other poor-risk settings."],
+   ["BCG schedule","Induction = weekly instillation ×6. Standard maintenance uses 3-week mini-courses at defined intervals; use a BCG availability-adapted institutional schedule and exact EAU/NCCN pathway."],
+   ["BCG-unresponsive","Further BCG is generally not appropriate. Radical cystectomy is the standard/preferred oncologic option; bladder-preserving options are selected according to guideline/approval/trial status and include intravesical gene therapy, N-803 + BCG, TAR-200 and systemic pembrolizumab in defined settings."]
+  ]},
+  {title:"4. NMIBC risk calculators",items:[
+   ["EORTC 2006","Uses number of tumours, tumour size, prior recurrence rate, T category, CIS and WHO 1973 grade to predict recurrence/progression in patients not treated with BCG."],
+   ["CUETO","BCG-treated model using sex, age, recurrence status, tumour number, T category, CIS and WHO 1973 grade; separate recurrence and progression score structures."],
+   ["EAU 2021 model","Uses age >70, primary/recurrent status, multiplicity, size ≥3 cm, Ta/T1, CIS and WHO 2004/2016 or 1973 grading. EAU online calculator remains the preferred implementation reference."]
+  ]},
+  {title:"5. MIBC staging & local therapy",items:[
+   ["TNM","Ta non-invasive papillary; Tis CIS; T1 lamina propria; T2a/b inner/outer muscle; T3a microscopic perivesical tissue and T3b macroscopic; T4a invades adjacent pelvic structures such as prostate/stroma/uterus/vagina; T4b pelvic/abdominal wall. N1 single pelvic node, N2 multiple pelvic nodes, N3 common iliac nodes."],
+   ["Standard curative route","Fit cT2–T4a N0M0 patients: radical cystectomy + pelvic lymph-node dissection with perioperative systemic therapy according to eligibility."],
+   ["Neoadjuvant / perioperative systemic therapy","Cisplatin-based chemotherapy remains a major standard backbone. EAU 2026 also incorporates perioperative gemcitabine/cisplatin + durvalumab for appropriate cisplatin-eligible MIBC, and EV + pembrolizumab for cisplatin-ineligible MIBC based on KEYNOTE-905/EV-303 data and approvals."],
+   ["Adjuvant","Adjuvant nivolumab is established for selected high-risk patients who cannot receive/decline cisplatin-based chemotherapy. ctDNA-guided strategies are emerging; use only when the guideline/approved trial pathway supports them."],
+   ["Bladder preservation","Selected patients with favourable tumour factors and the ability to undergo maximal TURBT can receive trimodality therapy (maximal TURBT + radiosensitizing systemic therapy + definitive RT) in an MDT."]
+  ]},
+  {title:"6. Metastatic urothelial carcinoma",items:[
+   ["First-line","EV + pembrolizumab is a major current first-line standard after EV-302/KEYNOTE-A39 for advanced urothelial carcinoma. Platinum chemotherapy remains relevant when EV + P is unsuitable/ineligible."],
+   ["Maintenance","After response/stable disease following 4–6 cycles of platinum combination therapy, maintenance avelumab is established by JAVELIN Bladder 100."],
+   ["FGFR","FGFR3 alterations can identify patients for erdafitinib in appropriate lines/settings; test molecular status before late-line therapy."],
+   ["HER2","EAU 2026 adds HER2 IHC testing to select patients for trastuzumab deruxtecan; IHC 3+ supports use, while IHC 2+ may be considered in selected circumstances."],
+   ["What changed","Sacituzumab govitecan is not a routine recommendation after the negative TROPiCS-04 result and regulatory withdrawal of the accelerated indication."]
+  ]},
+  {title:"7. Trials",items:[
+   ["NMIBC","SWOG 8507 (BCG maintenance), CUETO, KEYNOTE-057, QUILT-3032, SunRISe-1, THOR-2, Nadofaragene phase III."],
+   ["MIBC perioperative","SWOG 8710, VESPER, CheckMate 274, AMBASSADOR, NIAGARA, KEYNOTE-905/EV-303, IMvigor011."],
+   ["Metastatic","EV-302/KEYNOTE-A39, JAVELIN Bladder 100, DANUBE, KEYNOTE-361, IMvigor130, THOR and HER2-directed studies."]
+  ]},
+  {title:"8. Follow-up",items:[
+   ["NMIBC","Cystoscopy schedule is risk-adapted. High-risk disease requires long-term intensive surveillance and upper-tract monitoring in defined scenarios."],
+   ["MIBC after cystectomy","Surveillance includes history, renal function/metabolic care, imaging for recurrence risk and urinary-diversion assessment; follow the risk-adapted schedule in the current EAU/NCCN guideline."],
+   ["Quality","Smoking cessation, urinary diversion education, renal preservation, sexual health, bowel function and survivorship are part of the treatment plan."]
+  ]}
+ ]},
+"UTUC":{
+ emoji:"↗️",color:"violet",tagline:"Upper tract urothelial carcinoma • kidney-sparing • RNU • systemic therapy",
+ sections:[
+  {title:"1. Diagnosis & staging",items:[
+   ["Imaging","CT urography is the principal staging/diagnostic imaging test when renal function permits. MR urography is an alternative in selected patients."],
+   ["Endoscopy","Ureteroscopy with biopsy and selective upper-tract cytology helps define tumour grade and eligibility for kidney-sparing treatment."],
+   ["TNM","Tis/CIS; Ta non-invasive papillary; T1 lamina propria; T2 muscularis; T3 peripelvic/periureteric fat or renal parenchyma; T4 adjacent organs/through kidney into surrounding structures. Use current UICC TNM 9th edition incorporated in EAU 2026."],
+   ["Molecular","FGFR3 alterations are relevant to risk biology and systemic therapy selection in advanced disease; molecular testing should be integrated with the disease line."]
+  ]},
+  {title:"2. Histology / risk stratification",items:[
+   ["Histology","Most are urothelial carcinoma. Variants such as micropapillary, plasmacytoid, sarcomatoid and other aggressive differentiations increase concern for systemic spread and may favour radical management."],
+   ["Low-risk features","EAU low-risk criteria are built from grade, cytology, imaging appearance, tumour size, focality and absence of invasive/aggressive features."],
+   ["High-risk features","High-grade cytology/biopsy, invasive appearance on imaging, hydronephrosis, larger/multifocal disease and aggressive variant histology move the patient toward high-risk management."]
+  ]},
+  {title:"3. Local treatment",items:[
+   ["Low-risk","Kidney-sparing treatment is preferred when technically feasible. Endoscopic ablation/resection, segmental/distal ureterectomy in selected ureteral tumours and appropriate adjuvant instillation strategies are considered."],
+   ["High-risk","Radical nephroureterectomy with complete bladder cuff excision is standard for fit patients. Template lymph-node dissection is used according to location/stage."],
+   ["Adjuvant bladder instillation","A single postoperative intravesical chemotherapy instillation after RNU reduces bladder recurrence risk when safely deliverable."],
+   ["Perioperative chemotherapy","Adjuvant platinum-based chemotherapy after RNU is supported by the POUT trial in appropriate high-risk patients; timing relative to surgery matters because renal function may fall after nephroureterectomy."]
+  ]},
+  {title:"4. Metastatic / systemic",items:[
+   ["First line","For platinum-eligible disease, platinum combination chemotherapy and increasingly EV + pembrolizumab depending on jurisdiction/approval and current guideline pathway. For cisplatin-eligible patients, gemcitabine/cisplatin or HD-MVAC are standard options; gemcitabine/carboplatin is used when cisplatin-ineligible."],
+   ["Maintenance","Avelumab maintenance after non-progressive platinum-treated metastatic disease is established."],
+   ["Later line","Erdafitinib for susceptible FGFR alterations and checkpoint inhibitors according to prior therapy/biomarker status. Clinical trial participation is important."]
+  ]},
+  {title:"5. Trials",items:[
+   ["POUT","Adjuvant gemcitabine-platinum after RNU in locally advanced/high-risk UTUC."],
+   ["EV-302 / JAVELIN Bladder 100","Systemic principles largely inform advanced urothelial carcinoma including upper-tract primaries."],
+   ["THOR","FGFR-directed erdafitinib trial underpinning FGFR-altered urothelial carcinoma treatment."]
+  ]}
+ ]},
+"Ca Penis":{
+ emoji:"⚕️",color:"rose",tagline:"PeIN • invasive SCC • cN0 • cN1–3 • contralateral nodes • systemic disease",
+ sections:[
+  {title:"1. Histological subtypes (WHO 2022 / ISUP)",items:[
+   ["HPV-independent SCC","Usual, pseudohyperplastic, pseudoglandular, verrucous, cuniculatum, papillary, sarcomatoid and mixed variants."],
+   ["HPV-associated SCC","Basaloid, warty, clear-cell, lymphoepithelioma-like and mixed forms. p16 IHC is the practical surrogate marker for HPV-related pathway biology."],
+   ["Other malignancies","Adenosquamous, mucoepidermoid, melanoma, mesenchymal tumours, lymphoma and metastatic lesions are far less common and need different pathways."],
+   ["Pathology checklist","Site, histological subtype, grade, maximum depth, invasion pattern, LVI, PNI, urethral/corpus spongiosum/cavernosa invasion, margins, p16, nodal burden and ENE must be recorded. ISUP 2025 advises not routinely grading PeIN itself."],
+   ["Prognostic pathology","Worst pattern of invasion, LVI/PNI, ENE, nodal burden and subtype can be more clinically useful than grade alone."]
+  ]},
+  {title:"2. TNM & stage groups",items:[
+   ["T","Tis/PeIN; Ta non-invasive; T1 invades subepithelial connective tissue; T2 corpus spongiosum; T3 corpus cavernosum/urethra; T4 adjacent structures. T1a = low-grade/LVI-negative; T1b = high-grade and/or LVI-positive."],
+   ["cN","cN0 = non-palpable; cN1 = palpable mobile unilateral inguinal node; cN2 = multiple mobile unilateral/bilateral inguinal nodes; cN3 = fixed inguinal mass or pelvic lymphadenopathy."],
+   ["pN","pN1 = 1–2 inguinal nodes; pN2 = >2 unilateral or bilateral inguinal nodes; pN3 = pelvic nodal metastasis or ENE."],
+   ["Stage groups","Stage 0 = Tis/Ta N0; I = T1a N0; IIA = T1b–T2 N0; IIB = T3 N0; IIIA = N1; IIIB = N2; IV = T4, N3 or M1."]
+  ]},
+  {title:"3. Primary tumour treatment",items:[
+   ["PeIN / Ta","Topical or organ-sparing therapy can be used in selected superficial lesions. NCCN 2.2026 lists imiquimod 5% 3 nights/week for 4–16 weeks and 5-FU cream 5% twice daily for 2–6 weeks; ensure histologic diagnosis and follow-up."],
+   ["T1 organ preservation","Wide local excision, glansectomy and selected laser/Mohs approaches depend on site, depth, grade and margins."],
+   ["T2+","Partial penectomy or total penectomy according to extent; reconstruction and functional stump goals matter, but oncologic margins remain primary."]
+  ]},
+  {title:"4. cN0 groins — do not miss occult disease",items:[
+   ["Low risk","EAU/NCCN pathways support surveillance for very low-risk primary disease (e.g. PeIN/Ta/T1a) when the complete risk profile is favourable."],
+   ["Intermediate/high risk","For T1b or T2+ disease, invasive nodal staging is generally indicated with dynamic sentinel node biopsy or inguinal node dissection according to expertise and guideline pathway."],
+   ["DSNB performance","Modern dynamic sentinel-node pathways have high sensitivity in experienced centres, but performance depends heavily on technique and centre expertise; ultrasound/FNA is used when nodes are suspicious."],
+   ["Contralateral nodes","Penile lymphatic drainage is frequently bilateral/cross-over. Bilateral nodal staging is therefore important; the decision is based on primary risk, laterality and the opposite groin's clinical status rather than a simplistic 'one positive node = always bilateral dissection' rule."]
+  ]},
+  {title:"5. cN1 / cN2 / pN+ management",items:[
+   ["cN1","EAU 2026: ipsilateral fascial-sparing ILND or open radical ILND, with minimally invasive ILND only in a clinical trial."],
+   ["cN2","EAU 2026: ipsilateral open radical ILND. Selected bulky mobile or bilateral cN2 disease may receive NAC as an alternative to immediate surgery if cisplatin/taxane fit."],
+   ["Pelvic nodes","EAU 2026 recommends prophylactic ipsilateral PLND when ≥3 inguinal nodes are positive or ENE is present. Pelvic nodal disease is pN3 and requires multimodal therapy."],
+   ["Timing","Complete inguinal/pelvic surgical nodal management within about 3 months of diagnosis unless NAC has been given; integrate MDT planning."]
+  ]},
+  {title:"6. cN3 / bulky disease — exact logic",items:[
+   ["Definition","cN3 = fixed inguinal mass or pelvic lymphadenopathy."],
+   ["Why NAC","Upfront surgery is often poor-risk in fixed/bulky disease. EAU recommends a cisplatin- and taxane-based NAC approach in chemotherapy-fit cN3/pelvic-node disease; surgery follows in responders or selected non-progressors when resection remains feasible."],
+   ["TIP","Paclitaxel/ifosfamide/cisplatin is the best-established prospective cisplatin/taxane NAC regimen; the phase II study used 4 cycles and reported ORR around 50% with 10% pCR in the selected cN2/cN3 population."],
+   ["TPF","Docetaxel/cisplatin/5-FU has activity but more limited prospective evidence and substantial toxicity. EAU 2026 does not make it a universal replacement for TIP."],
+   ["Expected response","Across pooled heterogeneous series, radiologic response is approximately 53–57%; pCR about 4–13%, with prospective TIP pCR around 10%. These percentages are population-level and do not predict an individual patient."],
+   ["After NAC","If responding and resectable → radical ILND + PLND with management of the primary. If progressive → re-evaluate curative surgery and consider systemic/palliative pathways."]
+  ]},
+  {title:"7. Metastatic / palliative",items:[
+   ["Preferred systemic class","EAU: platinum-based chemotherapy is preferred first-line palliative systemic therapy; options include PF, taxane-platinum combinations such as TIP/TPF, or selected doublets such as paclitaxel/carboplatin when extrapolation is appropriate."],
+   ["Immunotherapy","NCCN 2.2026 supports pembrolizumab in selected biomarker-defined unresectable/metastatic disease (e.g. MSI-H/dMMR or TMB-H) after progression when criteria are met. Check local label/line-of-therapy."],
+   ["New evidence","HERCULES (2025) studied pembrolizumab + platinum-based chemotherapy in advanced penile SCC; encouraging phase II activity does not automatically make it standard in all patients. Retifanlimab/ORPHEUS and other checkpoint studies remain part of the evolving trial landscape."],
+   ["Palliation","Radiotherapy is appropriate for symptom control, including ulcerative/fixed nodes and painful lesions."]
+  ]},
+  {title:"8. Trials",items:[
+   ["EAU / nodal","TIP phase II cN2/cN3 study; InPACT (preoperative chemoradiotherapy; ongoing at last guideline review)."],
+   ["Systemic","HERCULES (pembrolizumab + platinum chemotherapy), PERICLES (atezolizumab ± RT), ORPHEUS (retifanlimab), EPIC-B (cemiplimab)."],
+   ["Guideline position","Because penile SCC is rare and many trials are small/non-randomized, trial enrollment is particularly valuable in cN3, metastatic and post-platinum disease."]
+  ]}
+ ]},
+"Ca Testis":{
+ emoji:"🥚",color:"amber",tagline:"Seminoma • NSGCT • stage I • II • metastatic • post-chemo residual mass",
+ sections:[
+  {title:"1. Diagnostic pathway",items:[
+   ["Initial test","High-frequency scrotal US with Doppler. Measure both testes and describe intratesticular lesions and vascularity."],
+   ["Markers before orchiectomy","AFP, β-hCG and LDH are mandatory before orchiectomy and repeated after orchiectomy because staging/prognosis depends on post-orchiectomy values."],
+   ["No scrotal violation","Do not perform trans-scrotal biopsy; radical inguinal orchiectomy is the standard diagnostic/therapeutic operation."],
+   ["Staging","CT/MRI abdomen/pelvis and chest imaging are selected according to histology/marker/stage. Brain MRI is reserved for selected high-risk presentations."]
+  ]},
+  {title:"2. Histology & marker rules",items:[
+   ["Seminoma","Pure seminoma. AFP should not be elevated; if AFP is persistently elevated after orchiectomy, manage as nonseminoma regardless of the dominant histology."],
+   ["NSGCT components","Embryonal carcinoma, yolk-sac tumour, choriocarcinoma and teratoma. Mixed germ-cell tumours are managed as NSGCT."],
+   ["Teratoma","Mature teratoma is relatively chemoresistant and may require surgical resection of residual disease. Histology alone should never be used to ignore marker behaviour."],
+   ["Somatic pathology","Lymphovascular invasion, rete testis invasion, tumour size and histologic composition drive stage I relapse risk and treatment choice."]
+  ]},
+  {title:"3. TNM / stage",items:[
+   ["Primary","pTis intratubular germ-cell neoplasia; pT1 confined to testis/epididymis without LVI; pT2 with LVI or hilar/soft tissue involvement; pT3 spermatic cord invasion; pT4 scrotal invasion."],
+   ["Nodes","N1–N3 reflect escalating retroperitoneal nodal burden by size/number; use current AJCC/UICC table for exact measurement cut-offs."],
+   ["M / markers","M1a non-regional nodes/lung; M1b non-pulmonary visceral metastasis. Serum marker categories S0–S3 are integrated into stage grouping."]
+  ]},
+  {title:"4. IGCCCG metastatic risk",items:[
+   ["Good risk","Seminoma: any site without non-pulmonary visceral metastasis. NSGCT: AFP <1,000 ng/mL, β-hCG <5,000 IU/L and LDH <1.5× ULN, with no mediastinal primary and no non-pulmonary visceral metastases."],
+   ["Intermediate","Seminoma with non-pulmonary visceral metastasis; NSGCT with AFP 1,000–10,000, β-hCG 5,000–50,000 or LDH 1.5–10× ULN, absent poor-risk features."],
+   ["Poor","NSGCT only: primary mediastinal germ-cell tumour, non-pulmonary visceral metastasis, AFP >10,000, β-hCG >50,000 or LDH >10× ULN."],
+   ["Use case","IGCCCG drives chemotherapy intensity, cycle number and prognosis after orchiectomy in metastatic disease."]
+  ]},
+  {title:"5. Stage I seminoma",items:[
+   ["Surveillance","Preferred for many compliant stage I patients; relapse risk is roughly 12–20% depending on risk features and surveillance strategy."],
+   ["Adjuvant carboplatin","Single-dose carboplatin AUC 7 is an alternative in selected patients; it reduces relapse risk but requires counselling about late relapse and long-term follow-up."],
+   ["RT","Routine adjuvant radiotherapy is generally avoided because of late toxicity/second-malignancy concerns, reserved for exceptional circumstances."]
+  ]},
+  {title:"6. Stage I NSGCT",items:[
+   ["Surveillance","Preferred for low-relapse-risk and compliant patients."],
+   ["LVI-positive","Relapse risk is approximately 40–50%. One cycle of BEP or nerve-sparing RPLND are accepted risk-adapted alternatives depending on expertise, patient preference and exact stage."],
+   ["Fertility","Discuss sperm banking before chemotherapy/RPLND. Avoid unnecessary retroperitoneal surgery that compromises ejaculation."]
+  ]},
+  {title:"7. Stage II / metastatic treatment",items:[
+   ["Seminoma IIA/B","Marker-negative low-volume disease may be managed with RT or cisplatin-based chemotherapy in selected patients. Stage IIC+ generally receives systemic chemotherapy according to IGCCCG."],
+   ["Good-risk metastatic","BEP ×3 or EP ×4 are standard first-line patterns when bleomycin is contraindicated."],
+   ["Intermediate/poor-risk","BEP ×4 is the standard backbone. VIP ×4 is a bleomycin-free alternative in patients at pulmonary risk."],
+   ["Poor-risk marker decline","Re-check markers after cycle 1; an unfavourable decline prompts consideration of expert-center intensification strategies."]
+  ]},
+  {title:"8. Residual masses",items:[
+   ["NSGCT","With normalized/normalising markers, visible residual mass >1 cm generally requires post-chemotherapy RPLND. Histology may be necrosis/fibrosis, teratoma or viable cancer; do not rely on PET to rule out NSGCT residual disease."],
+   ["Seminoma","For residual mass ≥3 cm, 18F-FDG PET/CT after chemotherapy can help. Perform no earlier than about 6–8 weeks after chemotherapy to reduce false positives."],
+   ["Small residuals","EAU 2026 notes that selected post-chemo residuals <10 mm can be observed in complete-response settings, with recurrence risk in the 6–9% range in reported series; individualized MDT review is required."]
+  ]},
+  {title:"9. Follow-up / survivorship",items:[
+   ["Markers","Use AFP/β-hCG/LDH according to stage and relapse pathway; marker normalisation kinetics matter."],
+   ["Imaging","Use guideline-specific chest/abdomen surveillance rather than routine indiscriminate CT forever; adapt to histology, stage and treatment."],
+   ["Late effects","Monitor cardiovascular risk, secondary malignancy risk, hearing, neuropathy, renal function, hypogonadism and fertility/sexual function."]
+  ]},
+  {title:"10. Trials / named studies",items:[
+   ["Risk-adapted stage I","Seminoma adjuvant carboplatin studies; NSGCT surveillance/RPLND de-escalation programs."],
+   ["Advanced disease","IGCCCG collaborative datasets underpin the risk system; contemporary salvage/HDCT studies should be handled in expert centres."],
+   ["De-escalation","EAU 2026 includes updated evidence on de-escalating treatment approaches and expanded discussion of bone metastases."]
+  ]}
+ ]},
+"Ca Kidney":{
+ emoji:"🫘",color:"emerald",tagline:"RCC histology • Bosniak • RENAL/PADUA • IMDC • surgery • systemic therapy",
+ sections:[
+  {title:"1. Diagnostic pathway",items:[
+   ["Imaging","Multiphasic contrast-enhanced CT is the main diagnostic/staging study. MRI is useful when iodinated contrast is unsuitable or venous extension requires clarification."],
+   ["Renal mass biopsy","Biopsy is especially useful before active surveillance, thermal ablation, indeterminate lesions or systemic therapy decisions when histology will change treatment."],
+   ["Contrast enhancement","For solid renal masses, enhancement must be interpreted relative to non-contrast images and technique; a single arbitrary HU threshold should not replace radiologic assessment."],
+   ["Bone/brain","Routine bone or brain imaging is not required for every asymptomatic RCC patient; target imaging to symptoms/stage and systemic-treatment context."]
+  ]},
+  {title:"2. Histological subtypes & grading",items:[
+   ["Clear-cell RCC","Commonest subtype; VHL pathway alterations are characteristic. ccRCC dominates evidence for modern IO/TKI combinations and adjuvant pembrolizumab."],
+   ["Papillary RCC","Papillary type 1/2 terminology is increasingly supplemented by molecularly informed classification. MET-altered and FH-deficient entities are distinct biologic diseases."],
+   ["Chromophobe RCC","Usually more indolent; may be associated with Birt-Hogg-Dubé in hereditary settings."],
+   ["Other aggressive entities","Collecting duct, renal medullary, MiTF translocation and other rare RCCs require specialist pathology review and histology-specific systemic choices."],
+   ["WHO/ISUP grade","ISUP grading is used in ccRCC/papillary RCC. Grade 1–4 reflects nucleolar prominence and/or sarcomatoid/rhabdoid features; grade 4 includes extreme pleomorphism/sarcomatoid/rhabdoid morphology."]
+  ]},
+  {title:"3. Bosniak 2019",items:[
+   ["Bosniak I","Simple cyst; benign."],
+   ["Bosniak II","Minimally complex cyst; generally benign/no routine follow-up when confidently classified."],
+   ["Bosniak IIF","Probably benign but indeterminate complexity; surveillance imaging is recommended."],
+   ["Bosniak III","Indeterminate cystic mass with enhancing thick/irregular septa or wall; malignancy risk substantial; management is individualized with surveillance or surgery depending on size, age and risk."],
+   ["Bosniak IV","Enhancing nodular soft-tissue component; high likelihood of malignancy and usually treated as malignant when clinically appropriate."]
+  ]},
+  {title:"4. TNM & surgical treatment",items:[
+   ["T1","Tumour ≤7 cm limited to kidney. Partial nephrectomy is preferred when technically feasible and oncologically appropriate."],
+   ["T2","Tumour >7 cm limited to kidney. Radical nephrectomy is common when partial nephrectomy is not reasonable."],
+   ["T3/T4","Extension into major veins/perinephric tissues or adjacent structures; surgery remains possible in selected patients, often in expert centres."],
+   ["PN details","RENAL/PADUA complexity guides operative planning but is not itself a treatment indication. Do not use score alone to deny nephron-sparing surgery."],
+   ["Adrenal / LN","Routine adrenalectomy is not required unless involved/suspicious. Routine lymph-node dissection is not mandatory in clinically node-negative disease solely for staging."]
+  ]},
+  {title:"5. Active surveillance / ablation",items:[
+   ["Small renal masses","Active surveillance is a guideline-supported option in selected patients, particularly with frailty/comorbidity or limited life expectancy."],
+   ["Thermal ablation","Cryoablation/RFA can be considered for selected small masses when nephron-sparing surgery is less suitable."],
+   ["Frailty","EAU 2026 adds formal frailty/comprehensive geriatric assessment into decision-making."]
+  ]},
+  {title:"6. Adjuvant therapy",items:[
+   ["KEYNOTE-564","Adjuvant pembrolizumab improves DFS and OS in selected high-risk operable clear-cell RCC. EAU 2026 recommends it for trial-defined intermediate-high/high-risk groups and M1 NED after resection of oligometastatic disease within 1 year."],
+   ["Dose reference","Pembrolizumab 200 mg IV q3w or 400 mg q6w for approximately 1 year according to the approved regimen/order set."],
+   ["Do not extrapolate","Do not give adjuvant pembrolizumab to every T1 RCC or every non-clear-cell tumour; the evidence and approval are histology/risk-specific."]
+  ]},
+  {title:"7. IMDC & metastatic treatment",items:[
+   ["IMDC factors","KPS <80%, diagnosis-to-treatment interval <1 year, low haemoglobin, high corrected calcium, neutrophilia and thrombocytosis. Favorable = 0; intermediate = 1–2; poor = 3–6."],
+   ["First-line ccRCC","EAU 2026: nivolumab/ipilimumab, pembrolizumab/axitinib, lenvatinib/pembrolizumab or nivolumab/cabozantinib are standards, especially for IMDC intermediate/poor risk. VEGFR-TKI monotherapy remains an option when ICI is unsuitable."],
+   ["Cytoreductive nephrectomy","CARMENA and SURTIME shifted practice toward deferred/selected CN. Upfront CN is for carefully selected patients, not an automatic step for metastatic RCC."],
+   ["After ICI combinations","Cabozantinib or another unused VEGFR-TKI is a common evidence-based next line. Belzutifan is an emerging later-line option in appropriately pretreated ccRCC."],
+   ["Sarcomatoid","ICI-containing combinations are particularly relevant."]
+  ]},
+  {title:"8. Non-clear-cell pathways",items:[
+   ["Papillary","Cabozantinib is an important evidence-based option; molecularly selected therapy may be relevant in MET-driven disease. NCCN 2026-era pathways also include pembro/lenvatinib or nivolumab/cabozantinib as regimen options in selected non-clear-cell settings."],
+   ["Chromophobe","Evidence is less robust; systemic therapy should be individualized and clinical trial participation is encouraged."],
+   ["Hereditary RCC","Use syndrome-specific pathways (VHL, FH/HLRCC, BHD, TSC and others) and genetics referral."]
+  ]},
+  {title:"9. Trials",items:[
+   ["Adjuvant","KEYNOTE-564; IMmotion010 and CheckMate 914 were negative for routine adjuvant ICI; use the evidence hierarchy."],
+   ["Metastatic","KEYNOTE-426, CheckMate-214, CLEAR, CheckMate 9ER, CARMENA, SURTIME, CONTACT-03."],
+   ["Papillary","SWOG 1500 (PAPMET) informed cabozantinib in papillary RCC."]
+  ]},
+  {title:"10. Follow-up",items:[
+   ["EAU 2026","Follow-up should be risk-adapted; 2026 updates emphasize recurrence risk, renal function and alternative-to-surgery surveillance."],
+   ["Renal function","Monitor eGFR/proteinuria/BP after nephron-sparing or radical nephrectomy; coordinate nephrology when CKD risk is substantial."]
+  ]}
+ ]},
+"Urethral Cancer":{
+ emoji:"〰️",color:"slate",tagline:"Male/female urethral carcinoma • local • nodal • systemic",
+ sections:[
+  {title:"1. Histology",items:[
+   ["Histology depends on location","Distal/anterior urethral tumours are commonly squamous; prostatic urethral and periurethral tumours can be urothelial or glandular. Adenocarcinoma, SCC, urothelial carcinoma and rare neuroendocrine/sarcomatoid entities require distinct pathways."],
+   ["Pathology essentials","Site, grade, depth, LVI, margins, nodal status and histologic subtype should be explicit."]
+  ]},
+  {title:"2. Staging",items:[
+   ["T","Tis limited mucosa/CIS; Ta non-invasive; T1 subepithelial connective tissue; T2 spongiosum/prostate/periurethral muscle; T3 corpora/other adjacent tissues; T4 adjacent organs/structures."],
+   ["Nodes","Use current AJCC/UICC N definitions with attention to inguinal versus pelvic drainage and tumour location."]
+  ]},
+  {title:"3. Local / nodal treatment",items:[
+   ["Distal superficial disease","Selected lesions can undergo urethra-preserving excision with careful negative margins."],
+   ["Invasive disease","Penectomy/urethrectomy or cystoprostatectomy-type surgery may be required according to location and extent; nodal staging is selective and anatomy-dependent."],
+   ["RT / chemoradiation","Selected organ-preserving strategies may be considered for localized disease in experienced centres."]
+  ]},
+  {title:"4. Systemic treatment",items:[
+   ["Urothelial phenotype","Use cisplatin-based chemotherapy where appropriate and advanced urothelial regimens according to current bladder/urothelial pathways."],
+   ["Squamous phenotype","Platinum-based chemotherapy and/or chemoradiation are used by analogy and tumour location; evidence is lower level because of rarity."],
+   ["Metastatic","Systemic therapy is histology-specific; MDT and clinical trials are strongly encouraged."]
+  ]}
+ ]},
+"Adrenal / Neuroendocrine":{
+ emoji:"🧪",color:"purple",tagline:"Adrenal incidentaloma • pheochromocytoma • ACC • neuroendocrine",
+ sections:[
+  {title:"1. Incidentaloma evaluation",items:[
+   ["Hormone screen","Before biopsy or surgery, exclude pheochromocytoma with plasma free or urinary fractionated metanephrines when indicated. Perform 1-mg overnight dexamethasone suppression testing; assess aldosterone/renin ratio in patients with hypertension/hypokalaemia."],
+   ["Imaging","Non-contrast CT attenuation, homogeneity, washout and MRI chemical-shift features help differentiate benign adenoma from malignant/suspicious lesions. Washout thresholds must be interpreted only with an appropriate adrenal CT protocol."],
+   ["Biopsy","Never biopsy a potentially functional adrenal mass before pheochromocytoma is excluded." ]
+  ]},
+  {title:"2. Adrenocortical carcinoma / pheochromocytoma",items:[
+   ["ACC","Suspicious invasive/functioning masses should be managed by an expert adrenal MDT; open en-bloc oncologic resection is standard for resectable ACC. Mitotane and platinum-based combinations are used in advanced disease according to stage."],
+   ["Pheochromocytoma/paraganglioma","Pre-operative alpha blockade and volume preparation are essential before adrenalectomy in secretory tumours. Genetics is relevant in a large proportion of patients."],
+   ["Neuroendocrine","For neuroendocrine adrenal disease, use histology- and stage-specific protocols and involve endocrine oncology." ]
+  ]}
+ ]},
+};
 
-        function formatText(text) {
-            let formatted = text.replace(/\n/g, '<br>');
-            const redFlags = ['CRITICAL SAFETY RULE', 'MANDATORY', 'ABSOLUTE CONTRAINDICATION', 'CONTRAINDICATED', 'NEVER'];
-            redFlags.forEach(flag => {
-                const regex = new RegExp(`(${flag})`, 'g');
-                formatted = formatted.replace(regex, '<span class="text-red-700 font-black bg-red-100 px-1.5 py-0.5 rounded border border-red-300 tracking-wide">$1</span>');
-            });
-            return formatted;
-        }
+const DRUGS = [
+["ADT / LHRH agonist","Leuprolide / goserelin class","Schedule is product-specific (e.g. monthly/3-month/6-month depot). Confirm formulation and testosterone monitoring."],
+["LHRH antagonist","Degarelix / relugolix","Useful when rapid testosterone suppression is desired or avoiding injection depot; follow product label."],
+["Docetaxel – prostate","75 mg/m² IV q3w ×6 in common mHSPC protocols","Premedication, CBC/LFTs and neuropathy/febrile-neutropenia precautions per order set."],
+["Darolutamide","600 mg PO twice daily with food","mHSPC triplet backbone in ARASENS; check interactions/renal-hepatic restrictions."],
+["Abiraterone + prednisone","Abiraterone 1000 mg PO daily on empty stomach + prednisone per regimen","Monitor K+, BP, fluid status, LFTs; steroid schedule can vary by indication."],
+["Enzalutamide","160 mg PO daily","ARPI; seizure/drug-interaction risk assessment required."],
+["Apalutamide","240 mg PO daily","ARPI; monitor rash, falls/fracture risk, thyroid and drug interactions."],
+["Lu-177 PSMA-617","7.4 GBq IV q6w × up to 6","VISION reference regimen; requires PSMA-positive disease and protocol-specific organ/hematologic criteria."],
+["Gem/Cis – bladder/UTUC","Gemcitabine 1000 mg/m² D1,D8 + cisplatin ~70 mg/m² D1 q21d (common schedule)","Hydration, renal function and hearing/neuropathy assessment are protocol-dependent."],
+["ddMVAC","Methotrexate 30 mg/m² D1 + vinblastine 3 mg/m² D2 + doxorubicin 30 mg/m² D2 + cisplatin 70 mg/m² D2 q14d ×4 (common VESPER-style protocol)","G-CSF support is standard in dose-dense protocols."],
+["Durvalumab perioperative MIBC","1500 mg IV q3w with GC ×4, then q4w maintenance in the NIAGARA-type regimen","Use exact current label/protocol; EAU 2026 incorporates NIAGARA evidence."],
+["Enfortumab vedotin + pembrolizumab","EV 1.25 mg/kg D1,D8 q21d + pembrolizumab 200 mg q3w (advanced disease reference)","Monitor skin, neuropathy, glucose, ocular symptoms and immune toxicity."],
+["Avelumab maintenance","800 mg IV q2w","Use after non-progressive platinum-treated advanced urothelial carcinoma per JAVELIN Bladder 100 pathway."],
+["Erdafitinib","Label-dependent oral dose and schedule","Use only for eligible susceptible FGFR alterations and according to the current product label; monitor phosphate/ocular/skin toxicity."],
+["Pembrolizumab – RCC","200 mg IV q3w or 400 mg q6w for approved indications","Adjuvant KEYNOTE-564 commonly for 1 year."],
+["Nivolumab + ipilimumab – RCC","Nivolumab 3 mg/kg + ipilimumab 1 mg/kg q3w ×4 → nivolumab maintenance","Check current protocol and immune-toxicity algorithms."],
+["Pembrolizumab + axitinib – RCC","Pembrolizumab 200 mg q3w + axitinib 5 mg BID (common start)","Axitinib may be titrated according to tolerance/label."],
+["Lenvatinib + pembrolizumab – RCC","Lenvatinib 20 mg PO daily + pembrolizumab 200 mg q3w","BP, proteinuria, renal/hepatic function and immune toxicity monitoring."],
+["Nivolumab + cabozantinib – RCC","Nivolumab 240 mg q2w/480 mg q4w + cabozantinib 40 mg daily","Dose modifications are common for toxicity."],
+["BEP – testis","Bleomycin 30,000 IU D1,D8,D15 + etoposide 100 mg/m² D1–5 + cisplatin 20 mg/m² D1–5 q21d","Standard good-risk 3-cycle pattern; 4 cycles for intermediate/poor-risk in standard pathways."],
+["EP – testis","Etoposide 100 mg/m² D1–5 + cisplatin 20 mg/m² D1–5 q21d ×4","Used instead of BEP when bleomycin is contraindicated in appropriate good-risk disease."],
+["VIP – testis","Etoposide + ifosfamide + cisplatin q21d ×4, with mesna","Bleomycin-free option; exact doses follow institutional germ-cell order set."],
+["TIP – penile","Paclitaxel 175 mg/m² D1 + ifosfamide 1200 mg/m² D1–3 + cisplatin 25 mg/m² D1–3 q21d ×4","Prospective cN2/cN3 data; use specialist penile cancer MDT."],
+["5-FU/Imiquimod – penile precursor","Imiquimod 5% 3 nights/week 4–16 weeks; 5-FU 5% twice daily 2–6 weeks","NCCN 2.2026 reference for selected PeIN/Ta; confirm pathology and local formulary."],
+["Mitomycin C / gemcitabine – NMIBC immediate","Single immediate instillation after appropriate TURBT when perforation/high-risk bleeding is excluded","Exact intravesical concentration/volume should follow pharmacy/institutional order set."],
+["BCG – NMIBC","Full-dose weekly ×6 induction; maintenance courses use a 3-week mini-course pattern at guideline-defined intervals","Avoid in traumatic catheterisation, active UTI, gross haematuria or recent bladder perforation."],
+];
 
-        // --- GLOBAL SEARCH ---
-        function performSearch() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
-            const resultsDiv = document.getElementById('searchResults');
-            const resultsContent = document.getElementById('searchResultsContent');
-            
-            if (query.length < 2) {
-                switchMode(currentMode); // revert UI
-                return;
-            }
+const TRIALS = [
+["Prostate","ProtecT","RP vs RT vs active monitoring in localized prostate cancer.","Localized"],
+["Prostate","CHAARTED","ADT + docetaxel in mHSPC; foundation for metastatic-volume stratification.","mHSPC"],
+["Prostate","LATITUDE","ADT + abiraterone/prednisone in newly diagnosed high-risk mHSPC.","mHSPC"],
+["Prostate","STAMPEDE","Platform testing multiple intensification strategies across advanced/high-risk prostate cancer.","mHSPC/high-risk"],
+["Prostate","TITAN","Apalutamide + ADT in mHSPC.","mHSPC"],
+["Prostate","ENZAMET / ARCHES","Enzalutamide + ADT in mHSPC.","mHSPC"],
+["Prostate","ARASENS","ADT + docetaxel + darolutamide triplet.","mHSPC"],
+["Prostate","PEACE-1","ADT + docetaxel + abiraterone in mHSPC; prostate RT question in low-volume cohort.","mHSPC"],
+["Prostate","EMBARK","Enzalutamide-based intensification in high-risk biochemical recurrence.","BCR"],
+["Prostate","PROfound","Olaparib in HRR-altered mCRPC after ARPI progression.","mCRPC"],
+["Prostate","MAGNITUDE","Niraparib + abiraterone in HRR-selected mCRPC.","mCRPC"],
+["Prostate","TALAPRO-2","Talazoparib + enzalutamide in molecularly selected/mCRPC populations.","mCRPC"],
+["Prostate","VISION","Lu-177 PSMA-617 in PSMA-positive mCRPC.","mCRPC"],
+["Prostate","CARD","Cabazitaxel vs alternative AR-targeted therapy after docetaxel + ARPI.","mCRPC"],
+["Bladder","SWOG 8507","Maintenance BCG improves recurrence control compared with induction alone.","NMIBC"],
+["Bladder","KEYNOTE-057","Pembrolizumab in BCG-unresponsive NMIBC.","NMIBC"],
+["Bladder","QUILT 3032","N-803 + BCG in BCG-unresponsive NMIBC.","NMIBC"],
+["Bladder","SunRISe-1","TAR-200 bladder drug delivery system in BCG-unresponsive NMIBC.","NMIBC"],
+["Bladder","THOR-2","Erdafitinib in FGFR-altered NMIBC/urothelial disease.","NMIBC"],
+["Bladder","VESPER","ddMVAC vs gemcitabine/cisplatin in perioperative MIBC.","MIBC"],
+["Bladder","CheckMate 274","Adjuvant nivolumab after radical surgery in high-risk urothelial carcinoma.","MIBC"],
+["Bladder","NIAGARA","Perioperative durvalumab + gem/cis in MIBC.","MIBC"],
+["Bladder","KEYNOTE-905/EV-303","Perioperative enfortumab vedotin + pembrolizumab in cisplatin-ineligible MIBC.","MIBC"],
+["Bladder","IMvigor011","ctDNA-selected adjuvant atezolizumab strategy after cystectomy.","MIBC"],
+["Bladder","EV-302 / KEYNOTE-A39","Enfortumab vedotin + pembrolizumab vs chemotherapy in untreated advanced urothelial carcinoma.","Metastatic"],
+["Bladder","JAVELIN Bladder 100","Avelumab maintenance after non-progressive platinum chemotherapy.","Metastatic"],
+["UTUC","POUT","Adjuvant gemcitabine-platinum after radical nephroureterectomy.","UTUC"],
+["RCC","KEYNOTE-564","Adjuvant pembrolizumab in high-risk operable ccRCC.","Adjuvant"],
+["RCC","KEYNOTE-426","Pembrolizumab + axitinib in advanced ccRCC.","Metastatic"],
+["RCC","CheckMate-214","Nivolumab + ipilimumab in advanced RCC.","Metastatic"],
+["RCC","CLEAR","Lenvatinib + pembrolizumab in advanced RCC.","Metastatic"],
+["RCC","CheckMate 9ER","Nivolumab + cabozantinib in advanced RCC.","Metastatic"],
+["RCC","CARMENA","Cytoreductive nephrectomy vs sunitinib in metastatic RCC.","Surgery/systemic"],
+["RCC","SURTIME","Immediate vs deferred cytoreductive nephrectomy.","Surgery/systemic"],
+["RCC","SWOG 1500 / PAPMET","Cabozantinib and other targeted therapies in papillary RCC.","Non-clear-cell"],
+["Penis","TIP phase II","Neoadjuvant TIP in cN2/cN3 penile SCC.","Nodal"],
+["Penis","InPACT","Preoperative chemoradiotherapy / multimodal strategies for advanced penile cancer.","Nodal"],
+["Penis","HERCULES (LACOG 0218)","Pembrolizumab + platinum chemotherapy in advanced penile SCC.","Advanced"],
+["Penis","PERICLES","Atezolizumab ± radiotherapy in advanced penile SCC.","Advanced"],
+["Penis","ORPHEUS","Retifanlimab in advanced penile SCC.","Advanced"],
+["Testis","IGCCCG cohorts","Prognostic classification underpinning BEP/EP/VIP intensity.","Metastatic"],
+["Testis","De-escalation programmes","Stage I seminoma/NSGCT surveillance and reduced-treatment strategies; exact eligibility is guideline-specific.","Stage I"]
+];
 
-            clinicalSection.classList.add('hidden');
-            oracleSection.classList.add('hidden');
-            handoutSection.classList.add('hidden');
-            resultsDiv.classList.remove('hidden');
-            resultsContent.innerHTML = '';
-            
-            let found = 0;
-            for (const disease in clinicalData) {
-                for (const phase in clinicalData[disease]) {
-                    clinicalData[disease][phase].forEach((item) => {
-                        if (item.q.toLowerCase().includes(query) || item.a.toLowerCase().includes(query)) {
-                            found++;
-                            resultsContent.innerHTML += `
-                                <div class="mb-4 bg-white border-l-4 border-sky-600 rounded-r-xl p-5 shadow-md">
-                                    <div class="text-[10px] font-black text-sky-600 mb-1 uppercase tracking-wider">${disease} > ${phase}</div>
-                                    <h3 class="text-base font-bold text-slate-800 mb-2">${item.q}</h3>
-                                    <div class="text-sm text-slate-700 leading-relaxed font-medium">${formatText(item.a)}</div>
-                                </div>
-                            `;
-                        }
-                    });
-                }
-            }
-            if (found === 0) resultsContent.innerHTML = '<div class="text-center font-bold text-slate-400 py-8">No matching guidelines found.</div>';
-        }
+const CALCULATORS = {
+  isup: {
+    title:"ISUP / Gleason deep-dive — prostate",
+    desc:"Oracle-grade interpretation, including tertiary pattern logic. This is intentionally separate from treatment calculation.",
+    html:()=>`
+      <div class="grid md:grid-cols-2 gap-2">
+        <select id="igPrimary" class="border rounded-xl p-3 text-sm"><option value="">Primary pattern</option><option>3</option><option>4</option><option>5</option></select>
+        <select id="igSecondary" class="border rounded-xl p-3 text-sm"><option value="">Secondary pattern</option><option>3</option><option>4</option><option>5</option></select>
+        <select id="igTertiary" class="border rounded-xl p-3 text-sm"><option value="">Tertiary pattern (if RP)</option><option>None</option><option>5</option></select>
+        <input id="igP4" type="number" min="0" max="100" class="border rounded-xl p-3 text-sm" placeholder="% pattern 4">
+      </div>
+      <label class="flex items-center gap-2 text-xs mt-3"><input id="igIDC" type="checkbox"> Cribriform / intraductal carcinoma reported</label>
+      <button onclick="calcISUPDeep()" class="mt-3 w-full rounded-xl py-3 bg-sky-700 text-white text-sm font-black">Interpret</button>
+      <div id="isupOut" class="mt-3"></div>`
+  },
+  psad:{title:"PSA density",desc:"PSA (ng/mL) ÷ prostate volume (cc).",html:()=>`
+      <div class="grid grid-cols-2 gap-2"><input id="psa" type="number" step="0.01" class="border rounded-xl p-3 text-sm" placeholder="PSA"><input id="vol" type="number" step="0.1" class="border rounded-xl p-3 text-sm" placeholder="Volume (cc)"></div>
+      <button onclick="calcPSAD()" class="mt-3 w-full rounded-xl py-3 bg-sky-700 text-white text-sm font-black">Calculate</button><div id="psadOut" class="mt-3"></div>`},
+  eortc:{title:"EORTC 2006 NMIBC risk",desc:"Historic model for recurrence/progression; use WHO 1973 grade and do not confuse it with the current EAU 4-group risk classification.",html:()=>`
+    <div class="grid md:grid-cols-2 gap-2">
+      <select id="erTumors" class="border rounded-xl p-3 text-sm"><option value="0">1 tumor</option><option value="3">2–7 tumors</option><option value="6">≥8 tumors</option></select>
+      <select id="erSize" class="border rounded-xl p-3 text-sm"><option value="0">&lt;3 cm</option><option value="3">≥3 cm</option></select>
+      <select id="erRec" class="border rounded-xl p-3 text-sm"><option value="0">Primary</option><option value="2">&lt;1 recurrence/year</option><option value="4">≥1 recurrence/year</option></select>
+      <select id="erT" class="border rounded-xl p-3 text-sm"><option value="0">Ta</option><option value="1">T1</option></select>
+      <select id="erCIS" class="border rounded-xl p-3 text-sm"><option value="0">No CIS</option><option value="1">CIS present</option></select>
+      <select id="erG" class="border rounded-xl p-3 text-sm"><option value="0">G1</option><option value="1">G2</option><option value="2">G3</option></select>
+    </div>
+    <button onclick="calcEORTC()" class="mt-3 w-full rounded-xl py-3 bg-indigo-700 text-white text-sm font-black">Calculate recurrence + progression score</button><div id="eortcOut" class="mt-3"></div>`},
+  eaurisk:{title:"EAU NMIBC 2021 risk-group engine",desc:"Implements the published EAU four-group clinical risk rules.",html:()=>`
+    <div class="grid md:grid-cols-2 gap-2">
+      <select id="erxStage" class="border rounded-xl p-3 text-sm"><option value="Ta">Ta</option><option value="T1">T1</option></select>
+      <select id="erxGrade" class="border rounded-xl p-3 text-sm"><option value="LG1">LG/G1</option><option value="LG2">LG/G2</option><option value="HG3">HG/G3</option></select>
+      <select id="erxStatus" class="border rounded-xl p-3 text-sm"><option value="primary">Primary</option><option value="recurrent">Recurrent</option></select>
+      <select id="erxAge" class="border rounded-xl p-3 text-sm"><option value="le70">≤70</option><option value="gt70">&gt;70</option></select>
+      <select id="erxMult" class="border rounded-xl p-3 text-sm"><option value="single">Single</option><option value="multi">Multiple</option></select>
+      <select id="erxSize" class="border rounded-xl p-3 text-sm"><option value="lt3">&lt;3 cm</option><option value="ge3">≥3 cm</option></select>
+    </div>
+    <label class="flex items-center gap-2 text-xs mt-3"><input id="erxCIS" type="checkbox"> CIS present</label>
+    <label class="flex items-center gap-2 text-xs mt-2"><input id="erxVHI" type="checkbox"> Variant histology / LVI / prostatic urethral CIS</label>
+    <button onclick="calcEAURisk()" class="mt-3 w-full rounded-xl py-3 bg-indigo-700 text-white text-sm font-black">Assign EAU risk group</button><div id="eauriskOut" class="mt-3"></div>`},
+  imdc:{title:"IMDC RCC metastatic risk",desc:"Six-factor Heng/IMDC model.",html:()=>`
+    <div class="grid md:grid-cols-2 gap-2">
+      <label class="text-xs"><input id="imdcKPS" type="checkbox"> KPS &lt;80%</label>
+      <label class="text-xs"><input id="imdcHb" type="checkbox"> Hb below LLN</label>
+      <label class="text-xs"><input id="imdcCa" type="checkbox"> Corrected Ca above ULN</label>
+      <label class="text-xs"><input id="imdcNeut" type="checkbox"> Neutrophils above ULN</label>
+      <label class="text-xs"><input id="imdcPlate" type="checkbox"> Platelets above ULN</label>
+      <label class="text-xs"><input id="imdcTime" type="checkbox"> Diagnosis → systemic therapy &lt;1 year</label>
+    </div>
+    <button onclick="calcIMDC()" class="mt-3 w-full rounded-xl py-3 bg-emerald-700 text-white text-sm font-black">Calculate</button><div id="imdcOut" class="mt-3"></div>`},
+  renal:{title:"RENAL nephrometry score",desc:"Anatomic complexity; A/P/X is a descriptor, not a numeric component.",html:()=>`
+    <div class="grid md:grid-cols-2 gap-2">
+      <select id="rr" class="border rounded-xl p-3 text-sm"><option value="1">R: ≤4 cm</option><option value="2">R: 4–7 cm</option><option value="3">R: ≥7 cm</option></select>
+      <select id="re" class="border rounded-xl p-3 text-sm"><option value="1">E: ≥50% exophytic</option><option value="2">E: &lt;50% exophytic</option><option value="3">E: entirely endophytic</option></select>
+      <select id="rn" class="border rounded-xl p-3 text-sm"><option value="1">N: ≥7 mm</option><option value="2">N: 4–7 mm</option><option value="3">N: ≤4 mm</option></select>
+      <select id="rl" class="border rounded-xl p-3 text-sm"><option value="1">L: entirely above/below polar line</option><option value="2">L: crosses polar line</option><option value="3">L: >50% crosses / hilar</option></select>
+    </div>
+    <button onclick="calcRENAL()" class="mt-3 w-full rounded-xl py-3 bg-emerald-700 text-white text-sm font-black">Calculate</button><div id="renalOut" class="mt-3"></div>`},
+  gss:{title:"Guy's Stone Score",desc:"PCNL complexity classifier retained as a non-oncology urology tool.",html:()=>`
+    <select id="gss" class="border rounded-xl p-3 w-full text-sm"><option value="1">Grade I: solitary mid/lower pole/pelvis, normal anatomy</option><option value="2">Grade II: solitary upper-pole / multiple normal anatomy / solitary abnormal anatomy</option><option value="3">Grade III: multiple abnormal anatomy / diverticulum / partial staghorn</option><option value="4">Grade IV: complete staghorn or spina bifida/SCI</option></select>
+    <button onclick="calcGSS()" class="mt-3 w-full rounded-xl py-3 bg-slate-800 text-white text-sm font-black">Interpret</button><div id="gssOut" class="mt-3"></div>`},
+  clavien:{title:"Clavien–Dindo",desc:"Postoperative complication grading.",html:()=>`
+    <select id="cd" class="border rounded-xl p-3 w-full text-sm">
+      <option value="1">I — deviation treated with bedside/pharmacologic measures</option>
+      <option value="2">II — pharmacologic treatment beyond permitted grade I</option>
+      <option value="3a">IIIa — endoscopic/radiologic/surgical intervention without GA</option>
+      <option value="3b">IIIb — intervention under GA</option>
+      <option value="4a">IVa — life-threatening, single-organ dysfunction / ICU</option>
+      <option value="4b">IVb — multiorgan dysfunction</option>
+      <option value="5">V — death</option>
+    </select><button onclick="calcClavien()" class="mt-3 w-full rounded-xl py-3 bg-slate-800 text-white text-sm font-black">Classify</button><div id="cdOut" class="mt-3"></div>`}
+};
 
-        // ==========================================
-        // --- 2. INTERACTIVE DECISION ORACLE ENGINE ---
-        // ==========================================
-        const oracleInputArea = document.getElementById('oracleInputArea');
-        const oracleOutputArea = document.getElementById('oracleOutputArea');
-        const oracleResultContent = document.getElementById('oracleResultContent');
+function cardHTML(disease,section,item){
+  const [q,a]=item;
+  return `<article class="card p-4 searchable" data-search="${esc(disease+' '+section+' '+q+' '+a)}">
+    <div class="flex gap-2 items-center mb-2"><span class="badge badge-blue">${esc(disease)}</span><span class="text-[10px] font-bold text-slate-400 uppercase">${esc(section)}</span></div>
+    <h3 class="font-black text-sm mb-2">${esc(q)}</h3>
+    <div class="text-sm text-slate-700 leading-6">${formatText(a)}</div>
+  </article>`;
+}
+function formatText(t){return t.replace(/\n/g,'<br>');}
+function esc(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));}
 
-        function loadOracleEngine() {
-            const type = document.getElementById('oracleTypeSelect').value;
-            oracleInputArea.classList.remove('hidden');
-            oracleOutputArea.classList.add('hidden');
-            oracleInputArea.innerHTML = '';
+function showHome(){
+  ["homeView","diseaseView","oracleView","calcView","drugView","trialView","searchView"].forEach(id=>document.getElementById(id).classList.add("hidden"));
+  document.getElementById("homeView").classList.remove("hidden");
+  document.getElementById("globalSearch").value="";
+}
+function openDisease(name){
+  ["homeView","oracleView","calcView","drugView","trialView","searchView"].forEach(id=>document.getElementById(id).classList.add("hidden"));
+  document.getElementById("diseaseView").classList.remove("hidden");
+  renderDiseaseNav();
+  const d=DISEASES[name];
+  document.getElementById("diseaseHeader").innerHTML=`<div class="card p-5 mb-4"><div class="flex flex-wrap gap-2 items-center"><span class="text-2xl">${d.emoji}</span><span class="badge badge-green">EAU ${name==='Ca Bladder'?'NMIBC/MIBC 2026':META.guidelineBaseline.EAU[name==='Ca Prostate'?'prostate':name==='Ca Kidney'?'RCC':name==='Ca Penis'?'penis':name==='Ca Testis'?'testis':'UTUC']||'2026'}</span><span class="badge badge-slate">${name.includes('Prostate')?'NCCN '+META.guidelineBaseline.NCCN.prostate:name==='Ca Bladder'?'NCCN '+META.guidelineBaseline.NCCN.bladder:name==='Ca Kidney'?'NCCN '+META.guidelineBaseline.NCCN.kidney:name==='Ca Penis'?'NCCN '+META.guidelineBaseline.NCCN.penile:name==='Ca Testis'?'NCCN '+META.guidelineBaseline.NCCN.testicular:'EAU 2026 baseline'}</span></div><h2 class="text-2xl font-black mt-2">${esc(name)}</h2><div class="text-sm text-slate-500 mt-1">${esc(d.tagline)}</div></div>`;
+  const nav=document.getElementById("sectionNav");
+  nav.innerHTML=d.sections.map((s,i)=>`<button onclick="document.getElementById('sec-${i}').scrollIntoView({behavior:'smooth',block:'start'})" class="w-full text-left p-2 rounded-lg text-xs font-bold hover:bg-sky-50">${i+1}. ${esc(s.title.replace(/^\d+\.\s*/,''))}</button>`).join("");
+  document.getElementById("diseaseContent").innerHTML=d.sections.map((s,i)=>`<section id="sec-${i}" class="mb-4"><div class="text-base font-black mb-2">${esc(s.title)}</div><div class="space-y-3">${s.items.map(it=>cardHTML(name,s.title,it)).join("")}</div></section>`).join("");
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+function renderDiseaseNav(){
+  const el=document.getElementById("diseaseNav");
+  el.innerHTML=Object.keys(DISEASES).map(n=>`<button onclick="openDisease('${n.replace(/'/g,"\\'")}')" class="px-3 py-2 rounded-full border bg-white text-xs font-black hover:bg-sky-50">${DISEASES[n].emoji} ${esc(n)}</button>`).join("");
+}
+function renderHome(){
+  document.getElementById("diseaseGrid").innerHTML=[
+    ...Object.keys(DISEASES).map(n=>`<button onclick="openDisease('${n.replace(/'/g,"\\'")}')" class="card p-4 text-left hover:-translate-y-0.5 transition"><div class="text-2xl">${DISEASES[n].emoji}</div><div class="font-black text-sm mt-2">${esc(n)}</div><div class="text-xs text-slate-500 mt-1">${esc(DISEASES[n].tagline)}</div></button>`),
+    `<button onclick="openOracle()" class="card p-4 text-left bg-slate-950 text-white"><div class="text-2xl">🧭</div><div class="font-black text-sm mt-2">Clinical Oracle</div><div class="text-xs text-slate-300 mt-1">Enter criteria → management plan</div></button>`,
+    `<button onclick="openCalculators()" class="card p-4 text-left"><div class="text-2xl">🧮</div><div class="font-black text-sm mt-2">Scores & calculators</div><div class="text-xs text-slate-500 mt-1">ISUP, EORTC, EAU NMIBC, IMDC, RENAL and more</div></button>`,
+    `<button onclick="openDrugs()" class="card p-4 text-left"><div class="text-2xl">💊</div><div class="font-black text-sm mt-2">Drug protocols</div><div class="text-xs text-slate-500 mt-1">Common doses/schedules with safety prompts</div></button>`,
+    `<button onclick="openTrials()" class="card p-4 text-left"><div class="text-2xl">📚</div><div class="font-black text-sm mt-2">Trial map</div><div class="text-xs text-slate-500 mt-1">Named landmark trials by cancer and stage</div></button>`
+  ].join("");
+}
+function openCalculators(){
+  ["homeView","diseaseView","oracleView","drugView","trialView","searchView"].forEach(id=>document.getElementById(id).classList.add("hidden"));document.getElementById("calcView").classList.remove("hidden");
+  document.getElementById("calcGrid").innerHTML=Object.entries(CALCULATORS).map(([k,v])=>`<article class="card p-4"><h3 class="font-black text-sm">${esc(v.title)}</h3><p class="text-xs text-slate-500 mt-1 mb-3">${esc(v.desc)}</p>${v.html()}</article>`).join("");
+}
+function openDrugs(){
+  ["homeView","diseaseView","oracleView","calcView","trialView","searchView"].forEach(id=>document.getElementById(id).classList.add("hidden"));document.getElementById("drugView").classList.remove("hidden");
+  document.getElementById("drugGrid").innerHTML=DRUGS.map(d=>`<article class="card p-4"><span class="badge badge-blue">${esc(d[0])}</span><h3 class="font-black text-sm mt-2">${esc(d[1])}</h3><div class="text-xs text-slate-600 leading-5 mt-1">${esc(d[2])}</div></article>`).join("");
+}
+function openTrials(){
+  ["homeView","diseaseView","oracleView","calcView","drugView","searchView"].forEach(id=>document.getElementById(id).classList.add("hidden"));document.getElementById("trialView").classList.remove("hidden");
+  document.getElementById("trialGrid").innerHTML=TRIALS.map(t=>`<article class="card p-4"><div class="flex gap-2 mb-2"><span class="badge badge-slate">${esc(t[0])}</span><span class="badge badge-blue">${esc(t[3])}</span></div><h3 class="font-black text-sm">${esc(t[1])}</h3><div class="text-xs text-slate-600 mt-1 leading-5">${esc(t[2])}</div></article>`).join("");
+}
 
-            let html = '';
-            if (type === 'prostate') {
-                html = `
-                    <h3 class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-4 border-b pb-2">Prostate Clinical Parameters</h3>
-                    <div class="grid grid-cols-2 gap-4 mb-4">
-                        <div><label class="text-xs font-bold">Clinical T-Stage</label>
-                        <select id="pTstage" class="w-full border p-3 rounded bg-slate-50 text-sm font-semibold mt-1">
-                            <option value="T1c">T1c (Biopsy only)</option>
-                            <option value="T2a">T2a (≤50% one lobe)</option>
-                            <option value="T2b">T2b (>50% one lobe)</option>
-                            <option value="T2c">T2c (Both lobes)</option>
-                            <option value="T3a">T3a (Extraprostatic)</option>
-                            <option value="T3b">T3b (Seminal Vesicle)</option>
-                            <option value="T4">T4 (Fixed/Adjacent)</option>
-                        </select></div>
-                        <div><label class="text-xs font-bold">PSA (ng/mL)</label>
-                        <input type="number" id="pPSA" value="5.0" class="w-full border p-3 rounded bg-slate-50 text-sm font-semibold mt-1"></div>
-                    </div>
-                    <h4 class="text-xs font-bold text-slate-500 uppercase mt-4 mb-2">ISUP Gleason Pathology</h4>
-                    <div class="grid grid-cols-3 gap-2 mb-4">
-                        <select id="pPrim" class="border p-2 rounded bg-slate-50 text-sm font-semibold"><option value="" disabled selected>Primary</option><option value="3">Pattern 3</option><option value="4">Pattern 4</option><option value="5">Pattern 5</option></select>
-                        <select id="pSec" class="border p-2 rounded bg-slate-50 text-sm font-semibold"><option value="" disabled selected>Secondary</option><option value="3">Pattern 3</option><option value="4">Pattern 4</option><option value="5">Pattern 5</option></select>
-                        <select id="pTer" class="border p-2 rounded bg-slate-50 text-sm font-semibold"><option value="0">No Tertiary 5</option><option value="5">Tertiary 5 Present</option></select>
-                    </div>
-                    <div><label class="text-xs font-bold">Positive Cores</label>
-                        <select id="pCores" class="w-full border p-3 rounded bg-slate-50 text-sm font-semibold mt-1">
-                            <option value="low">< 50% Positive Cores</option>
-                            <option value="high">≥ 50% Positive Cores</option>
-                            <option value="veryhigh">> 4 Cores of GG4-5</option>
-                        </select>
-                    </div>
-                    <button onclick="calcProstate()" class="mt-6 w-full bg-slate-800 text-white font-black py-4 rounded-lg shadow-md hover:bg-slate-900 transition">RUN NCCN ALGORITHM</button>
-                `;
-            } else if (type === 'testis') {
-                html = `
-                    <h3 class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-4 border-b pb-2">Testis IGCCCG Parameters</h3>
-                    <div class="grid grid-cols-2 gap-4 mb-4">
-                        <div><label class="text-xs font-bold">Histology</label>
-                        <select id="tHist" class="w-full border p-3 rounded bg-slate-50 text-sm font-semibold mt-1">
-                            <option value="sem">Pure Seminoma</option>
-                            <option value="nsgct">NSGCT (Mixed/Embryonal/Yolk)</option>
-                        </select></div>
-                        <div><label class="text-xs font-bold">Primary Tumor Site</label>
-                        <select id="tSite" class="w-full border p-3 rounded bg-slate-50 text-sm font-semibold mt-1">
-                            <option value="testis">Testis / Retroperitoneal</option>
-                            <option value="mediastinal">Mediastinal (Extragonadal)</option>
-                        </select></div>
-                    </div>
-                    <div class="mb-4"><label class="text-xs font-bold">Metastasis Profile</label>
-                        <select id="tMets" class="w-full border p-3 rounded bg-slate-50 text-sm font-semibold mt-1">
-                            <option value="none">No Visceral Mets / Pulm Only</option>
-                            <option value="nonpulm">Non-Pulmonary Visceral (Liver, Bone, Brain)</option>
-                        </select>
-                    </div>
-                    <h4 class="text-xs font-bold text-slate-500 uppercase mt-4 mb-2">Post-Orchiectomy Markers</h4>
-                    <div class="grid grid-cols-3 gap-2 mb-4">
-                        <div><label class="text-[10px] font-bold">AFP (ng/mL)</label><input type="number" id="tAFP" value="50" class="w-full border p-2 rounded bg-slate-50 text-sm font-semibold mt-1"></div>
-                        <div><label class="text-[10px] font-bold">hCG (mIU/mL)</label><input type="number" id="thCG" value="500" class="w-full border p-2 rounded bg-slate-50 text-sm font-semibold mt-1"></div>
-                        <div><label class="text-[10px] font-bold">LDH (x Normal)</label><input type="number" id="tLDH" value="1" step="0.1" class="w-full border p-2 rounded bg-slate-50 text-sm font-semibold mt-1"></div>
-                    </div>
-                    <button onclick="calcTestis()" class="mt-6 w-full bg-slate-800 text-white font-black py-4 rounded-lg shadow-md hover:bg-slate-900 transition">RUN IGCCCG ALGORITHM</button>
-                `;
-            } else if (type === 'kidney') {
-                html = `
-                    <h3 class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-4 border-b pb-2">Metastatic Kidney (IMDC) Parameters</h3>
-                    <div class="space-y-3 mb-6">
-                        <label class="flex items-center space-x-3 bg-slate-50 p-3 border rounded"><input type="checkbox" id="k1" class="w-5 h-5 rounded text-sky-600"><span class="text-sm font-semibold">Karnofsky Performance Status < 80%</span></label>
-                        <label class="flex items-center space-x-3 bg-slate-50 p-3 border rounded"><input type="checkbox" id="k2" class="w-5 h-5 rounded text-sky-600"><span class="text-sm font-semibold">Time from Diagnosis to Tx < 1 Year</span></label>
-                        <label class="flex items-center space-x-3 bg-slate-50 p-3 border rounded"><input type="checkbox" id="k3" class="w-5 h-5 rounded text-sky-600"><span class="text-sm font-semibold">Hemoglobin < Lower Limit of Normal</span></label>
-                        <label class="flex items-center space-x-3 bg-slate-50 p-3 border rounded"><input type="checkbox" id="k4" class="w-5 h-5 rounded text-sky-600"><span class="text-sm font-semibold">Corrected Calcium > Upper Limit of Normal</span></label>
-                        <label class="flex items-center space-x-3 bg-slate-50 p-3 border rounded"><input type="checkbox" id="k5" class="w-5 h-5 rounded text-sky-600"><span class="text-sm font-semibold">Neutrophils > Upper Limit of Normal</span></label>
-                        <label class="flex items-center space-x-3 bg-slate-50 p-3 border rounded"><input type="checkbox" id="k6" class="w-5 h-5 rounded text-sky-600"><span class="text-sm font-semibold">Platelets > Upper Limit of Normal</span></label>
-                    </div>
-                    <button onclick="calcKidney()" class="mt-2 w-full bg-slate-800 text-white font-black py-4 rounded-lg shadow-md hover:bg-slate-900 transition">RUN IMDC ALGORITHM</button>
-                `;
-            } else if (type === 'penis') {
-                html = `
-                    <h3 class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-4 border-b pb-2">Penile Nodal Metastasis Engine</h3>
-                    <div class="grid grid-cols-2 gap-4 mb-4">
-                        <div><label class="text-xs font-bold">Primary Stage</label>
-                        <select id="peT" class="w-full border p-3 rounded bg-slate-50 text-sm font-semibold mt-1">
-                            <option value="Ta">Ta / Tis</option>
-                            <option value="T1">T1 (Subepithelial)</option>
-                            <option value="T2">T2 (Corpus Spongiosum)</option>
-                            <option value="T3">T3 (Corpus Cavernosum)</option>
-                        </select></div>
-                        <div><label class="text-xs font-bold">Histology Grade</label>
-                        <select id="peG" class="w-full border p-3 rounded bg-slate-50 text-sm font-semibold mt-1">
-                            <option value="1">Grade 1 (Well diff)</option>
-                            <option value="2">Grade 2/3/4 or LVI+</option>
-                        </select></div>
-                    </div>
-                    <div class="mb-4"><label class="text-xs font-bold">Clinical Nodal Status (Groin)</label>
-                        <select id="peN" class="w-full border p-3 rounded bg-slate-50 text-sm font-semibold mt-1">
-                            <option value="cN0">cN0 (Non-palpable / normal USG)</option>
-                            <option value="cN1">cN1 (Mobile unilateral palpable)</option>
-                            <option value="cN2">cN2 (Mobile bilateral palpable)</option>
-                            <option value="cN3">cN3 (Fixed mass or pelvic nodes)</option>
-                        </select>
-                    </div>
-                    <button onclick="calcPenis()" class="mt-6 w-full bg-slate-800 text-white font-black py-4 rounded-lg shadow-md hover:bg-slate-900 transition">RUN EAU NODAL PATHWAY</button>
-                `;
-            } else if (type === 'bladder') {
-                html = `
-                    <h3 class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-4 border-b pb-2">Bladder Cancer Engine</h3>
-                    <div class="grid grid-cols-2 gap-4 mb-4">
-                        <div><label class="text-xs font-bold">TURBT Staging</label>
-                        <select id="bT" class="w-full border p-3 rounded bg-slate-50 text-sm font-semibold mt-1">
-                            <option value="Ta">Ta (Non-invasive papillary)</option>
-                            <option value="T1">T1 (Lamina Propria)</option>
-                            <option value="T2">T2+ (Muscle Invasive - MIBC)</option>
-                        </select></div>
-                        <div><label class="text-xs font-bold">Histological Variant</label>
-                        <select id="bVar" class="w-full border p-3 rounded bg-slate-50 text-sm font-semibold mt-1">
-                            <option value="pure">Pure Urothelial</option>
-                            <option value="scc">Squamous Cell / Adeno</option>
-                            <option value="micro">Micropapillary / Plasmacytoid</option>
-                            <option value="small">Small Cell / Neuroendocrine</option>
-                        </select></div>
-                    </div>
-                    <div class="mb-4">
-                        <label class="flex items-center space-x-3 bg-slate-50 p-3 border rounded"><input type="checkbox" id="bCIS" class="w-5 h-5 rounded text-sky-600"><span class="text-sm font-semibold">Concomitant CIS Present</span></label>
-                    </div>
-                    <button onclick="calcBladder()" class="mt-6 w-full bg-slate-800 text-white font-black py-4 rounded-lg shadow-md hover:bg-slate-900 transition">RUN BLADDER PATHWAY</button>
-                `;
-            }
-            oracleInputArea.innerHTML = html;
-        }
+function openOracle(){
+  ["homeView","diseaseView","calcView","drugView","trialView","searchView"].forEach(id=>document.getElementById(id).classList.add("hidden"));document.getElementById("oracleView").classList.remove("hidden");
+  document.getElementById("oracleDisease").innerHTML=Object.keys(ORACLE_SCHEMAS).map(k=>`<option>${esc(k)}</option>`).join("");
+  renderOracleForm();
+}
+const ORACLE_SCHEMAS={
+ "Ca Prostate":[
+  ["state","Disease state",["Localized","BCR after RP","BCR after RT","mHSPC","nmCRPC","mCRPC"]],
+  ["gg","ISUP Grade Group",["1","2","3","4","5"]],
+  ["psa","PSA (ng/mL)","number"],["ct","cT category",["T1","T2a","T2b","T2c","T3a","T3b","T4"]],
+  ["cn","cN",["N0","N1"]],["cm","cM",["M0","M1a","M1b","M1c"]],
+  ["volume","M1 volume (CHAARTED-style)","select",["Low","High","Not M1"]],
+  ["priorARPI","Prior ARPI exposure",["No","Yes"]],["priorDoc","Prior docetaxel",["No","Yes"]],
+  ["hrr","HRR alteration",["Unknown/negative","BRCA1/2","Other actionable HRR"]],
+  ["psadt","PSA doubling time (months)","number"]
+ ],
+ "Ca Bladder":[
+  ["state","Disease state",["NMIBC initial/recurrent","BCG-unresponsive NMIBC","MIBC cT2–T4a","Metastatic"]],
+  ["t","T category",["Ta","Tis","T1","T2","T3","T4"]],
+  ["grade","Grade",["LG","HG"]],["cis","CIS",["No","Yes"]],
+  ["nodes","Nodes",["cN0","cN+"]],["cisplatin","Cisplatin eligible",["Yes","No"]],
+  ["fgfr","FGFR3 alteration",["Unknown/negative","Susceptible alteration"]],
+  ["her2","HER2 IHC",["Not tested","0/1+","2+","3+"]],
+  ["ctdna","Post-cystectomy ctDNA",["Not tested/negative","Positive"]]
+ ],
+ "UTUC":[
+  ["risk","Risk",["Low","High","Unknown"]],["location","Location",["Renal pelvis","Proximal/mid ureter","Distal ureter"]],
+  ["t","T category",["Ta/Tis","T1","T2","T3","T4"]],["grade","Grade",["Low","High"]],
+  ["hydronephrosis","Hydronephrosis",["No","Yes"]],["met","Metastatic",["M0","M1"]],
+  ["cis","Cisplatin eligible",["Yes","No"]]
+ ],
+ "Ca Penis":[
+  ["state","Disease state",["Primary only","cN0","cN1","cN2","cN3 / pelvic nodes","M1 / unresectable"]],
+  ["primary","Primary T stage",["PeIN/Tis","Ta","T1a","T1b","T2","T3","T4"]],
+  ["grade","Grade",["G1","G2","G3"]],["lvi","LVI",["No","Yes"]],
+  ["bulky","Bulky node ≥4 cm",["No","Yes"]],["bilateral","Bilateral groin nodes",["No","Yes"]],
+  ["fna","FNA positive for inguinal metastasis",["No","Yes"]],["cis","Cisplatin/taxane fit",["Yes","No"]],
+  ["pnl","Positive inguinal nodes after surgery",["0","1–2","≥3"]],["ene","ENE",["No","Yes"]]
+ ],
+ "Ca Testis":[
+  ["hist","Histology",["Seminoma","NSGCT"]],["stage","Clinical stage",["I","IIA/IIB","IIC/III"]],["lvi","LVI (NSGCT)",["No","Yes"]],
+  ["markers","Markers after orchiectomy",["Normal","Elevated"]],["igcccg","IGCCCG",["Good","Intermediate","Poor","Not metastatic"]],["residual","Post-chemo residual mass",["None","<1 cm","≥1 cm","Seminoma ≥3 cm"]]
+ ],
+ "Ca Kidney":[
+  ["hist","Histology",["Clear-cell RCC","Papillary RCC","Chromophobe/other RCC"]],
+  ["t","T category",["T1a","T1b","T2","T3","T4"]],["nodes", "Nodes",["N0","N1"]],["met","Metastatic",["M0","M1"]],
+  ["imdc","IMDC",["Favorable","Intermediate","Poor","Not applicable"]],["recur","Adjuvant risk",["Not eligible/unknown","KEYNOTE-564-defined risk"]]
+ ],
+ "Urethral Cancer":[
+  ["hist","Histology",["SCC","Urothelial","Adenocarcinoma","Other/rare"]],
+  ["t","T stage",["Tis/Ta","T1","T2","T3","T4"]],["nodes","Nodes",["N0","N1/N2"]],["met","Metastatic",["M0","M1"]],
+  ["resect","Resectable",["Yes","No"]]
+ ]
+};
+function fieldHTML(x){
+  const [id,label,type,opts]=x; let input="";
+  if(type==="number" || (type==="select" && !opts)) input=`<input id="o-${id}" type="number" class="w-full border rounded-xl p-3 text-sm" placeholder="${esc(label)}">`;
+  else input=`<select id="o-${id}" class="w-full border rounded-xl p-3 text-sm">${(type==="number"?[]:opts||x[2]).map(o=>`<option>${esc(o)}</option>`).join("")}</select>`;
+  return `<label class="block text-xs font-bold text-slate-500"><span class="block mb-1">${esc(label)}</span>${input}</label>`;
+}
+function renderOracleForm(){
+  const d=document.getElementById("oracleDisease").value; const schema=ORACLE_SCHEMAS[d];
+  document.getElementById("oracleForm").innerHTML=`<div class="font-black text-sm mb-3">${esc(d)} — input criteria</div><div class="grid md:grid-cols-2 gap-3">${schema.map(fieldHTML).join("")}</div><button onclick="runOracle('${d}')" class="mt-4 w-full rounded-xl py-3 bg-slate-950 text-white font-black text-sm">Find treatment plan</button><div class="text-[11px] text-slate-400 mt-2">The engine maps the entered criteria to a pathway; score calculations remain separate.</div>`;
+}
+function val(id){const e=document.getElementById("o-"+id); return e?e.value:"";}
 
-        function displayOracleOutput(title, content) {
-            oracleOutputArea.classList.remove('hidden');
-            oracleResultContent.innerHTML = `<p class="font-black text-lg text-slate-900 mb-2">${title}</p><div class="border-t border-emerald-200 my-2"></div>${content}`;
-        }
+function runOracle(d){
+ let html="";
+ if(d==="Ca Prostate"){
+  const s=val("state"), gg=+val("gg"), psa=+val("psa"), ct=val("ct"), cn=val("cn"), cm=val("cm"), hrr=val("hrr"), psadt=+val("psadt"), priorARPI=val("priorARPI"), priorDoc=val("priorDoc"), vol=val("volume");
+  if(s==="Localized"){
+    if(cm!=="M0") {html=plan("Metastatic disease entered","This is not a localized pathway. Switch the disease state to mHSPC/mCRPC and enter metastasis details.");}
+    else if(gg<=1 && psa<10 && ["T1","T2a"].includes(ct)){html=plan("Low-risk localized PCa","Active surveillance is a major guideline pathway when life expectancy and tumour burden support it. Definitive RP or RT remain options after shared decision-making.","AS");
+    } else if(gg<=2 && psa<20 && ["T2b","T2c"].includes(ct)){html=plan("Intermediate-risk localized PCa","Separate favourable from unfavourable intermediate-risk using the full NCCN/EAU criteria (tumour burden, GG and clinical stage). Selected favourable disease may undergo AS; unfavourable disease usually needs definitive local therapy with RT+short-course ADT or RP ± nodal staging.","Intermediate");
+    } else {html=plan("High / very-high risk localized or locally advanced PCa","Use multimodality curative treatment. Consider RP with nodal staging in selected fit patients or definitive RT + long-course ADT; selected high-risk patients may receive systemic intensification under current NCCN/EAU criteria.","High/very-high");}
+  } else if(s==="mHSPC"){
+    if(cm==="M0"){html=plan("mHSPC state mismatch","M1 is required. Re-enter metastatic status.","");}
+    else {
+      let base="Continuous ADT + treatment intensification. ";
+      let trip = (priorARPI==="No" && priorDoc==="No");
+      let biom = (hrr==="BRCA1/2" || hrr==="Other actionable HRR");
+      if(trip) base += "If fit for docetaxel, assess triplet therapy with an ARPI + docetaxel (e.g. darolutamide/ARASENS or abiraterone/PEACE-1) versus ARPI doublet according to disease volume, fitness and current guideline criteria. ";
+      else base += "Use an appropriate ARPI/disease-directed regimen according to prior exposure. ";
+      if(vol==="Low") base += "Low-volume M1 disease: discuss prostate-directed RT. ";
+      if(biom) base += "HRR alteration detected: review PARP-inhibitor eligibility and current region-specific indications/trials (e.g. AMPLITUDE-related strategy).";
+      html=plan("Metastatic hormone-sensitive prostate cancer",base,"mHSPC");
+    }
+  } else if(s==="nmCRPC"){
+    let high=(psadt && psadt<10);
+    html=plan("Non-metastatic CRPC","Continue ADT. "+(high?"High-risk for metastasis by PSA-DT (<10 mo): consider darolutamide, apalutamide or enzalutamide.":"PSA-DT not in the high-risk threshold; continue guideline-concordant surveillance and assess imaging/therapy based on the full risk profile."));
+  } else if(s==="mCRPC"){
+    let next=[];
+    if(hrr!=="Unknown/negative") next.push("molecularly directed PARP-inhibitor pathway");
+    if(cm==="M1c") next.push("visceral-disease-aware systemic selection");
+    if(priorARPI==="Yes" && priorDoc==="Yes") next.push("cabazitaxel/CARD-style or PSMA radioligand if eligible");
+    else next.push("choose next life-prolonging agent based on prior exposure, symptoms, visceral disease and biomarkers");
+    html=plan("Metastatic castration-resistant prostate cancer","Maintain castrate testosterone. "+next.join("; ")+". Consider PSMA PET before radioligand therapy and biopsy of discordant/rapidly progressive disease when neuroendocrine transformation is suspected.");
+  } else if(s==="BCR after RP" || s==="BCR after RT"){
+    html=plan("Biochemical recurrence","Restage only if the result will affect treatment. After RP, consider early salvage RT based on PSA kinetics/pathology; after RT, use Phoenix definition and PSMA PET when appropriate. Selected high-risk recurrence may require ADT with salvage treatment.");
+  }
+ } else if(d==="Ca Bladder"){
+  const s=val("state"), t=val("t"), cis=val("cis"), grade=val("grade"), cisp=val("cisplatin"), fgfr=val("fgfr"), her2=val("her2"), ctdna=val("ctdna");
+  if(s==="NMIBC initial/recurrent"){
+    if(t==="T1" && grade==="HG") html=plan("High-risk NMIBC pathway","Ensure adequate TURBT/second TURBT where indicated. Discuss BCG induction + maintenance versus early radical cystectomy according to full EAU/NCCN risk profile, including variant histology/LVI.");
+    else if(t==="Tis" || cis==="Yes") html=plan("CIS pathway","Confirm mapping/prostatic urethral evaluation when indicated. BCG-based treatment is central for BCG-naïve high-risk CIS; risk-stratify and define early cystectomy versus bladder preservation.");
+    else html=plan("Low/intermediate NMIBC pathway","Complete TURBT. For low-risk disease consider immediate postoperative intravesical chemotherapy when safe. Intermediate-risk disease receives recurrence/progression-adapted intravesical therapy.");
+  } else if(s==="BCG-unresponsive NMIBC") html=plan("BCG-unresponsive NMIBC","Do not simply repeat BCG. Radical cystectomy is the standard/preferred oncologic option. Bladder-preserving options depend on CIS/papillary phenotype, approval and trial access (e.g. pembrolizumab, N-803+BCG, nadofaragene, TAR-200 and trials).");
+  else if(s==="MIBC cT2–T4a") html=plan("Muscle-invasive bladder cancer","For cT2–T4a N0M0, pursue curative-intent multimodality therapy. If cisplatin-eligible, evaluate perioperative cisplatin-based strategy including GC ± durvalumab under current guideline/approval. If cisplatin-ineligible, evaluate EV + pembrolizumab perioperative pathway where approved. Radical cystectomy + pelvic LND remains a central local modality; TMT is for selected candidates.");
+  else if(s==="Metastatic"){
+    let b=cisp==="Yes"?"EV+pembrolizumab may be preferred if available/appropriate; otherwise platinum-based chemotherapy remains a core option.":"EV+pembrolizumab is a major option for untreated advanced disease; if unsuitable, use a cisplatin- or carboplatin-based pathway as appropriate.";
+    if(fgfr==="Susceptible alteration") b+=" FGFR3 alteration: assess erdafitinib in the appropriate later-line setting.";
+    if(her2==="3+" || her2==="2+") b+=" HER2 expression: review HER2-directed ADC eligibility (EAU 2026 incorporates trastuzumab deruxtecan).";
+    b+=" If platinum-treated without progression, maintenance avelumab is an established pathway.";
+    html=plan("Advanced/metastatic urothelial carcinoma",b);
+  }
+ } else if(d==="UTUC"){
+  const r=val("risk"), loc=val("location"), met=val("met"), cisp=val("cis");
+  if(met==="M1") html=plan("Metastatic UTUC","Treat as advanced urothelial carcinoma: systemic therapy by platinum/ICI/ADC eligibility, molecular testing and prior exposure. Maintenance avelumab remains relevant after non-progressive platinum chemotherapy.");
+  else if(r==="Low") html=plan("Low-risk localized UTUC","Kidney-sparing management is preferred when feasible: endoscopic ablation/resection and/or selected segmental/distal ureterectomy with close ureteroscopic and imaging surveillance.");
+  else if(r==="High") html=plan("High-risk localized UTUC","Radical nephroureterectomy with complete bladder cuff is standard for suitable patients. Discuss perioperative platinum therapy; adjuvant gemcitabine-platinum after RNU is supported by POUT in appropriate patients. Kidney-sparing may be reserved for imperative/select circumstances.");
+  else html=plan("UTUC risk not fully specified","Enter low/high-risk status after integrating grade, cytology, imaging, hydronephrosis, tumour size, multifocality and biopsy.");
+ } else if(d==="Ca Penis"){
+  const s=val("state"), cis=val("cis"), bulky=val("bulky"), fna=val("fna"), pnl=val("pnl"), ene=val("ene"), prim=val("primary");
+  if(s==="Primary only") html=plan("Primary tumour pathway","Choose organ-sparing versus partial/total penectomy according to T stage, depth, grade and functional anatomy. Do not separate primary treatment from groin risk assessment.");
+  else if(s==="cN0") html=plan("Clinically node-negative groins","Low-risk PeIN/Ta/T1a may be observed. T1b or T2+ disease generally needs invasive nodal staging, usually bilateral DSNB or ILND according to centre expertise and current guideline pathway.");
+  else if(s==="cN1") html=plan("cN1 penile SCC","Ipsilateral fascial-sparing ILND or open radical ILND. FNA/US and cross-sectional staging as appropriate. Avoid videoendoscopic ILND outside guideline-supported contexts.");
+  else if(s==="cN2") html=plan("cN2 penile SCC","Open radical ILND. If bulky mobile or bilateral cN2 and chemotherapy-fit, discuss NAC with cisplatin + taxane before nodal surgery as an alternative to immediate surgery.");
+  else if(s==="cN3 / pelvic nodes") html=plan("cN3 / pelvic nodal disease","EAU 2026: NAC with a cisplatin- and taxane-based combination in chemotherapy-fit patients; TIP is the best-established prospective regimen. Re-image; if responding or not progressing and resectable → radical ILND + PLND. If not resectable/progressive → systemic/palliative MDT pathway.");
+  else if(s==="M1 / unresectable") html=plan("Metastatic/unresectable penile SCC","Platinum-based chemotherapy is the preferred first-line systemic approach. Consider biomarker-defined pembrolizumab where NCCN/approval criteria are met and trial enrollment in progressive disease.");
+  if(pnl==="≥3" || ene==="Yes") html += `<div class="warn mt-3 text-xs"><b>Postoperative nodal flag:</b> EAU 2026 supports ipsilateral prophylactic PLND when ≥3 inguinal nodes are positive or ENE is present.</div>`;
+ } else if(d==="Ca Testis"){
+  const h=val("hist"), st=val("stage"), lvi=val("lvi"), mk=val("markers"), ig=val("igcccg"), res=val("residual");
+  if(st==="I" && h==="Seminoma") html=plan("Stage I seminoma","Active surveillance is appropriate for many compliant patients. Selected men may choose single-dose carboplatin AUC 7. Avoid routine adjuvant RT.");
+  else if(st==="I" && h==="NSGCT") html=plan("Stage I NSGCT",lvi==="Yes"?"High relapse risk (~40–50%): surveillance, 1-cycle BEP or nerve-sparing RPLND according to patient preference/expertise.":"Surveillance is appropriate for many patients with reliable follow-up.");
+  else if(st==="IIA/IIB" && h==="NSGCT" && mk==="Normal") html=plan("Clinical stage IIA/IIB NSGCT","Marker-negative low-volume disease needs specialist staging. Nerve-sparing RPLND is recommended by EAU for selected stage IIA NSGCT in experienced centres; repeat staging can be considered for very small (<2 cm) equivocal nodes.");
+  else if(st==="IIC/III") html=plan("Metastatic germ-cell tumour","Use IGCCCG risk to choose chemotherapy: good-risk BEP×3 or EP×4; intermediate/poor-risk generally BEP×4. VIP×4 is the bleomycin-free option when appropriate.");
+  if(res==="≥1 cm" && h==="NSGCT" && mk==="Normal") html += `<div class="rule mt-3 text-xs"><b>Residual mass:</b> visible >1 cm after chemotherapy with normalized/normalising markers → post-chemotherapy RPLND in the standard pathway.</div>`;
+  if(res==="Seminoma ≥3 cm" && h==="Seminoma") html += `<div class="rule mt-3 text-xs"><b>Seminoma residual:</b> FDG-PET/CT after an adequate post-chemotherapy interval (about 6–8 weeks) is used for ≥3 cm residual masses.</div>`;
+ } else if(d==="Ca Kidney"){
+  const h=val("hist"), t=val("t"), m=val("met"), im=val("imdc"), adj=val("recur");
+  if(m==="M0" && t==="T1a") html=plan("Localized T1a RCC","Partial nephrectomy is preferred when feasible. Active surveillance or ablation are alternatives for selected small renal masses.");
+  else if(m==="M0" && t!=="T1a") html=plan("Localized higher-stage RCC","Use nephron-sparing surgery where technically feasible for T1 disease; radical nephrectomy is standard for many T2/T3 situations when PN is not appropriate. Discuss adjuvant pembrolizumab for KEYNOTE-564-defined high-risk ccRCC.");
+  else if(m==="M1"){
+    if(h!=="Clear-cell RCC") html=plan("Metastatic non-clear-cell RCC","Use histology-specific systemic therapy and expert MDT review; papillary RCC has the strongest prospective cabozantinib signal. Clinical trials are valuable.");
+    else html=plan("Metastatic clear-cell RCC",im==="Intermediate"||im==="Poor"?"Preferred first-line options include nivo/ipi, pembro/axi, lenva/pembro or nivo/cabo.":"Favourable-risk patients may receive an IO/TKI combination or selected alternatives; the exact regimen depends on contraindications/preferences. Avoid using risk category as the sole treatment determinant.");
+  }
+  if(adj==="KEYNOTE-564-defined risk") html += `<div class="ok mt-3 text-xs"><b>Adjuvant flag:</b> EAU 2026 supports pembrolizumab for defined pT2 G4/sarcomatoid, pT3, pT4, N+ M0 and selected M1 NED populations.</div>`;
+ } else if(d==="Urethral Cancer"){
+  const h=val("hist"), m=val("met"), resect=val("resect");
+  if(m==="M1") html=plan("Metastatic urethral carcinoma","Systemic treatment follows histology: urothelial pathways for urothelial carcinoma; platinum-based SCC strategies or site-specific chemoradiation pathways for SCC/adenocarcinoma. Use specialist MDT and trial access.");
+  else if(resect==="Yes") html=plan("Localized resectable urethral carcinoma","Select local excision/urethrectomy/penectomy or larger en-bloc pelvic surgery according to site, depth and margins; add nodal treatment/RT/chemotherapy when stage and histology warrant.");
+  else html=plan("Unresectable localized urethral carcinoma","Use histology-specific chemoradiation/systemic downstaging strategies in an expert centre.");
+ }
+ document.getElementById("oracleOutput").innerHTML=html||`<div class="text-sm font-black">Enter a complete set of criteria.</div>`;
+}
+function plan(title,body,tag="Guideline pathway"){return `<div class="flex gap-2 items-center"><span class="badge badge-green">${esc(tag)}</span></div><h3 class="text-lg font-black mt-2">${esc(title)}</h3><div class="rule mt-3 text-sm leading-6">${body}</div><div class="text-[11px] text-slate-500 mt-3">Verify the live NCCN/EAU version, institutional protocol, regulatory indication and MDT decision before treatment.</div>`;}
 
-        // Oracle Algorithms
-        function calcProstate() {
-            let t = document.getElementById('pTstage').value;
-            let psa = parseFloat(document.getElementById('pPSA').value);
-            let prim = parseInt(document.getElementById('pPrim').value);
-            let sec = parseInt(document.getElementById('pSec').value);
-            let ter = parseInt(document.getElementById('pTer').value);
-            let cores = document.getElementById('pCores').value;
+function calcISUPDeep(){
+ const p=+document.getElementById("igPrimary").value,s=+document.getElementById("igSecondary").value,t=document.getElementById("igTertiary").value,p4=+document.getElementById("igP4").value||0,idc=document.getElementById("igIDC").checked;
+ if(!p||!s){document.getElementById("isupOut").innerHTML=`<div class="warn text-xs">Select both primary and secondary patterns.</div>`;return}
+ const sum=p+s; let gg=sum<=6?1:sum===7?(p===3?2:3):sum===8?4:5;
+ let note=`Gleason ${p}+${s}=${sum} → ISUP Grade Group ${gg}.`;
+ if(t==="5" && gg<5) note+=` Tertiary pattern 5 is present: report it explicitly in the radical-prostatectomy specimen; do not simply discard it.`;
+ if(idc) note+=` Cribriform/intraductal carcinoma is an adverse pathologic feature and should be explicitly recorded; it can influence risk beyond the numeric GG.`;
+ if(p4) note+=` Pattern-4 percentage = ${p4}%; percentage pattern 4 is a prognostic descriptor, not a separate ISUP Grade Group.`;
+ document.getElementById("isupOut").innerHTML=`<div class="ok text-sm leading-6">${esc(note)}</div>`;
+}
+function calcPSAD(){const p=+document.getElementById("psa").value,v=+document.getElementById("vol").value;if(p>0&&v>0){const x=p/v;document.getElementById("psadOut").innerHTML=`<div class="ok text-sm">PSA density = <b>${x.toFixed(3)} ng/mL/cc</b><br>Use the value with PI-RADS and clinical suspicion; do not use 0.15 as an automatic biopsy switch for every patient.</div>`}}
+function calcEORTC(){
+ const rec=+erTumors.value + +erSize.value + +erRec.value + +erT.value + +erCIS.value + +erG.value;
+ const prog=+erTumors.value + +erRec.value + +erSize.value + +erT.value + +erCIS.value + +erG.value;
+ const recRisk=rec===0?"1-y 15%, 5-y 31%":rec<=4?"1-y 24%, 5-y 46%":rec<=9?"1-y 38%, 5-y 62%":"1-y 61%, 5-y 78%";
+ const progRisk=prog===0?"1-y 0.2%, 5-y 0.8%":prog<=6?"1-y 1.0%, 5-y 6%":prog<=13?"1-y 5%, 5-y 17%":"1-y 17%, 5-y 45%";
+ eortcOut.innerHTML=`<div class="rule text-sm">Recurrence score <b>${rec}/17</b> — ${recRisk}<br>Progression score <b>${prog}/23</b> — ${progRisk}</div><div class="text-[11px] text-slate-500 mt-2">Historic EORTC 2006 tables. Current EAU 2026 uses the 4-group EAU model for progression and continues to reference EORTC/CUETO for selected prognostic use.</div>`;
+}
+function calcEAURisk(){
+ const stage=erxStage.value, grade=erxGrade.value, cis=erxCIS.checked, vhi=erxVHI.checked, age=erxAge.value==="gt70", mult=erxMult.value==="multi", size=erxSize.value==="ge3";
+ let risk="Intermediate";
+ if(vhi){risk="Very High";}
+ else if(cis && stage==="Tis"){risk="High";}
+ else if(stage==="T1" && grade==="HG3"){risk="High"; if(cis||[age,mult,size].filter(Boolean).length>=1) risk="Very High";}
+ else {
+   const extra=[age,mult,size].filter(Boolean).length;
+   if(grade==="HG3" && stage==="Ta" && cis && extra===3) risk="Very High";
+   else if(grade==="HG3" && stage==="Ta" && extra>=2) risk="High";
+   else if(stage==="T1" && grade==="LG1" && extra===3) risk="High";
+   else if(stage==="Ta" && grade.startsWith("LG") && !cis && !age&&!mult&&!size && erxStatus.value==="primary") risk="Low";
+   else if(stage==="Ta" && grade.startsWith("LG") && extra<=1 && !cis) risk="Low";
+ }
+ eauriskOut.innerHTML=`<div class="${risk==='Very High'?'warn':risk==='High'?'rule':'ok'} text-sm"><b>EAU risk group: ${risk}</b></div><div class="text-[11px] text-slate-500 mt-2">Exact EAU assignment has additional variant-histology/clinical exclusions; use the official EAU NMIBC calculator when a borderline combination is encountered.</div>`;
+}
+function calcIMDC(){let n=0;["imdcKPS","imdcHb","imdcCa","imdcNeut","imdcPlate","imdcTime"].forEach(id=>{if(document.getElementById(id).checked)n++});let r=n===0?"Favorable":n<=2?"Intermediate":"Poor";imdcOut.innerHTML=`<div class="ok text-sm">IMDC = <b>${n}</b> → <b>${r} risk</b></div>`}
+function calcRENAL(){const n=+rr.value + +re.value + +rn.value + +rl.value;renalOut.innerHTML=`<div class="ok text-sm">Core RENAL score = <b>${n}</b> (A/P/X is a descriptor; add suffix h when the lesion abuts the main hilar vessels). Higher score = greater anatomic complexity.</div>`}
+function calcGSS(){gssOut.innerHTML=`<div class="ok text-sm">Guy's Stone Score <b>Grade ${gss.value}</b>. Use as a surgical complexity descriptor, not a stone-free guarantee.</div>`}
+function calcClavien(){cdOut.innerHTML=`<div class="ok text-sm"><b>Clavien–Dindo ${cd.value}</b></div>`}
 
-            if(!prim || !sec || isNaN(psa)) { alert("Complete all inputs."); return; }
+function searchAll(){
+ const q=document.getElementById("globalSearch").value.trim().toLowerCase(); if(q.length<2){if(!document.getElementById("homeView").classList.contains("hidden"))return;showHome();return}
+ ["homeView","diseaseView","oracleView","calcView","drugView","trialView"].forEach(id=>document.getElementById(id).classList.add("hidden"));document.getElementById("searchView").classList.remove("hidden");
+ let rows=[];
+ Object.entries(DISEASES).forEach(([d,dat])=>dat.sections.forEach(s=>s.items.forEach(it=>{const hay=(d+" "+s.title+" "+it[0]+" "+it[1]).toLowerCase();if(hay.includes(q))rows.push({d,s:s.title,q:it[0],a:it[1]})})));
+ DRUGS.forEach(x=>{if(x.join(" ").toLowerCase().includes(q))rows.push({d:"Drug library",s:x[0],q:x[1],a:x[2]})});
+ TRIALS.forEach(x=>{if(x.join(" ").toLowerCase().includes(q))rows.push({d:x[0],s:x[3],q:x[1],a:x[2]})});
+ document.getElementById("searchMeta").textContent=`${rows.length} match(es) for "${q}"`;
+ document.getElementById("searchResults").innerHTML=rows.length?rows.map(r=>cardHTML(r.d,r.s,[r.q,r.a])).join(""):`<div class="card p-6 text-sm text-slate-500">No matching protocol found.</div>`;
+}
 
-            // ISUP Logic
-            let totalGleason = prim + sec;
-            let isup = 0;
-            if(totalGleason <= 6) isup = 1;
-            else if(totalGleason === 7 && prim === 3) isup = 2;
-            else if(totalGleason === 7 && prim === 4) isup = 3;
-            else if(totalGleason === 8) isup = 4;
-            else if(totalGleason >= 9) isup = 5;
-
-            let trueIsup = isup;
-            let tertFlag = "";
-            if (ter === 5 && isup < 4) {
-                tertFlag = "<br><span class='text-red-700 font-bold'>⚠️ Tertiary Pattern 5 Present: Pathological behavior highly aggressive, functionally upgrades risk.</span>";
-            }
-
-            // NCCN Risk Logic
-            let risk = "";
-            let tx = "";
-            
-            let intFactors = 0;
-            if (t === 'T2b' || t === 'T2c') intFactors++;
-            if (isup === 2 || isup === 3) intFactors++;
-            if (psa >= 10 && psa < 20) intFactors++;
-
-            if (t === 'T3b' || t === 'T4' || prim === 5 || cores === 'veryhigh') {
-                risk = "Very High Risk";
-                tx = "<b>Primary options:</b><br>1. EBRT (78-80 Gy) + Long-course ADT (18-36 mo) + Abiraterone (STAMPEDE protocol).<br>2. Radical Prostatectomy + Extended Pelvic LND (Do not omit ePLND). Expect high need for multimodal salvage therapy.";
-            } else if (t === 'T3a' || isup >= 4 || psa > 20) {
-                risk = "High Risk";
-                tx = "<b>Primary options:</b><br>1. EBRT + Long-course ADT (18-36 mo) ± Brachy boost.<br>2. Radical Prostatectomy + ePLND.";
-            } else if (isup === 3 || cores === 'high' || intFactors >= 2) {
-                risk = "Unfavorable Intermediate Risk";
-                tx = "<b>Primary options:</b><br>1. EBRT + Short-course ADT (4-6 mo).<br>2. Radical Prostatectomy + ePLND.<br><span class='text-red-600 font-bold'>Active Surveillance is CONTRAINDICATED.</span>";
-            } else if (intFactors === 1) {
-                risk = "Favorable Intermediate Risk";
-                tx = "<b>Primary options:</b><br>1. Active Surveillance (Preferred if lower volume).<br>2. Radical Prostatectomy alone.<br>3. EBRT alone (no ADT needed).";
-            } else {
-                risk = "Low / Very Low Risk";
-                tx = "<b>Primary option:</b><br>Active Surveillance is strongly recommended. (PSA q6mo, DRE annually, confirmatory biopsy/MRI 1-2 yrs).";
-            }
-
-            let output = `
-                <div class="mb-2"><span class="text-slate-500 text-xs uppercase font-bold">Calculated Pathology:</span><br>Gleason ${prim}+${sec}=${totalGleason} (ISUP Grade Group ${isup}) ${tertFlag}</div>
-                <div class="mb-4"><span class="text-slate-500 text-xs uppercase font-bold">NCCN Stratification:</span><br><span class="text-lg font-black text-slate-800">${risk}</span></div>
-                <div class="p-4 bg-white rounded-lg border shadow-inner text-sm leading-relaxed">${tx}</div>
-            `;
-            displayOracleOutput("Prostate Navigator Result", output);
-        }
-
-        function calcTestis() {
-            let hist = document.getElementById('tHist').value;
-            let site = document.getElementById('tSite').value;
-            let mets = document.getElementById('tMets').value;
-            let afp = parseFloat(document.getElementById('tAFP').value);
-            let hcg = parseFloat(document.getElementById('thCG').value);
-            let ldh = parseFloat(document.getElementById('tLDH').value);
-
-            let risk = "";
-            let tx = "";
-
-            if (hist === 'sem') {
-                if (afp > 10) {
-                    risk = "<span class='text-red-700'>ERROR: Elevated AFP > 10 in pure Seminoma.</span>";
-                    tx = "<span class='font-bold bg-red-100 text-red-700 px-2 rounded'>CRITICAL RULE: Treat entirely as NSGCT regardless of pathology report. Recalculate using NSGCT.</span>";
-                } else if (mets === 'nonpulm') {
-                    risk = "Intermediate Risk (Seminoma)";
-                    tx = "<b>Regimen:</b> 4 cycles of BEP (or 4 cycles VIP/EP).<br>Note: There is NO 'Poor Risk' category for pure seminoma.";
-                } else {
-                    risk = "Good Risk (Seminoma)";
-                    tx = "<b>Regimen:</b> 3 cycles of BEP OR 4 cycles of EP.<br>Post-chemo residual mass ≥3cm requires FDG PET-CT at 6-8 weeks.";
-                }
-            } else {
-                // NSGCT Logic
-                let s1 = (afp < 1000 && hcg < 5000 && ldh < 1.5);
-                let s3 = (afp > 10000 || hcg > 50000 || ldh > 10);
-                
-                if (site === 'mediastinal' || mets === 'nonpulm' || s3) {
-                    risk = "Poor Risk (NSGCT)";
-                    tx = "<b>Regimen:</b> 4 cycles of BEP OR 4 cycles VIP.<br>MANDATORY Nerve-Sparing RPLND for any residual mass >1cm with normalized markers.";
-                } else if (!s1 && !s3) { // S2 (Intermediate markers)
-                    risk = "Intermediate Risk (NSGCT)";
-                    tx = "<b>Regimen:</b> 4 cycles of BEP.<br>MANDATORY Nerve-Sparing RPLND for residual mass >1cm.";
-                } else {
-                    risk = "Good Risk (NSGCT)";
-                    tx = "<b>Regimen:</b> 3 cycles of BEP OR 4 cycles of EP.<br>MANDATORY Nerve-Sparing RPLND for residual mass >1cm.";
-                }
-            }
-
-            let output = `
-                <div class="mb-4"><span class="text-slate-500 text-xs uppercase font-bold">IGCCCG Stratification:</span><br><span class="text-lg font-black text-slate-800">${risk}</span></div>
-                <div class="p-4 bg-white rounded-lg border shadow-inner text-sm leading-relaxed">${tx}</div>
-            `;
-            displayOracleOutput("Testis Navigator Result", output);
-        }
-
-        function calcKidney() {
-            let score = 0;
-            for(let i=1; i<=6; i++) { if(document.getElementById(`k${i}`).checked) score++; }
-            
-            let risk = "";
-            let tx = "";
-            if(score === 0) {
-                risk = "Favorable Risk (0 factors)";
-                tx = "<b>Systemic 1st Line Options:</b><br>• Pembrolizumab + Axitinib (KEYNOTE-426)<br>• Pembrolizumab + Lenvatinib (CLEAR)<br>• Nivolumab + Ipilimumab (CheckMate-214 is an option, but generally TKI+IO is preferred here).<br><br><i>Highly selected Favorable risk patients may undergo upfront Cytoreductive Nephrectomy.</i>";
-            } else if (score >= 1 && score <= 2) {
-                risk = "Intermediate Risk (" + score + " factors)";
-                tx = "<b>Systemic 1st Line Options:</b><br>• Nivolumab + Ipilimumab (IO/IO doublet - CheckMate-214 standard).<br>• Cabozantinib + Nivolumab.<br>• Pembrolizumab + Lenvatinib.<br><br><span class='text-red-700 font-bold'>Upfront cytoreductive surgery generally discouraged (CARMENA trial). Treat systemically first.</span>";
-            } else {
-                risk = "Poor Risk (" + score + " factors)";
-                tx = "<b>Systemic 1st Line Options:</b><br>• Nivolumab + Ipilimumab.<br>• Pembrolizumab + Axitinib/Lenvatinib.<br><span class='text-red-700 font-bold'>Strictly systemic therapy. No upfront nephrectomy.</span>";
-            }
-
-            let output = `
-                <div class="mb-4"><span class="text-slate-500 text-xs uppercase font-bold">IMDC (Heng) Stratification:</span><br><span class="text-lg font-black text-slate-800">${risk}</span></div>
-                <div class="p-4 bg-white rounded-lg border shadow-inner text-sm leading-relaxed">${tx}</div>
-            `;
-            displayOracleOutput("Kidney Navigator Result", output);
-        }
-
-        function calcPenis() {
-            let t = document.getElementById('peT').value;
-            let g = document.getElementById('peG').value;
-            let n = document.getElementById('peN').value;
-
-            let pathway = "";
-            if (n === 'cN3') {
-                pathway = `<span class="text-red-700 font-black">CRITICAL RULE: Upfront surgery is CONTRAINDICATED (high risk of skin necrosis/fungation).</span><br><br><b>Protocol:</b><br>1. Neoadjuvant Chemotherapy (NACT) with TIP regimen (Paclitaxel, Ifosfamide, Cisplatin).<br>2. Assess response.<br>3. If objective response -> Radical Consolidative Inguinal + Pelvic LND.`;
-            } else if (n === 'cN1' || n === 'cN2') {
-                pathway = `<b>Protocol:</b> Upfront Radical Inguinal LND (Superficial + Deep packets).<br><br><span class="text-red-700 font-black">MANDATORY EXTRAS:</span><br>• <b>Contralateral Rule:</b> If ≥2 positive nodes or ENE+ on ipsilateral side, contralateral prophylactic ILND is MANDATORY.<br>• <b>Pelvic LND Rule:</b> Ipsilateral Pelvic LND is MANDATORY if ≥2 nodes positive, or ENE+, or Cloquet's node positive.`;
-            } else if (n === 'cN0') {
-                if (t === 'Ta' || (t === 'T1' && g === '1')) {
-                    pathway = `<b>Protocol: Low Risk cN0</b><br>Surveillance of the groins (clinical exam + USG). Risk of occult micrometastasis is <15%.`;
-                } else {
-                    pathway = `<span class="text-red-700 font-black">CRITICAL RULE: Intermediate/High Risk cN0 (Occult mets risk >20%). Surveillance is CONTRAINDICATED.</span><br><br><b>Protocol:</b> Invasive Nodal Staging is MANDATORY via:<br>1. Dynamic Sentinel Node Biopsy (DSNB) using 99mTc and Patent Blue V.<br>-- OR --<br>2. Modified Inguinal LND (preserving saphenous vein, shorter incision).`;
-                }
-            }
-
-            let output = `<div class="p-4 bg-white rounded-lg border shadow-inner text-sm leading-relaxed">${pathway}</div>`;
-            displayOracleOutput("Penile Nodal Result", output);
-        }
-
-        function calcBladder() {
-            let t = document.getElementById('bT').value;
-            let v = document.getElementById('bVar').value;
-            let cis = document.getElementById('bCIS').checked;
-
-            let pathway = "";
-            if (v === 'small') {
-                pathway = `<span class="text-red-700 font-black">SYSTEMIC DISEASE: Small Cell / Neuroendocrine</span><br>Treat immediately with Neoadjuvant Etoposide + Platinum chemotherapy, followed by Radical Cystectomy or definitive radiotherapy. Do not use BCG.`;
-            } else if (v === 'micro' || v === 'scc') {
-                pathway = `<span class="text-red-700 font-black">AGGRESSIVE VARIANT HISTOLOGY</span><br>Extremely high risk of early micrometastasis or chemoresistance. Upfront Radical Cystectomy + ePLND is strongly preferred. Conservative management with intravesical BCG is highly discouraged.`;
-            } else if (t === 'T2') {
-                pathway = `<b>Muscle Invasive Bladder Cancer (MIBC)</b><br>1. Staging CT Urogram + CT Chest/Abdo/Pelvis.<br>2. <b>Neoadjuvant Therapy:</b> Check Cisplatin eligibility (Galsky criteria: CrCl >60). If eligible, Dose-Dense MVAC (VESPER Trial) is standard.<br>3. Radical Cystectomy + extended PLND.<br>4. Adjuvant: Nivolumab (CheckMate-274) if high risk of recurrence.`;
-            } else if (t === 'T1' || cis) {
-                pathway = `<span class="text-red-700 font-black">HIGH RISK NMIBC</span><br>1. <b>MANDATORY:</b> Re-TURBT within 2-6 weeks to rule out occult MIBC (30-40% upstaging risk).<br>2. If still T1/CIS: Induction BCG weekly x 6.<br>3. Maintenance BCG (SWOG protocol) for 1-3 years if responsive.`;
-            } else {
-                pathway = `<b>Low / Intermediate Risk NMIBC</b><br>Immediate post-op single instillation of Mitomycin C or Gemcitabine (within 2-6 hours). Ensure no bladder perforation. Subsequent treatment based on full pathology.`;
-            }
-
-            let output = `<div class="p-4 bg-white rounded-lg border shadow-inner text-sm leading-relaxed">${pathway}</div>`;
-            displayOracleOutput("Bladder Pathway Result", output);
-        }
-
-        // --- HANDOUTS ---
-        function generateHandout() {
-            const val = document.getElementById('handoutSelect').value;
-            const content = document.getElementById('handoutContent');
-            const title = document.getElementById('handoutTitle');
-            if(val === 'bladder') {
-                title.textContent = 'Bladder Cancer: 3-Year Post-Surgery Plan';
-                content.innerHTML = `<p><strong>Year 1:</strong></p><ul class="list-disc pl-5 mb-3"><li>Month 3, 6, 9: Cystoscopy (Camera test) & Urine Test</li><li>Month 12: Cystoscopy, Urine Test, CT Scan of Abdomen/Pelvis</li></ul><p><strong>Year 2:</strong></p><ul class="list-disc pl-5 mb-3"><li>Month 15, 18: Cystoscopy & Urine Test</li><li>Month 24: Cystoscopy, Urine Test, CT Scan</li></ul><p><strong>Year 3+:</strong></p><ul class="list-disc pl-5"><li>Every 6 months: Cystoscopy & Urine test indefinitely</li></ul>`;
-            } else if (val === 'prostate') {
-                title.textContent = 'Prostate Cancer: Post-Treatment Plan';
-                content.innerHTML = `<p><strong>Year 1 & 2:</strong></p><ul class="list-disc pl-5 mb-3"><li>Every 3 months: PSA Blood Test</li><li>Do not take testosterone supplements.</li></ul><p><strong>Year 3 & 4:</strong></p><ul class="list-disc pl-5 mb-3"><li>Every 6 months: PSA Blood Test</li></ul><p><strong>Year 5+:</strong></p><ul class="list-disc pl-5"><li>Annually: PSA Test and Clinical Checkup</li></ul>`;
-            } else if (val === 'testis') {
-                title.textContent = 'Testicular Cancer: Active Surveillance';
-                content.innerHTML = `<p><strong>Year 1:</strong></p><ul class="list-disc pl-5 mb-3"><li>Every 2 months: Physical Exam & Blood Markers (AFP, hCG, LDH)</li><li>Every 4 months: CT Scan of Abdomen/Pelvis</li></ul><p><strong>Year 2:</strong></p><ul class="list-disc pl-5 mb-3"><li>Every 3 months: Physical Exam & Markers</li><li>Every 6 months: CT Scan</li></ul><p><strong>Year 3+:</strong></p><ul class="list-disc pl-5"><li>Every 6 months: Physical Exam & Markers</li><li>Annually: Routine Checkup (CT scans minimized to avoid radiation)</li></ul>`;
-            }
-            document.getElementById('printArea').classList.remove('hidden');
-            document.getElementById('printBtn').classList.remove('hidden');
-        }
-
-        // Init
-        switchMode('clinical');
-    </script>
+renderHome();
+</script>
 </body>
 </html>
