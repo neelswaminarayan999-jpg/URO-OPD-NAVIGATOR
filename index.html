@@ -4007,5 +4007,484 @@ if(typeof _finalDiseaseSelector!=='undefined'&&_finalDiseaseSelector)_finalDisea
   window.showHome=function(){if(origShowHome)origShowHome();document.getElementById('oracleView')?.classList.add('hidden');document.getElementById('homeView')?.classList.remove('hidden');};
 })();
 </script>
+    <!--
+  Uro-Oncology Oracle: EAU 2026 source augmentation
+  Paste this entire block immediately before </body> in the existing detailed HTML.
+
+  It preserves the supplied NCCN-oriented material and existing validated calculators.
+  It adds an EAU 2026 provenance layer, current-update panel, trial links, path-specific
+  safety checkpoints, and a visible distinction between guideline navigation and prescribing.
+-->
+<script>
+(function () {
+  "use strict";
+
+  var EAU_2026 = {
+    "Ca Bladder": {
+      label: "Bladder cancer",
+      url: "https://uroweb.org/guidelines/non-muscle-invasive-bladder-cancer/summary-of-changes",
+      mibcUrl: "https://uroweb.org/guidelines/muscle-invasive-and-metastatic-bladder-cancer/summary-of-changes/2026",
+      edition: "EAU NMIBC 2026 + EAU MIBC/Metastatic UC 2026",
+      updates: [
+        {
+          area: "NMIBC classification and risk",
+          text: "Use the current WHO 1973, WHO 2004/2022 and hybrid grading context shown in the guideline. Keep EAU risk group, EORTC/CUETO prognostic tools and the post-BCG phenotype as separate constructs; do not swap one for another."
+        },
+        {
+          area: "BCG-unresponsive disease",
+          text: "The 2026 NMIBC guideline adds phenotype-specific tables for papillary Ta/T1 and CIS ± papillary disease. The clinical interview must record adequate BCG exposure and recurrence timing before this label is used."
+        },
+        {
+          area: "High / very-high-risk BCG-naive NMIBC",
+          text: "The 2026 update includes new recommendations regarding sasanlimab or durvalumab added to BCG with maintenance in selected BCG-naive high- and very-high-risk patients. Applicability, approval and local protocol must be checked."
+        },
+        {
+          area: "Resectable MIBC",
+          text: "The 2026 MIBC update incorporates NIAGARA: perioperative cisplatin/gemcitabine plus durvalumab for eligible cT2–T4a cN0 M0 patients. The EAU source notes cisplatin eligibility in this setting may include GFR >40 mL/min together with immunotherapy eligibility."
+        },
+        {
+          area: "Cisplatin-ineligible MIBC",
+          text: "The 2026 MIBC update incorporates KEYNOTE-905/EV-303 perioperative enfortumab vedotin plus pembrolizumab for the relevant cisplatin-ineligible population. Do not offer this branch without checking the approved indication and all eligibility criteria."
+        },
+        {
+          area: "Advanced UC biomarkers and sequencing",
+          text: "The 2026 update recommends documenting HER2 IHC for HER2-directed ADC selection and includes trastuzumab deruxtecan for HER2 IHC 3+ and consideration for IHC 2+ in the guideline-defined setting. It also addresses ctDNA-positive adjuvant data, FGFR-directed treatment, and withdrawal of the accelerated sacituzumab govitecan indication."
+        },
+        {
+          area: "Local control, survivorship and MDT",
+          text: "Keep cystectomy, diversion, trimodality suitability, mental-health support, frailty, functional outcomes and metastasis-directed discussions in a documented MDT pathway rather than treating them as one-line alternatives."
+        }
+      ],
+      trials: [
+        ["NIAGARA", "Perioperative gemcitabine/cisplatin + durvalumab"],
+        ["KEYNOTE-905 / EV-303", "Perioperative enfortumab vedotin + pembrolizumab"],
+        ["IMvigor011", "ctDNA-guided adjuvant atezolizumab context"],
+        ["POTOMAC", "Durvalumab + BCG in high-risk NMIBC"],
+        ["THOR", "FGFR-directed treatment context"],
+        ["SunRISe-1", "TAR-200 bladder-preserving context"]
+      ],
+      prompts: [
+        "Is the disease layer derived from actual T and M category rather than from a duplicated NMIBC/MIBC selector?",
+        "For NMIBC, are detrusor muscle, complete TURBT, grade, CIS, multiplicity, size, recurrence pattern, variant/LVI and BCG history documented?",
+        "For MIBC, are cT, cN, M, local-control candidacy, renal function, cisplatin eligibility, immunotherapy eligibility and patient preference all documented?",
+        "For advanced UC, are prior platinum/ICI/EV exposure, FGFR status, HER2 IHC, performance status and local regulatory status documented?"
+      ]
+    },
+    "Ca Prostate": {
+      label: "Prostate cancer",
+      url: "https://uroweb.org/guidelines/prostate-cancer/summary-of-changes",
+      edition: "EAU Prostate Cancer 2026",
+      updates: [
+        {
+          area: "MRI and biopsy strategy",
+          text: "The 2026 guideline revised recommendations for MRI in biopsy indication and strategy. The case record must retain PSA, PSA density where used, DRE, MRI/PI-RADS, biopsy technique and pathological findings rather than storing only a risk label."
+        },
+        {
+          area: "Staging",
+          text: "The 2026 update revised prostate staging recommendations. Record the imaging modality, clinical versus pathological staging, nodal status, metastatic burden where relevant and the date that staged the patient."
+        },
+        {
+          area: "Active surveillance",
+          text: "The 2026 update revised active-surveillance recommendations. Eligibility should expose Grade Group, PSA, clinical stage, biopsy extent and adverse histology such as cribriform/intraductal features rather than relying on a one-word low-risk label."
+        },
+        {
+          area: "Biochemical recurrence",
+          text: "The 2026 update revised imaging in biochemical recurrence and second-line therapy after curative-intent treatment. Separate post-prostatectomy and post-radiotherapy definitions, PSA kinetics, prior treatment and salvage candidacy."
+        },
+        {
+          area: "Metastatic hormone-sensitive disease",
+          text: "The 2026 update revised first-line mHSPC recommendations. Keep disease volume, timing, fitness, contraindications, prior exposure and patient priorities explicit when navigating doublet/triplet systemic options."
+        }
+      ],
+      trials: [
+        ["ProtecT", "Localized disease outcomes context"],
+        ["STAMPEDE", "Systemic and radiotherapy strategy platform"],
+        ["ARASENS", "ADT + docetaxel + darolutamide"],
+        ["PEACE-1", "Systemic intensification context"],
+        ["EMBARK", "High-risk biochemical recurrence context"],
+        ["VISION", "PSMA radioligand therapy context"]
+      ],
+      prompts: [
+        "Are Grade Group, PSA, clinical T category, MRI, biopsy extent and adverse histology visible?",
+        "Is the patient in a localized, recurrence, mHSPC, nmCRPC or mCRPC state before selecting a therapy branch?",
+        "Does the plan document urinary, bowel, sexual, bone, metabolic and cardiovascular considerations?",
+        "If a percentage is shown, does it name the model, endpoint and time horizon?"
+      ]
+    },
+    "Ca Kidney": {
+      label: "Renal cell carcinoma",
+      url: "https://uroweb.org/guidelines/renal-cell-carcinoma/summary-of-changes",
+      edition: "EAU Renal Cell Carcinoma 2026",
+      updates: [
+        {
+          area: "Frailty and nephrology",
+          text: "The 2026 RCC guideline adds a frailty/comprehensive geriatric assessment chapter and updates nephrological assessment. Renal reserve, contralateral kidney, CKD risk and patient fitness must sit beside anatomy in every local-treatment decision."
+        },
+        {
+          area: "Localized disease",
+          text: "The 2026 update includes revised radical and partial nephrectomy text and alternatives to surgery. Record tumour complexity, anatomical feasibility, baseline renal function, hereditary context, biopsy status where relevant and competing-risk assessment."
+        },
+        {
+          area: "Oligometastatic disease",
+          text: "The 2026 update revises oligometastatic management. Keep systemic disease state, response/stability, resectability/ablative feasibility and multidisciplinary rationale visible."
+        },
+        {
+          area: "Follow-up",
+          text: "The 2026 update revises follow-up. Follow-up intensity should be tied to a named recurrence-risk model, imaging strategy, renal function and survivorship needs."
+        }
+      ],
+      trials: [
+        ["KEYNOTE-564", "Adjuvant pembrolizumab context"],
+        ["CheckMate 214", "Nivolumab + ipilimumab context"],
+        ["KEYNOTE-426", "Pembrolizumab + axitinib context"],
+        ["CLEAR", "Lenvatinib + pembrolizumab context"],
+        ["CheckMate 9ER", "Nivolumab + cabozantinib context"]
+      ],
+      prompts: [
+        "Is the RCC subtype documented rather than inferred from a renal mass?",
+        "Are cT/pT, nodal/metastatic status, venous involvement and resectability recorded?",
+        "Has renal reserve and nephrology input been considered before local treatment?",
+        "Does systemic-treatment navigation identify IMDC group, prior therapy and need for rapid disease control?"
+      ]
+    },
+    "UTUC": {
+      label: "Upper tract urothelial carcinoma",
+      url: "https://uroweb.org/guidelines/upper-urinary-tract-urothelial-cell-carcinoma",
+      edition: "EAU UTUC 2026",
+      updates: [
+        {
+          area: "TNM and diagnostic risk work-up",
+          text: "The 2026 update incorporates the 2025 UICC/TNM edition, further clarifies cytology/urinary biomarkers and discusses prognostic FGFR3 expression. Keep imaging, cytology, ureteroscopic findings, biopsy grade, location, multifocality and renal function structured."
+        },
+        {
+          area: "Kidney-sparing treatment",
+          text: "The 2026 update discusses the limited evidence on renal preservation after endoscopic/laser treatment. Preserve the complete low-risk criteria and surveillance burden before offering a kidney-sparing route."
+        },
+        {
+          area: "RNU and lymph nodes",
+          text: "The 2026 update elaborates bladder-cuff management, lymph-node-dissection patient criteria and distal ureterectomy evidence. Location and intended nodal template must be visible in the plan."
+        },
+        {
+          area: "Perioperative and advanced disease",
+          text: "The 2026 update includes chemoimmunotherapy evidence, perioperative bladder-instillation evidence and local-regional nodal-metastasis options. Post-RNU renal decline is a pathway-changing issue and should never be hidden."
+        },
+        {
+          area: "Follow-up",
+          text: "The 2026 update revises follow-up after kidney-sparing management of high-risk disease. Link follow-up intensity to treatment route and bladder/upper-tract recurrence risk."
+        }
+      ],
+      trials: [
+        ["POUT", "Adjuvant platinum chemotherapy after RNU context"],
+        ["CheckMate 274", "Adjuvant nivolumab urothelial context"],
+        ["EV-302 / KEYNOTE-A39", "Advanced urothelial systemic context"],
+        ["JAVELIN Bladder 100", "Maintenance avelumab context"]
+      ],
+      prompts: [
+        "Have all current low-risk versus high-risk UTUC criteria been documented?",
+        "Is the location renal pelvis, proximal/mid/distal ureter and is multifocality recorded?",
+        "What will the chosen local treatment do to renal reserve and subsequent systemic eligibility?",
+        "If nodal disease is present, has the local-regional management route been discussed in MDT?"
+      ]
+    },
+    "Ca Testis": {
+      label: "Testicular cancer",
+      url: "https://uroweb.org/guidelines/testicular-cancer/summary-of-changes",
+      edition: "EAU Testicular Cancer 2026",
+      updates: [
+        {
+          area: "2026 complete update",
+          text: "All chapters were assessed for the 2026 guideline. The update includes a new recommendation on testicular prosthesis and material restructure/additions in metastatic disease, including bone metastases."
+        },
+        {
+          area: "Stage I and risk adaptation",
+          text: "Retain histology, pathological stage, lymphovascular invasion, post-orchidectomy markers, surveillance feasibility, fertility and patient preference. Do not use a generic stage-I plan for seminoma and NSGCT."
+        },
+        {
+          area: "Stage II and metastatic disease",
+          text: "The 2026 update restructures stage IIA/B seminoma including nsRPLND and radio-chemotherapy considerations. For metastatic germ-cell tumours, retain IGCCCG group, marker kinetics and bleomycin fitness."
+        },
+        {
+          area: "Post-treatment and relapse",
+          text: "Post-chemotherapy residual disease, relapse prognosis, cumulative toxicity, fertility, cardiovascular health, hearing, renal function and long-term follow-up require their own routes."
+        }
+      ],
+      trials: [
+        ["IGCCCG Update", "Metastatic prognostic classification context"],
+        ["SWENOTECA", "Risk-adapted stage I evidence context"],
+        ["TIGER", "Salvage treatment strategy context"]
+      ],
+      prompts: [
+        "Is pathology a seminoma, NSGCT/mixed tumour, stromal tumour or other rare entity?",
+        "Are AFP, beta-hCG and LDH values dated before and after orchidectomy?",
+        "Is the case classified by the correct stage and IGCCCG setting before selecting systemic treatment?",
+        "Have sperm banking, prosthesis discussion and survivorship/toxicity planning been offered?"
+      ]
+    },
+    "Ca Penis": {
+      label: "Penile cancer",
+      url: "https://uroweb.org/guidelines/penile-cancer/summary-of-changes",
+      edition: "EAU-ASCO Penile Cancer 2026",
+      updates: [
+        {
+          area: "2026 classification and diagnostics",
+          text: "The 2026 update adds genomic-testing text and a new cN0 management figure. Capture primary T category, grade/differentiation, LVI/perineural invasion, groin examination, imaging and histological confirmation."
+        },
+        {
+          area: "Primary treatment",
+          text: "The 2026 update revises local-treatment evidence. Surface the organ-preservation versus local-recurrence trade-off, anatomy, margins, patient goals and strict follow-up feasibility."
+        },
+        {
+          area: "Regional nodal disease",
+          text: "The 2026 update adds a cN1–cN3 regional lymph-node-management figure. Keep cN0, cN1/2 and cN3/pelvic disease separate; laterality, FNA/US, ENE and planned ILND/PLND must be explicit."
+        },
+        {
+          area: "Advanced disease and follow-up",
+          text: "The 2026 update restructures immunotherapy/advanced systemic-palliative content and emphasizes centralized care, guideline adherence, survival, follow-up and quality-of-life information."
+        }
+      ],
+      trials: [
+        ["InPACT", "Neoadjuvant/adjuvant treatment strategy context"],
+        ["HERCULES", "Advanced disease trial landscape context"],
+        ["EPIC", "Immunotherapy trial landscape context"]
+      ],
+      prompts: [
+        "Are T1a versus T1b risk features, grade, LVI and perineural invasion recorded?",
+        "Are both groins documented clinically and with appropriate imaging/FNA context?",
+        "For cN3/pelvic disease, is induction systemic therapy and consolidative surgery candidacy discussed at an expert centre?",
+        "Has organ function, sexual health, urinary stream and psychosocial impact been documented?"
+      ]
+    },
+    "Primary urethral carcinoma": {
+      label: "Primary urethral carcinoma",
+      url: "https://uroweb.org/guidelines/primary-urethral-carcinoma/summary-of-changes",
+      edition: "EAU Primary Urethral Carcinoma 2026",
+      updates: [
+        {
+          area: "TNM",
+          text: "The 2026 update incorporates the 2025 UICC/TNM classification. Store sex, anatomical site, histology, cT/pT, regional nodal status and distant spread in structured fields."
+        },
+        {
+          area: "Prognosis and advanced disease",
+          text: "The 2026 update revises prognostic-factor content and multimodal-treatment recommendations for advanced urethral carcinoma. Route rare/advanced cases to experienced multidisciplinary review rather than a generic urothelial default."
+        }
+      ],
+      trials: [
+        ["ClinicalTrials.gov", "Rare-disease trial search is location and eligibility dependent"]
+      ],
+      prompts: [
+        "Are sex, anatomical site and histology recorded before selecting a pathway?",
+        "Is disease localized, regionally node-positive, locally advanced or metastatic?",
+        "Has the case been referred to an experienced uro-oncology MDT?"
+      ]
+    }
+  };
+
+  function esc(value) {
+    return String(value == null ? "" : value).replace(/[&<>"']/g, function (char) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[char];
+    });
+  }
+
+  function keyFor(name) {
+    if (EAU_2026[name]) return name;
+    var text = String(name || "").toLowerCase();
+    if (text.indexOf("bladder") !== -1) return "Ca Bladder";
+    if (text.indexOf("prostate") !== -1) return "Ca Prostate";
+    if (text.indexOf("kidney") !== -1 || text.indexOf("renal") !== -1) return "Ca Kidney";
+    if (text.indexOf("upper") !== -1 || text.indexOf("utuc") !== -1) return "UTUC";
+    if (text.indexOf("testis") !== -1) return "Ca Testis";
+    if (text.indexOf("penis") !== -1 || text.indexOf("penile") !== -1) return "Ca Penis";
+    if (text.indexOf("ureth") !== -1) return "Primary urethral carcinoma";
+    return "";
+  }
+
+  function currentDisease() {
+    var select = document.getElementById("oracleDisease");
+    return keyFor(select ? select.value : "");
+  }
+
+  function sourceLinks(data) {
+    var output = '<a class="eau-source-link" target="_blank" rel="noopener noreferrer" href="' + esc(data.url) + '">EAU source ↗</a>';
+    if (data.mibcUrl) output += '<a class="eau-source-link" target="_blank" rel="noopener noreferrer" href="' + esc(data.mibcUrl) + '">EAU MIBC 2026 ↗</a>';
+    return output;
+  }
+
+  function trialHref(name, disease) {
+    return "https://clinicaltrials.gov/search?term=" + encodeURIComponent(name + " " + disease);
+  }
+
+  function createStyle() {
+    if (document.getElementById("eau2026Style")) return;
+    var style = document.createElement("style");
+    style.id = "eau2026Style";
+    style.textContent =
+      ".eau2026-card{margin-top:14px;padding:15px;border:1px solid #a9d7d5;border-radius:14px;background:linear-gradient(135deg,#f0fcfa,#f5fbfd);color:#173f4e}" +
+      ".eau2026-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}" +
+      ".eau2026-head h3{margin:4px 0 0;font-size:15px}.eau2026-kicker{font-size:10px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#087075}" +
+      ".eau2026-pill{display:inline-flex;align-items:center;border-radius:999px;padding:3px 7px;background:#d6f3ef;color:#07656a;font-size:10px;font-weight:900;white-space:nowrap}" +
+      ".eau2026-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}" +
+      ".eau2026-update{padding:11px;border:1px solid #d6e8e8;border-radius:10px;background:#fff}.eau2026-update b{display:block;font-size:12px;color:#114a5b}.eau2026-update p{margin:4px 0 0;font-size:11px;line-height:1.55;color:#456775}" +
+      ".eau2026-actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}.eau2026-btn{border:1px solid #9ccfce;border-radius:8px;padding:7px 9px;color:#075f65;background:#fff;font:700 11px/1.2 system-ui;cursor:pointer}.eau2026-btn:hover{background:#e5f7f5}" +
+      ".eau2026-modal{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:18px;background:rgba(3,25,39,.56)}.eau2026-dialog{width:min(960px,100%);max-height:90vh;overflow:auto;border-radius:18px;background:#fff;box-shadow:0 25px 70px rgba(0,0,0,.32);padding:20px}.eau2026-dialog h2{margin:0;font-size:20px;color:#0b3448}.eau2026-dialog p{font-size:12px;line-height:1.6;color:#405f6d}.eau2026-close{float:right;border:1px solid #cbdce1;border-radius:8px;padding:6px 9px;background:#fff;color:#24495a;cursor:pointer}.eau2026-table{width:100%;border-collapse:collapse;margin-top:12px;font-size:12px}.eau2026-table th,.eau2026-table td{padding:9px;border:1px solid #d5e2e6;text-align:left;vertical-align:top}.eau2026-table th{background:#eef8f8;color:#285566;font-size:10px;text-transform:uppercase;letter-spacing:.04em}.eau2026-list{margin:9px 0 0;padding-left:18px;font-size:12px;color:#395d6d}.eau2026-list li+li{margin-top:7px}.eau-source-link{display:inline-block;margin:5px 7px 0 0;color:#056b95;font-size:11px;font-weight:800}.eau2026-alert{margin-top:10px;padding:10px 11px;border-left:3px solid #db931e;border-radius:7px;background:#fff8e9;color:#694f18;font-size:11px;line-height:1.55}" +
+      "@media(max-width:760px){.eau2026-grid{grid-template-columns:1fr}.eau2026-head{display:block}.eau2026-pill{margin-top:8px}}";
+    document.head.appendChild(style);
+  }
+
+  function modal(title, body) {
+    var prior = document.getElementById("eau2026Modal");
+    if (prior) prior.remove();
+    var layer = document.createElement("div");
+    layer.id = "eau2026Modal";
+    layer.className = "eau2026-modal";
+    layer.innerHTML = '<article class="eau2026-dialog" role="dialog" aria-modal="true" aria-label="' + esc(title) + '">' +
+      '<button class="eau2026-close" type="button" id="eau2026Close">Close</button><h2>' + esc(title) + '</h2>' + body + '</article>';
+    document.body.appendChild(layer);
+    document.getElementById("eau2026Close").onclick = function () { layer.remove(); };
+    layer.addEventListener("click", function (event) { if (event.target === layer) layer.remove(); });
+  }
+
+  function openSourceDetail(name) {
+    var key = keyFor(name);
+    var data = EAU_2026[key];
+    if (!data) return;
+    var rows = data.updates.map(function (item) {
+      return "<tr><td><b>" + esc(item.area) + "</b></td><td>" + esc(item.text) + "</td></tr>";
+    }).join("");
+    var prompts = data.prompts.map(function (item) { return "<li>" + esc(item) + "</li>"; }).join("");
+    modal(data.edition + " — source update", '<p>This is an EAU-first update layer for the existing detailed app. It links to the live public EAU material, while retaining the supplied NCCN-oriented content separately.</p>' +
+      '<div>' + sourceLinks(data) + '</div><table class="eau2026-table"><thead><tr><th>2026 focus</th><th>What the clinical model must expose</th></tr></thead><tbody>' + rows + '</tbody></table>' +
+      '<h3 style="margin:18px 0 0;font-size:14px;color:#164d5c">Before a treatment output</h3><ul class="eau2026-list">' + prompts + '</ul>' +
+      '<div class="eau2026-alert"><b>Dosing boundary:</b> EAU guideline navigation and a treatment-planning engine are not a signed chemotherapy or intravesical order set. Any numeric dose, cycle, renal/hepatic adjustment, infusion sequence, supportive medicine and monitoring instruction must remain attached to the current local protocol and regulatory label used by the treating team.</div>');
+  }
+
+  function openTrialDetail(name) {
+    var key = keyFor(name);
+    var data = EAU_2026[key];
+    if (!data) return;
+    var rows = data.trials.map(function (item) {
+      return "<tr><td><a target='_blank' rel='noopener noreferrer' href='" + esc(trialHref(item[0], data.label)) + "'>" + esc(item[0]) + " ↗</a></td><td>" + esc(item[1]) + "</td></tr>";
+    }).join("");
+    modal(data.label + " — EAU-linked trial explorer", '<p>Trial names are navigation aids. They do not establish patient eligibility, local availability or regulatory approval.</p>' +
+      '<table class="eau2026-table"><thead><tr><th>Trial / registry search</th><th>Why it is relevant</th></tr></thead><tbody>' + rows + '</tbody></table>');
+  }
+
+  function detailCard(key, compact) {
+    var data = EAU_2026[key];
+    if (!data) return "";
+    var items = data.updates.slice(0, compact ? 2 : data.updates.length).map(function (item) {
+      return '<div class="eau2026-update"><b>' + esc(item.area) + '</b><p>' + esc(item.text) + '</p></div>';
+    }).join("");
+    return '<section class="eau2026-card" id="eau2026Card">' +
+      '<div class="eau2026-head"><div><div class="eau2026-kicker">Public source update</div><h3>' + esc(data.edition) + '</h3></div><span class="eau2026-pill">EAU 2026</span></div>' +
+      '<div class="eau2026-grid">' + items + '</div>' +
+      '<div class="eau2026-actions"><button type="button" class="eau2026-btn" data-eau-source="' + esc(key) + '">Open EAU update</button><button type="button" class="eau2026-btn" data-eau-trials="' + esc(key) + '">Trials</button>' + sourceLinks(data) + '</div>' +
+      '<div class="eau2026-alert">This update supplements the detailed NCCN-oriented content already in this app. A clinical recommendation must still show its source, patient-state criteria, approval status and local protocol check.</div></section>';
+  }
+
+  function bindButtons(host) {
+    if (!host) return;
+    host.querySelectorAll("[data-eau-source]").forEach(function (button) {
+      button.onclick = function () { openSourceDetail(button.getAttribute("data-eau-source")); };
+    });
+    host.querySelectorAll("[data-eau-trials]").forEach(function (button) {
+      button.onclick = function () { openTrialDetail(button.getAttribute("data-eau-trials")); };
+    });
+  }
+
+  function injectOracleEvidence(name) {
+    var key = keyFor(name);
+    if (!key) return;
+    var output = document.getElementById("oracleOutput");
+    if (!output) return;
+    var existing = document.getElementById("eau2026OracleCard");
+    if (existing) existing.remove();
+    var wrapper = document.createElement("div");
+    wrapper.id = "eau2026OracleCard";
+    wrapper.innerHTML = detailCard(key, true);
+    output.appendChild(wrapper);
+    bindButtons(wrapper);
+  }
+
+  function injectDiseaseEvidence(name) {
+    var key = keyFor(name);
+    if (!key) return;
+    var header = document.getElementById("diseaseHeader");
+    if (!header || document.getElementById("eau2026DiseaseCard")) return;
+    var wrapper = document.createElement("div");
+    wrapper.id = "eau2026DiseaseCard";
+    wrapper.innerHTML = detailCard(key, false);
+    header.parentNode.insertBefore(wrapper, header.nextSibling);
+    bindButtons(wrapper);
+  }
+
+  function injectHomeLibrary() {
+    var home = document.getElementById("homeView");
+    if (!home || document.getElementById("eau2026HomeLibrary")) return;
+    var cards = Object.keys(EAU_2026).map(function (key) {
+      var data = EAU_2026[key];
+      return '<div class="eau2026-update"><b>' + esc(data.label) + '</b><p>' + esc(data.edition) + '</p><button type="button" class="eau2026-btn" data-eau-source="' + esc(key) + '">2026 update</button></div>';
+    }).join("");
+    var wrapper = document.createElement("section");
+    wrapper.id = "eau2026HomeLibrary";
+    wrapper.className = "eau2026-card";
+    wrapper.innerHTML = '<div class="eau2026-head"><div><div class="eau2026-kicker">EAU 2026 source library</div><h3>Current guidance by disease</h3></div><span class="eau2026-pill">Live links</span></div><div class="eau2026-grid">' + cards + '</div>';
+    home.appendChild(wrapper);
+    bindButtons(wrapper);
+  }
+
+  function appendDoseSafety() {
+    var grid = document.getElementById("drugGrid");
+    if (!grid || document.getElementById("eau2026DoseSafety")) return;
+    var card = document.createElement("article");
+    card.id = "eau2026DoseSafety";
+    card.className = "eau2026-card";
+    card.innerHTML = '<div class="eau2026-head"><div><div class="eau2026-kicker">Protocol safety</div><h3>Drug and intravesical regimen registry</h3></div><span class="eau2026-pill">Source required</span></div>' +
+      '<div class="eau2026-alert"><b>Do not prescribe from a generic web card.</b> Each numeric dose shown in this app must display the linked current protocol/label, regimen version, indication, line of therapy, dose-modification rules, pre-medication, supportive care, laboratory thresholds and responsible local service. EAU provides clinical guidance; the treating unit’s verified order set remains the prescribing authority.</div>';
+    grid.insertBefore(card, grid.firstChild);
+  }
+
+  function attach() {
+    createStyle();
+    injectHomeLibrary();
+    var current = currentDisease();
+    if (current) {
+      injectOracleEvidence(current);
+      injectDiseaseEvidence(current);
+    }
+    appendDoseSafety();
+  }
+
+  var priorOpenDisease = window.openDisease;
+  if (typeof priorOpenDisease === "function") {
+    window.openDisease = function (name) {
+      var result = priorOpenDisease.apply(this, arguments);
+      window.setTimeout(function () { injectDiseaseEvidence(name); }, 0);
+      return result;
+    };
+  }
+
+  var priorRunOracle = window.runOracle;
+  if (typeof priorRunOracle === "function") {
+    window.runOracle = function (name) {
+      var result = priorRunOracle.apply(this, arguments);
+      window.setTimeout(function () { injectOracleEvidence(name || currentDisease()); }, 0);
+      return result;
+    };
+  }
+
+  var priorOpenDrugs = window.openDrugs;
+  if (typeof priorOpenDrugs === "function") {
+    window.openDrugs = function () {
+      var result = priorOpenDrugs.apply(this, arguments);
+      window.setTimeout(appendDoseSafety, 0);
+      return result;
+    };
+  }
+
+  window.showEAU2026Update = openSourceDetail;
+  window.showEAU2026Trials = openTrialDetail;
+  attach();
+}());
+</script>
 </body>
 </html>
