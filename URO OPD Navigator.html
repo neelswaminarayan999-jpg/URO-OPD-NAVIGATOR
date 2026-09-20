@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uro-Oncology OPD Navigator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #f8fafc; font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body class="text-slate-800">
+    <div class="max-w-md mx-auto bg-white min-h-screen shadow-2xl border-x border-slate-200 pb-10">
+        
+        <!-- Header -->
+        <div class="bg-sky-800 text-white p-5 rounded-b-xl shadow-md">
+            <h1 class="text-xl font-bold tracking-wide">Urology OPD Navigator</h1>
+            <p class="text-xs text-sky-200 mt-1 leading-relaxed">Guidelines acc. to NCCN & EAU<br>Dept of Urology, Dr Babasaheb Ambedkar Hospital, Delhi</p>
+        </div>
+
+        <!-- Disease Tabs -->
+        <div class="p-5">
+            <label class="text-xs font-bold text-slate-400 uppercase tracking-wider">1. Select Condition</label>
+            <div id="diseaseTabs" class="flex flex-wrap gap-2 mt-3"></div>
+        </div>
+
+        <div class="w-full h-px bg-slate-100 my-1"></div>
+
+        <!-- Cascading Form Section -->
+        <div id="formSection" class="p-5 hidden">
+            
+            <!-- Phase Dropdown -->
+            <div class="mb-5">
+                <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">2. Clinical Phase</label>
+                <select id="phaseSelect" class="w-full bg-slate-50 border border-slate-300 text-slate-800 text-sm rounded-lg focus:ring-sky-600 focus:border-sky-600 block p-3.5 shadow-sm appearance-none font-medium">
+                    <option value="" disabled selected>Choose clinical phase...</option>
+                </select>
+            </div>
+
+            <!-- Scenario Dropdown -->
+            <div id="scenarioDiv" class="mb-5 hidden">
+                <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">3. Specific Case / Scenario</label>
+                <select id="scenarioSelect" class="w-full bg-slate-50 border border-slate-300 text-slate-800 text-sm rounded-lg focus:ring-sky-600 focus:border-sky-600 block p-3.5 shadow-sm appearance-none font-medium">
+                    <option value="" disabled selected>Choose specific scenario...</option>
+                </select>
+            </div>
+
+            <!-- Result Card -->
+            <div id="resultCard" class="hidden mt-6 bg-sky-50 border border-sky-200 rounded-xl p-5 shadow-inner transition-all">
+                <h3 class="text-xs font-bold text-sky-800 uppercase tracking-wider mb-3 flex items-center">
+                    <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    Clinical Protocol
+                </h3>
+                <div id="resultContent" class="text-sm text-slate-700 leading-relaxed font-medium"></div>
+            </div>
+        </div>
+        
+        <!-- Developer Credits -->
+        <div class="p-6 text-center mt-8 border-t border-slate-100">
+            <p class="text-xs text-slate-400">Interactive pathways compiled & developed by<br><span class="font-semibold text-slate-500">Dr. Neel Rajendra Swaminarayan</span></p>
+        </div>
+    </div>
+
+    <!-- Master Clinical Database -->
+    <script>
+        const clinicalData = {
+            "Ca Bladder": {
+                "Diagnosis & Workup": [
+                    { q: "Initial Presentation & Diagnostic Workup", a: "Workup Protocol:\n• Gross/Micro Hematuria or persistent unexplained LUTS.\n• CT Urogram: Required to rule out upper tract urothelial carcinoma (UTUC).\n• Flexible Cystoscopy: In-office mucosal inspection.\n• TURBT: Must resect deep detrusor muscle for accurate T staging.\n• If MIBC (≥T2): Mandatory CT Chest/Abdomen/Pelvis (C/A/P) staging." }
+                ],
+                "NMIBC Management": [
+                    { q: "Immediate Post-Op Single Instillation", a: "Protocol:\n• Single post-TURBT instillation of intravesical chemotherapy within 2–6 hours.\n• Agents: Mitomycin C (40mg in 40mL saline) OR Gemcitabine (2g in 100mL saline).\n• Contraindication: Bladder perforation or extensive resection." },
+                    { q: "Low Risk NMIBC (Primary, Solitary TaG1, <3cm, No CIS)", a: "Low Risk Protocol:\n• Immediate post-op single instillation only.\n• No adjuvant induction or maintenance therapy.\n• Surveillance: Cystoscopy at 3 months, then 9 months, then annually for 5 years." },
+                    { q: "Intermediate Risk NMIBC (Multifocal TaG1, TaG2, Recurrent)", a: "Intermediate Risk Protocol:\n• Induction: Intravesical BCG (weekly x 6) OR Chemotherapy (Mitomycin C 40mg weekly x 6).\n• Maintenance: Maintenance BCG or Chemo up to 1 year.\n• Surveillance: Cystoscopy + Cytology q3-6mo for 2 yrs, then annually." },
+                    { q: "High Risk NMIBC (T1, HG/G3, CIS, Multifocal Large TaHG)", a: "High Risk Protocol:\n• Mandatory Re-TURBT within 2–6 weeks (critical for T1 lesions).\n• Adjuvant Induction BCG (weekly x 6) followed by 3-year maintenance.\n• Maintenance BCG Schedule: 3 weekly instillations at months 3, 6, 12, 18, 24, 30, and 36.\n• If unfit/refractory: Radical Cystectomy consultation." },
+                    { q: "Very High Risk NMIBC (e.g., HG T1 with concurrent CIS / LVI+)", a: "VHR Protocol:\n• Immediate discussion of Early Radical Cystectomy (RC) with Extended PLND.\n• If patient declines/unfit for RC: Full induction + 3-year maintenance BCG." },
+                    { q: "Indications for Mandatory Re-TURBT", a: "Re-TURBT is Mandatory within 2–6 weeks if:\n1. Initial resection was incomplete.\n2. Specimen lacks detrusor muscle (except primary CIS or pure TaLG).\n3. Any T1 lesion (highest rate of understaging).\n4. All High-Grade / G3 lesions.\n5. Any suspicion of muscle invasion." },
+                    { q: "Chances of Upstaging in Re-TURBT", a: "Upstaging Statistics:\n• Overall risk of upstaging to muscle-invasive (≥T2) is 10%–15%.\n• If detrusor muscle was absent in initial T1 biopsy: Upstaging risk rises to 30%–40%.\n• Primary determinants: T1 stage, High Grade, presence of CIS, lack of muscularis propria." }
+                ],
+                "MIBC Management": [
+                    { q: "Neoadjuvant Chemotherapy (NACT) Eligibility Criteria", a: "Cisplatin Eligibility Criteria:\n• eGFR > 60 mL/min (borderline: 50–60 mL/min with split doses).\n• ECOG Performance Status 0–1.\n• Absence of Grade ≥2 peripheral neuropathy or hearing loss.\n• Note: Carboplatin is NOT standard of care for neoadjuvant therapy." },
+                    { q: "Standard NACT Regimen (ddMVAC)", a: "ddMVAC Regimen:\n• Methotrexate 30 mg/m² (Day 1)\n• Vinblastine 3 mg/m² (Day 2)\n• Doxorubicin 30 mg/m² (Day 2)\n• Cisplatin 70 mg/m² (Day 2)\n• G-CSF / Pegfilgrastim support.\n• Schedule: Every 14 days for 4 cycles, followed by Radical Cystectomy." },
+                    { q: "Perioperative Durvalumab Protocol (NIAGARA Regimen)", a: "NIAGARA Protocol:\n• Neoadjuvant Phase (every 3 weeks x 4 cycles):\n  1. Durvalumab (1,500 mg IV Day 1)\n  2. Gemcitabine (1,000 mg/m² Days 1 & 8)\n  3. Cisplatin (70 mg/m² Day 1)\n• Surgery: Radical Cystectomy + Extended PLND.\n• Adjuvant Phase (every 4 weeks x up to 8 cycles):\n  1. Durvalumab (1,500 mg IV) monotherapy maintenance." },
+                    { q: "Extended Pelvic LND Boundaries (ePLND for RC)", a: "Dissection Template:\n• Cranial: Aortic bifurcation / Common iliac bifurcation.\n• Lateral: Genitofemoral nerve / Psoas muscle.\n• Medial: Internal iliac (hypogastric) vessels.\n• Caudal: Node of Cloquet / Inguinal ligament.\n• Posterior: Obturator fossa and nerve." },
+                    { q: "Bladder Preservation (Trimodal Therapy - TMT)", a: "TMT Protocol for Bladder Preservation:\n• Step 1: Maximal, complete TURBT.\n• Step 2: Concurrent Chemo-Radiotherapy (55–64 Gy to bladder).\n• Radiosensitizing Regimens: Cisplatin (weekly), or 5-FU + Mitomycin C, or Gemcitabine.\n• Salvage: Immediate Radical Cystectomy if incomplete response or recurrence." }
+                ],
+                "Metastatic Mgmt": [
+                    { q: "First-Line Systemic Therapy (Cisplatin-Eligible)", a: "Protocol:\n• ddMVAC x 4–6 cycles OR Gemcitabine + Cisplatin x 6 cycles.\n• Maintenance: If disease is stable or responding, initiate Avelumab maintenance (800 mg IV every 2 weeks) until disease progression." },
+                    { q: "First-Line Therapy (Cisplatin-Ineligible / PD-L1+)", a: "Protocol:\n• Enfortumab Vedotin (1.25 mg/kg Days 1, 8, 15 of 28-day cycle) + Pembrolizumab (200 mg every 3 weeks).\n• Alternative if EV unavailable: Gemcitabine + Carboplatin." },
+                    { q: "Second-Line / Targeted Therapy (FGFR Mutation)", a: "Erdafitinib Protocol:\n• Indication: Progression following platinum chemotherapy with susceptible FGFR3 or FGFR2 mutations.\n• Dose: 8 mg PO daily; can uptitrate to 9 mg daily based on serum phosphate (target: 5.5–7.0 mg/dL).\n• Monitoring: Mandatory baseline and periodic ophthalmologic examinations." }
+                ],
+                "Follow-Up": [
+                    { q: "NMIBC Surveillance Schedule", a: "Schedule:\n• Low Risk: Cystoscopy at 3 and 9 months, then annually for 5 years.\n• Intermediate/High Risk: Cystoscopy + Urine Cytology every 3 months for 2 years, every 6 months for years 3–5, then annually.\n• Upper tract CT Urogram every 12–24 months." },
+                    { q: "MIBC Post-Cystectomy Surveillance Schedule", a: "Schedule:\n• CT Chest/Abdomen/Pelvis, CBC, and renal panel every 3–6 months for 2 years, then every 6–12 months for years 3–5.\n• Monitor serum electrolytes, bicarbonate, and vitamin B12 annually (if ileal segment was utilized for urinary diversion).\n• Urethral wash cytology if native urethra was retained." }
+                ]
+            },
+            "Ca Prostate": {
+                "Diagnosis & Risk Stratification": [
+                    { q: "Diagnostic Workup & Biopsy", a: "Diagnostic Pathway:\n• Indications: Elevated PSA or abnormal DRE.\n• mpMRI Prostate (PI-RADS v2.1): Mandatory prior to biopsy.\n• Biopsy Protocol: Combined targeted cores (for PI-RADS 3–5) + systematic 12-core template (transperineal route preferred).\n• Staging: PSMA PET-CT indicated for unfavorable intermediate, high, and very high risk categories prior to curative treatment." },
+                    { q: "Very Low & Low Risk (PSA <10, Grade Group 1, cT1c-T2a)", a: "Active Surveillance (Standard of Care):\n• PSA every 6 months.\n• Clinical DRE annually.\n• mpMRI at 12–18 months.\n• Confirmatory repeat biopsy within 12–24 months.\n• Deferred local curative treatment only if grade progression or significant volume increase." },
+                    { q: "Intermediate Risk (Favorable vs. Unfavorable)", a: "Protocol:\n• Favorable (GG 2 [3+4], PSA 10-20, or cT2b): Active surveillance (selected cases), Radical Prostatectomy (RP), or EBRT (78 Gy) alone.\n• Unfavorable (GG 3 [4+3], >50% positive cores, or multiple intermediate factors): RP + ePLND OR EBRT + short-course ADT (4–6 months)." },
+                    { q: "High & Very High Risk (PSA >20, Grade Group 4-5, cT3-T4)", a: "Protocol:\n• Option 1: Radical Prostatectomy (RP) + mandatory Extended Pelvic LND (ePLND).\n• Option 2: EBRT (78–80 Gy) + long-course ADT (18–36 months) ± Brachytherapy boost." }
+                ],
+                "Lymph Node Mgmt": [
+                    { q: "Extended Pelvic LND Template (ePLND)", a: "Indications & Boundaries:\n• Indication: Pre-operative nomogram risk of nodal metastasis > 5%.\n• Cranial: Bifurcation of common iliac vessels / aortic bifurcation.\n• Lateral: Genitofemoral nerve.\n• Medial: Internal iliac vessels.\n• Distal: Node of Cloquet.\n• Dorsal: Obturator fossa and nerve." },
+                    { q: "Pathological Node-Positive (pN1) Management", a: "Protocol:\n• Adjuvant continuous ADT (LHRH agonist/antagonist) ± Pelvic external beam radiotherapy (50.4 Gy with boost)." }
+                ],
+                "Metastatic Mgmt": [
+                    { q: "mHSPC (Castration-Sensitive Metastatic)", a: "Systemic Backbone: Continuous ADT.\n• Triplet Therapy (High Volume / High Risk): ADT + Docetaxel (75 mg/m² q3w x 6 cycles) + Darolutamide (600 mg PO BID) OR Abiraterone acetate.\n• Doublet Therapy: ADT + ARPI (Enzalutamide 160 mg daily, Apalutamide 240 mg daily, or Abiraterone 1000 mg + Prednisone 5 mg)." },
+                    { q: "mCRPC (Castration-Resistant Metastatic)", a: "Protocol (Maintain castrate testosterone <50 ng/dL):\n• Chemotherapy: Docetaxel (75 mg/m² q3w) or Cabazitaxel (20–25 mg/m² q3w).\n• PARP Inhibitors: Olaparib (300 mg PO BID) if HRR/BRCA1/BRCA2 mutation is present.\n• Radioligand Therapy: Lutetium-177 PSMA-617 (7.4 GBq IV every 6 weeks for up to 6 cycles) if PSMA-avid on PSMA PET-CT." }
+                ],
+                "Follow-Up & BCR": [
+                    { q: "Surveillance Schedule Post-Curative Therapy", a: "Schedule:\n• PSA every 3–6 months for 3 years, then every 6 months for years 4–5, then annually.\n• DRE annually (if irradiated or if local recurrence is suspected post-RP)." },
+                    { q: "Biochemical Recurrence (BCR) Definitions & Action", a: "BCR Criteria:\n• Post-RP: PSA ≥ 0.2 ng/mL confirmed on two consecutive draws.\n• Post-RT: PSA rise of ≥ 2.0 ng/mL above post-treatment nadir (Phoenix criterion).\n• Management: Restage with PSMA PET-CT. Post-RP BCR w/o distant mets -> Salvage RT to prostatic bed (64–70 Gy) ± short-course ADT." }
+                ]
+            },
+            "Ca Penis": {
+                "Primary Tumor Management": [
+                    { q: "Diagnostic Workup & Biopsy", a: "Workup Protocol:\n• Histological confirmation via punch, incisional, or excisional biopsy.\n• Assessment of depth of invasion, histologic subtype, and lymphovascular invasion (LVI).\n• Careful bilateral groin palpation and ultrasound examination." },
+                    { q: "Penile-Sparing Surgery (Tis, Ta, T1a Low Grade)", a: "Techniques:\n• Carcinoma in situ (Tis): Topical 5-Fluorouracil (5-FU) or Imiquimod 5% cream.\n• Ta / T1aLG: Wide local excision with 3–5 mm clear margins, Laser ablation (CO2 or Nd:YAG), or Glansectomy with split-thickness skin graft reconstruction.\n• Goal: Preservation of cosmetic appearance, urinary direction, and erectile function." },
+                    { q: "Invasive Primary Tumors (T1b, T2, T3, T4)", a: "Techniques:\n• T1b / T2: Partial Penectomy with 3–5 mm negative margins (provided a 2–3 cm functional stump remains for upright voiding).\n• T3 / T4 / Proximal: Total Penectomy with Perineal Urethrostomy." }
+                ],
+                "Inguinal & Pelvic LN Mgmt": [
+                    { q: "Clinically N0 Groins (Stratification & Action)", a: "Risk Stratification:\n• Low Risk (Tis, Ta, T1aLG, LVI-): Surveillance of groins every 3 months.\n• Intermediate/High Risk (≥T1b, High Grade/G3, or LVI+): Invasive nodal staging is mandatory (risk of occult micrometastases >20%).\n• Inguinal Assessment: Dynamic Sentinel Node Biopsy (DSNB) with Tc-99m + Patent Blue dye OR Modified Inguinal LND." },
+                    { q: "Clinically N1/N2 (Palpable, Mobile Inguinal Nodes)", a: "Surgical Plan:\n• Radical Inguinal Lymph Node Dissection (superficial and deep inguinal packets below fascia lata).\n• Contralateral Groin: Modified or radical ILND if ipsilateral specimen demonstrates >1 positive node." },
+                    { q: "Pelvic Lymph Node Dissection (PLND) Triggers", a: "Indication:\n• Mandatory ipsilateral PLND (external iliac, internal iliac, and obturator nodes) if ≥2 inguinal nodes are positive OR if extranodal extension (ENE+) is identified." }
+                ],
+                "Advanced & Metastatic Mgmt": [
+                    { q: "Fixed / Bulky Nodes (cN3) & Systemic Chemo", a: "Neoadjuvant TIP Regimen:\n• Paclitaxel 175 mg/m² (Day 1)\n• Ifosfamide 1,200 mg/m² (Days 1–3) with Mesna uroprotection\n• Cisplatin 25 mg/m² (Days 1–3)\n• Cycles: 3–4 cycles followed by consolidative surgical resection if resectable." }
+                ],
+                "Follow-Up": [
+                    { q: "Penile Cancer Surveillance Schedule", a: "Schedule:\n• Years 1–2: Strict physical examination of primary site and groins every 3 months (80% of recurrences occur within 24 months).\n• Years 3–5: Examination every 6 months.\n• Ultrasound of groins every 3–6 months for patients managed with surveillance or penile-sparing surgery." }
+                ]
+            },
+            "Ca Testis": {
+                "Diagnosis & Orchiectomy": [
+                    { q: "Diagnostic Workup & Tumor Markers", a: "Workup Protocol:\n• High-resolution scrotal Doppler ultrasound.\n• Serum Tumor Markers (drawn BEFORE orchiectomy): AFP, beta-hCG, and LDH.\n• Mandatory rule: Radical Inguinal Orchiectomy with early cross-clamping of spermatic cord at the internal inguinal ring. Scrotal violation or trans-scrotal biopsy is strictly contraindicated.\n• Staging: CT Chest/Abdomen/Pelvis, repeat tumor markers post-op to monitor clearance kinetics." }
+                ],
+                "Stage I Management": [
+                    { q: "Stage I Seminoma", a: "Options:\n• Surveillance (Preferred): Serial clinical exams and abdominal imaging.\n• Adjuvant Chemotherapy: Single-dose Carboplatin (AUC 7) x 1–2 cycles (indicated if high-risk features: tumor size >4 cm or rete testis invasion).\n• Adjuvant Radiotherapy: Rarely recommended due to secondary malignancy risk." },
+                    { q: "Stage I Non-Seminoma (NSGCT)", a: "Options:\n• Low Risk (LVI-): Active Surveillance (relapse rate ~15%).\n• High Risk (LVI+): Primary Nerve-Sparing RPLND OR 1 cycle of adjuvant BEP chemotherapy (relapse rate reduced to <3%)." }
+                ],
+                "Advanced Disease & Chemotherapy": [
+                    { q: "IGCCCG Risk Stratification", a: "Risk Classification:\n• Good Risk: Testicular primary, no non-pulmonary visceral mets, AFP <1,000 ng/mL, hCG <5,000 IU/L, LDH <1.5x ULN.\n• Intermediate Risk: Testicular primary, no non-pulmonary visceral mets, intermediate marker levels.\n• Poor Risk (NSGCT only): Mediastinal primary, non-pulmonary visceral metastases, or highly elevated markers (AFP >10,000 ng/mL, hCG >50,000 IU/L, LDH >10x ULN)." },
+                    { q: "Standard Chemotherapy Regimens (BEP & EP)", a: "Regimens:\n• Good Risk: 3 cycles of BEP (Bleomycin 30,000 IU Days 1, 8, 15; Etoposide 100 mg/m² Days 1–5; Cisplatin 20 mg/m² Days 1–5) OR 4 cycles of EP.\n• Intermediate / Poor Risk: 4 cycles of BEP OR 4 cycles of VIP (Etoposide, Ifosfamide, Cisplatin; used if Bleomycin is contraindicated due to pulmonary disease)." }
+                ],
+                "Residual Mass Management": [
+                    { q: "Post-Chemo Residual Mass: Seminoma", a: "Protocol:\n• Residual mass < 3 cm: Active surveillance.\n• Residual mass > 3 cm: 18F-FDG PET-CT scan performed at least 6–8 weeks post-chemo.\n• PET-negative: Surveillance.\n• PET-positive (intense uptake): Surgical resection or biopsy." },
+                    { q: "Post-Chemo Residual Mass: NSGCT", a: "Protocol:\n• Residual mass ≤ 1 cm and normalized markers: Active surveillance.\n• Residual mass > 1 cm: Mandatory Nerve-Sparing Retroperitoneal Lymph Node Dissection (RPLND).\n• Rationale: Resected masses harbor teratoma (40%–50%) or viable active cancer (10%–15%). PET-CT is NOT diagnostic for teratoma." }
+                ],
+                "Follow-Up & Survivorship": [
+                    { q: "Surveillance & Long-Term Survivorship Schedule", a: "Schedule:\n• Year 1: H&P and tumor markers every 2 months; CT Abdomen/Pelvis every 3–4 months; CXR every 2 months.\n• Year 2: H&P and markers every 3 months; CT A/P every 6 months.\n• Years 3–5: Clinic visits every 6 months; transition to annual checkups.\n• Survivorship: Minimize ionizing CT scans after year 3 to reduce secondary radiation malignancies. Screen for metabolic syndrome, cardiovascular disease, and hypogonadism." }
+                ]
+            },
+            "BPH": {
+                "Diagnosis & Workup": [
+                    { q: "Clinical Evaluation & Symptom Scoring", a: "Workup:\n• International Prostate Symptom Score (IPSS) & Quality of Life (QoL) assessment.\n• Digital Rectal Examination (DRE) to estimate volume and exclude nodules.\n• Urinalysis and serum creatinine/eGFR.\n• Serum PSA (if life expectancy >10 years and screening indicated).\n• Optional/Targeted: Uroflowmetry (Qmax), Post-Void Residual (PVR) via ultrasound." }
+                ],
+                "Medical Management": [
+                    { q: "Mild to Moderate Symptoms (IPSS <8)", a: "Protocol:\n• Watchful Waiting and behavioral modifications.\n• Fluid restriction 2–3 hours before sleep.\n• Reduction of caffeine, alcohol, and bladder irritants.\n• Timed voiding and double voiding techniques." },
+                    { q: "Moderate to Severe Symptoms (IPSS ≥8)", a: "Drug Regimens:\n• Alpha-1 Blockers (Tamsulosin 0.4 mg, Alfuzosin 10 mg, or Silodosin 8 mg daily): First-line for rapid symptomatic relief.\n• 5-Alpha Reductase Inhibitors (Finasteride 5 mg or Dutasteride 0.5 mg daily): Indicated if prostate volume >30–40 mL; reduces long-term retention and surgical risk.\n• Combination Therapy (Alpha-blocker + 5-ARI): Most effective for men with moderate/severe symptoms and enlarged prostates." }
+                ],
+                "Surgical Management": [
+                    { q: "Indications & Surgical Modalities", a: "Indications:\n• Refractory urinary retention, recurrent UTIs, recurrent gross hematuria, bladder calculi, renal insufficiency secondary to BPH, or medical failure.\nSurgical Choices:\n• Prostate < 80 mL: Transurethral Resection of Prostate (TURP - Bipolar/Monopolar) or ThuLEP/HoLEP.\n• Prostate > 80 mL: Holmium Laser Enucleation of the Prostate (HoLEP) or Simple Prostatectomy (Robotic/Open).\n• Minimally Invasive: Prostatic Urethral Lift (UroLift), Water Vapor Therapy (Rezum)." }
+                ]
+            },
+            "Nocturnal Enuresis": {
+                "Diagnosis & Workup": [
+                    { q: "Diagnostic Evaluation", a: "Workup Protocol:\n• Differentiate Monosymptomatic (no daytime symptoms) vs. Non-monosymptomatic (daytime urgency, frequency, incontinence).\n• Comprehensive history: Onset, fluid intake pattern, family history, sleep behavior.\n• Mandatory 48–72 hour Bladder/Voiding Diary.\n• Screening for secondary causes: Constipation, sleep apnea, behavioral disorders, diabetes, and urinary tract infections." }
+                ],
+                "Treatment Pathways": [
+                    { q: "Phase 1: Lifestyle & Behavioral Interventions", a: "Interventions:\n• Ensure adequate daytime fluid intake with evening restriction (no large fluid bolus within 2 hours of bedtime).\n• Complete voiding immediately prior to sleep.\n• Complete cessation of evening caffeine, carbonated, and high-sugar drinks.\n• Mandatory aggressive management of constipation." },
+                    { q: "Phase 2: Enuresis Conditioning Alarm", a: "Protocol:\n• First-line curative treatment for children ≥6–7 years with supportive family.\n• Mechanism: Sensor triggers alarm upon initial droplet release, conditioning waking response to bladder fullness.\n• Duration: Continued for at least 2–3 months until 14 consecutive dry nights are achieved." },
+                    { q: "Phase 3: Pharmacotherapy (Desmopressin)", a: "Pharmacotherapy:\n• Desmopressin (DDAVP): Oral Lyophilisate (melt) 120–240 mcg OR Tablets 0.2–0.4 mg taken 1 hour before bedtime.\n• Mandatory Safety Rule: Fluid restriction (maximum 200 mL) starting 1 hour before administration until 8 hours post-dose to avoid dilutional hyponatremia and water intoxication." }
+                ]
+            }
+        };
+
+        const tabsContainer = document.getElementById('diseaseTabs');
+        const formSection = document.getElementById('formSection');
+        const phaseSelect = document.getElementById('phaseSelect');
+        const scenarioDiv = document.getElementById('scenarioDiv');
+        const scenarioSelect = document.getElementById('scenarioSelect');
+        const resultCard = document.getElementById('resultCard');
+        const resultContent = document.getElementById('resultContent');
+
+        let currentDisease = '';
+        let currentPhase = '';
+
+        // Initialize Condition Tabs
+        Object.keys(clinicalData).forEach(disease => {
+            const btn = document.createElement('button');
+            btn.className = 'px-4 py-2 bg-slate-100 text-slate-600 rounded-full text-xs font-bold hover:bg-sky-100 hover:text-sky-700 transition-colors border border-slate-200';
+            btn.textContent = disease;
+            btn.onclick = () => selectDisease(disease, btn);
+            tabsContainer.appendChild(btn);
+        });
+
+        function selectDisease(disease, clickedBtn) {
+            currentDisease = disease;
+            
+            Array.from(tabsContainer.children).forEach(b => {
+                b.classList.remove('bg-sky-700', 'text-white', 'border-sky-800');
+                b.classList.add('bg-slate-100', 'text-slate-600');
+            });
+            clickedBtn.classList.remove('bg-slate-100', 'text-slate-600');
+            clickedBtn.classList.add('bg-sky-700', 'text-white', 'border-sky-800');
+
+            formSection.classList.remove('hidden');
+            scenarioDiv.classList.add('hidden');
+            resultCard.classList.add('hidden');
+            
+            phaseSelect.innerHTML = '<option value="" disabled selected>Choose clinical phase...</option>';
+            Object.keys(clinicalData[disease]).forEach(phase => {
+                const opt = document.createElement('option');
+                opt.value = phase;
+                opt.textContent = phase;
+                phaseSelect.appendChild(opt);
+            });
+        }
+
+        phaseSelect.addEventListener('change', (e) => {
+            currentPhase = e.target.value;
+            scenarioDiv.classList.remove('hidden');
+            resultCard.classList.add('hidden');
+
+            scenarioSelect.innerHTML = '<option value="" disabled selected>Choose specific scenario...</option>';
+            clinicalData[currentDisease][currentPhase].forEach((item, index) => {
+                const opt = document.createElement('option');
+                opt.value = index;
+                opt.textContent = item.q;
+                scenarioSelect.appendChild(opt);
+            });
+        });
+
+        scenarioSelect.addEventListener('change', (e) => {
+            const scenarioIndex = e.target.value;
+            const data = clinicalData[currentDisease][currentPhase][scenarioIndex];
+            
+            resultContent.innerHTML = data.a.replace(/\n/g, '<br>');
+            resultCard.classList.remove('hidden');
+        });
+    </script>
+</body>
+</html>
