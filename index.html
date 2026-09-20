@@ -43,7 +43,7 @@
                 <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                     <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                 </div>
-                <input type="text" id="searchInput" onkeyup="performSearch()" placeholder="Fast search (e.g. 'Mitomycin', 'BEP', 'ddMVAC')..." class="block w-full p-3 pl-10 text-sm text-slate-900 border border-transparent rounded-lg bg-slate-50 focus:ring-sky-500 focus:border-sky-500 font-medium placeholder-slate-400 shadow-inner">
+                <input type="text" id="searchInput" onkeyup="performSearch()" placeholder="Fast search (e.g. 'Ceftriaxone', 'BEP', 'ddMVAC', 'FECal')..." class="block w-full p-3 pl-10 text-sm text-slate-900 border border-transparent rounded-lg bg-slate-50 focus:ring-sky-500 focus:border-sky-500 font-medium placeholder-slate-400 shadow-inner">
             </div>
         </div>
 
@@ -158,9 +158,47 @@
         </div>
     </div>
 
-    <!-- Complete Clinical Database with Exact Dosages -->
+    <!-- Complete Clinical Database with Exact Dosages & Expanded Scores -->
     <script>
         const clinicalData = {
+            "Drug Dosages": {
+                "1. IV / Oral Antibiotics": [
+                    { q: "Ceftriaxone", a: "• Adult: 1–2g IV/IM once or twice daily (Max 4g/day).\n• Pediatric: 50–75 mg/kg/day IV/IM divided q12–24h.\n• Note: Do not mix with calcium-containing solutions (e.g., Ringer's)." },
+                    { q: "Cefoperazone-Sulbactam (Magnex)", a: "• Adult: 1–2g IV twice daily (BD) (Ratio 1:1 or 2:1).\n• Pediatric: 40–80 mg/kg/day IV divided every 12 hours." },
+                    { q: "Piperacillin-Tazobactam (PipTaz)", a: "• Adult: 4.5g IV every 6 to 8 hours.\n• Pediatric: 90–100 mg/kg/dose IV every 8 hours." },
+                    { q: "Meropenem", a: "• Adult: 500mg – 1g IV every 8 hours (q8h).\n• Pediatric: 10–20 mg/kg/dose IV every 8 hours (up to 40 mg/kg for severe CNS infections)." },
+                    { q: "Cefixime (Oral)", a: "• Adult: 200mg PO BD or 400mg PO OD.\n• Pediatric: 8 mg/kg/day PO divided once or twice daily.\n• Syrup forms: Usually 50mg/5mL or 100mg/5mL." },
+                    { q: "Norfloxacin", a: "• Adult: 400mg PO twice daily (BD) for uncomplicated UTI.\n• Pediatric: Avoid in growing children (cartilage toxicity)." },
+                    { q: "Ofloxacin", a: "• Adult: 200–400mg PO/IV twice daily (BD).\n• Pediatric: Avoid generally. If strictly necessary: 10–15 mg/kg/day divided BD." }
+                ],
+                "2. Analgesics, Antacids & Antiemetics": [
+                    { q: "Paracetamol (PCM / Acetaminophen)", a: "• Adult: 500mg – 1000mg PO/IV every 6 to 8 hours (Max 4g/day).\n• Pediatric: 10–15 mg/kg/dose PO/IV every 6 hours.\n• Syrup forms: Usually 125mg/5mL or 250mg/5mL." },
+                    { q: "Diclofenac", a: "• Adult: 50mg PO BD/TDS, OR 75mg IM/IV deep injection once or twice daily.\n• Pediatric (>1 yr): 1–3 mg/kg/day PO/PR divided BD/TDS.\n• Note: IV push is CONTRAINDICATED. Must be given as IM or slow IV infusion to prevent necrosis/hypotension." },
+                    { q: "Pantoprazole", a: "• Adult: 40mg PO/IV once daily (OD) before meals.\n• Pediatric: 1 mg/kg/day." },
+                    { q: "Ondansetron", a: "• Adult: 4–8mg PO/IV every 8 hours.\n• Pediatric: 0.15 mg/kg/dose PO/IV every 8 hours.\n• Syrup forms: Usually 2mg/5mL." }
+                ],
+                "3. OAB & BPH Medications": [
+                    { q: "Tamsulosin", a: "• Adult: 0.4 mg PO once daily (OD). Usually given 30 mins after the same meal each day to prevent postural hypotension." },
+                    { q: "Silodosin", a: "• Adult: 8 mg PO once daily (OD) with a meal. Highly selective for alpha-1A. Warn patient about retrograde ejaculation (~25%).\n• Renal dose adjustment: 4 mg OD if CrCl 30-50 mL/min." },
+                    { q: "Solifenacin", a: "• Adult: 5 mg PO once daily (OD). Can be increased to 10 mg OD if tolerated.\n• Note: Anticholinergic. Monitor for dry mouth, constipation, and urinary retention." },
+                    { q: "Tolterodine", a: "• Adult: 2 mg PO twice daily (BD), OR 4 mg Extended Release (ER) PO once daily (OD)." },
+                    { q: "Mirabegron", a: "• Adult: 25 mg to 50 mg PO once daily (OD). Beta-3 agonist. Does not cause dry mouth/constipation.\n• Note: Monitor blood pressure (can cause mild hypertension)." }
+                ]
+            },
+            "Scores & Class": {
+                "1. Stone Scoring Systems": [
+                    { q: "S.T.O.N.E. Nephrolithometry Score", a: "Predicts stone-free rates post-PCNL. Total score ranges from 5 to 13.\n• (S)ize (Stone area): <400 mm² = 1 | 400-799 mm² = 2 | 800-1599 mm² = 3 | ≥1600 mm² = 4.\n• (T)ract length (Skin-to-stone): ≤100 mm = 1 | >100 mm = 2.\n• (O)bstruction (Hydronephrosis): None/Mild = 1 | Moderate/Severe = 2.\n• (N)umber of calyces involved: 1 to 2 calyces = 1 | 3 calyces = 2 | Staghorn = 3.\n• (E)ssence (Stone density): ≤950 HU = 1 | >950 HU = 2." },
+                    { q: "Guy's Stone Score (GSS)", a: "Grades PCNL surgical complexity:\n• Grade I: Solitary stone in mid/lower pole or pelvis with normal anatomy.\n• Grade II: Solitary upper pole stone; multiple stones in normal anatomy; OR solitary stone in abnormal anatomy.\n• Grade III: Multiple stones in abnormal anatomy, stones in a caliceal diverticulum, or partial staghorn.\n• Grade IV: Complete staghorn stone, OR any stone in a patient with spina bifida / spinal cord injury." }
+                ],
+                "2. Renal Mass Scoring": [
+                    { q: "R.E.N.A.L. Nephrometry Score", a: "Scores Partial Nephrectomy complexity (Score 4-12):\n• (R)adius (max diameter): ≤4 cm = 1 | 4-7 cm = 2 | ≥7 cm = 3.\n• (E)xophytic/Endophytic: ≥50% exophytic = 1 | <50% exophytic = 2 | entirely endophytic = 3.\n• (N)earness to collecting system: ≥7 mm = 1 | 4-7 mm = 2 | ≤4 mm = 3.\n• (A)nterior (a) / Posterior (p) / Neither (x).\n• (L)ocation to polar lines: Entirely above/below polar lines = 1 | Lesion crosses polar line = 2 | >50% of mass crosses polar line OR at hilum = 3.\n• Suffix 'h': Assigned if tumor abuts main renal artery/vein." },
+                    { q: "P.A.D.U.A. Score", a: "Preoperative Aspects and Dimensions Used for Anatomical classification (Total 6-14 points):\n• Polar Location: Upper/Lower pole = 1 | Crosses polar line = 2.\n• Exophytic rate: ≥50% = 1 | <50% = 2 | Endophytic = 3.\n• Renal Rim: Lateral = 1 | Medial = 2.\n• Renal Sinus involvement: No = 1 | Yes = 2.\n• Collecting System involvement: Absent = 1 | Present = 2.\n• Tumor Size: ≤4cm = 1 | 4.1-7cm = 2 | >7cm = 3." }
+                ],
+                "3. Stents & Surgical Classifications": [
+                    { q: "FECal Stent Score (Encrusted Stents)", a: "Acosta-Miranda's FECal (Forgotten, Encrusted, Calcified) Stent Score:\nPredicts surgical complexity for retained encrusted ureteral stents based on KUB X-ray.\n• Grade 1: Minimal to linear encrustations on the ureteral segment. Usually manageable with simple cystoscopic removal.\n• Grade 2: Circular encrustation/bulkiness around the stent, but no distinct large stone formation. Usually requires ureteroscopy (URS) + laser lithotripsy.\n• Grade 3: Complete calcification of the stent OR stone burden >10mm at the renal/bladder coil. Requires PCNL or cystolitholapaxy." },
+                    { q: "Clavien-Dindo Surgical Complications", a: "Standardized post-operative grading:\n• Grade I: Any deviation from normal recovery (healed with bedside meds like antiemetics/analgesics, or simple wound care).\n• Grade II: Requires pharmacological treatment (blood transfusions, TPN, antibiotics).\n• Grade III: Requires surgical, endoscopic, or radiological intervention.\n  - IIIa: Intervention NOT under general anesthesia.\n  - IIIb: Intervention UNDER general anesthesia.\n• Grade IV: Life-threatening complication requiring ICU.\n  - IVa: Single organ dysfunction.\n  - IVb: Multiorgan dysfunction.\n• Grade V: Death of the patient." }
+                ]
+            },
             "Ca Bladder": {
                 "1. Diagnostic Workup & Biomarkers": [
                     { q: "VISUAL FLOWCHART: Hematuria / LUTS Algorithm", a: "Follow this clinical pathway for initial evaluation:\n<div class=\"mermaid\">\ngraph TD\n    A[Hematuria / LUTS] --> B(CT Urogram)\n    A --> C(Flexible Cystoscopy)\n    B --> D{Lesion Found?}\n    C --> D\n    D -- Yes --> E[TURBT]\n    E --> F{Muscle Invasive?}\n    F -- No --> G[NMIBC Protocol]\n    F -- Yes --> H[Staging CT C/A/P]\n    H --> I[MIBC Protocol]\n    D -- No --> J[Observe / Medical Therapy]\n</div>" },
@@ -251,20 +289,6 @@
                     { q: "Indications for Adrenalectomy", a: "Surgical Rules:\n• Any functioning/hormone-secreting mass.\n• Any non-functioning mass > 4.0 to 5.0 cm.\n• Radiographically suspicious mass (unenhanced HU >20-30, washout <60%).\n• CRITICAL SAFETY RULE: Biopsy of an adrenal mass is ABSOLUTELY CONTRAINDICATED until pheochromocytoma has been biochemically ruled out (risk of fatal hypertensive crisis)." }
                 ]
             },
-            "Scores & Class": {
-                "1. Stone Scoring Systems": [
-                    { q: "S.T.O.N.E. Nephrolithometry", a: "Predicts stone-free rates post-PCNL based on Stone size, Tract length, Obstruction (hydronephrosis), Number of calyces, and Essence (density in HU)." },
-                    { q: "Guy's Stone Score (GSS)", a: "Grades PCNL complexity from Grade I (solitary stone in normal anatomy) to Grade IV (complete staghorn or abnormal spine anatomy)." }
-                ],
-                "2. Renal Mass Scoring": [
-                    { q: "R.E.N.A.L. Nephrometry Score", a: "Scores partial nephrectomy complexity based on Radius, Exophytic/endophytic properties, Nearness to collecting system, Anterior/posterior location, and Location relative to polar lines." },
-                    { q: "P.A.D.U.A. Score", a: "Categorizes renal tumors into Low, Intermediate, and High surgical complexity for open/robotic partial nephrectomy." }
-                ],
-                "3. Pediatric & Surgical Classifications": [
-                    { q: "FECal Assessment (Enuresis)", a: "Evaluates rectal fecal impaction via abdominal X-ray. Fecal loading mechanically compresses the bladder, reducing capacity and triggering detrusor overactivity." },
-                    { q: "Clavien-Dindo Classification of Surgical Complications", a: "Grades post-op complications from Grade I (bedside meds) to Grade V (death), with Grade III requiring surgical/radiological intervention and Grade IV requiring ICU." }
-                ]
-            },
             "Ca Penis": {
                 "1. Diagnostic Workup & Investigations": [
                     { q: "Biopsy & Initial Evaluation", a: "Protocol: Histological confirmation (punch/excisional). Assess depth, grade, and LVI. Bilateral high-resolution ultrasound of groins." }
@@ -298,8 +322,8 @@
                 "3. Stage I Management": [
                     { q: "Stage I Management (Seminoma & NSGCT)", a: "• Seminoma: Surveillance preferred (or single-dose Carboplatin AUC 7 if high risk).\n• NSGCT (LVI-): Surveillance. \n• NSGCT (LVI+): Primary Nerve-Sparing RPLND OR 1 cycle BEP." }
                 ],
-                "4. Advanced Disease & Chemotherapy Regimens (Exact Doses)": [
-                    { q: "BEP & VIP Regimens", a: "BEP Protocol:\n• Bleomycin: 30,000 IU IV (Days 1, 8, and 15)\n• Etoposide: 100 mg/m² IV (Days 1–5)\n• Cisplatin: 20 mg/m² IV (Days 1–5)\n• Schedule: Good Risk = 3 cycles; Intermediate/Poor Risk = 4 cycles.\nVIP Protocol (If Bleomycin contraindicated due to lung disease):\n• Etoposide 75 mg/m² (D1–5) + Ifosfamide 1,200 mg/m² (D1–5 with Mesna) + Cisplatin 20 mg/m² (D1–5) x 4 cycles." }
+                "4. Advanced Disease & Chemotherapy Regimens": [
+                    { q: "BEP & VIP Regimens (Exact Doses)", a: "BEP Protocol:\n• Bleomycin: 30,000 IU IV (Days 1, 8, and 15)\n• Etoposide: 100 mg/m² IV (Days 1–5)\n• Cisplatin: 20 mg/m² IV (Days 1–5)\n• Schedule: Good Risk = 3 cycles; Intermediate/Poor Risk = 4 cycles.\nVIP Protocol (If Bleomycin contraindicated due to lung disease):\n• Etoposide 75 mg/m² (D1–5) + Ifosfamide 1,200 mg/m² (D1–5 with Mesna) + Cisplatin 20 mg/m² (D1–5) x 4 cycles." }
                 ],
                 "5. Post-Chemotherapy Residual Mass Management": [
                     { q: "NSGCT Residual Mass Algorithm", a: "If mass > 1 cm and normalized markers: Nerve-Sparing RPLND is MANDATORY. 50% teratoma, 35% fibrosis, 15% viable germ cell cancer." },
@@ -314,7 +338,7 @@
                     { q: "IPSS & Diagnostic Accuracy", a: "• IPSS >19 indicates severe symptoms.\n• Uroflowmetry Qmax <10 mL/s has 85% specificity for obstruction.\n• PVR >100-200 mL indicates high risk of retention." },
                     { q: "Indications for Urodynamics (PFS)", a: "MANDATORY Indications: Diagnostic uncertainty (BOO vs underactive detrusor), prior failed invasive surgery, or Qmax >15 mL/s despite severe symptoms." }
                 ],
-                "2. Medical Therapy Protocols (Exact Doses)": [
+                "2. Medical Therapy Protocols": [
                     { q: "Alpha Blockers & 5-ARIs Doses", a: "• Tamsulosin: 0.4 mg PO daily (rapid relief).\n• Alfuzosin: 10 mg PO daily.\n• Silodosin: 8 mg PO daily.\n• Finasteride 5 mg daily / Dutasteride 0.5 mg daily (prostate >30-40 cc).\n• CRITICAL SAFETY RULE (50% PSA Rule): 5-ARIs artificially lower serum PSA by 50%. You MUST multiply measured PSA by 2!" }
                 ],
                 "3. Surgical Decision Pathway": [
@@ -326,7 +350,7 @@
                 "1. Diagnostic Classification & Workup": [
                     { q: "Classification & Bladder Diary", a: "• MNE (Monosymptomatic): No daytime symptoms.\n• NMNE: Daytime urgency/incontinence present.\n• Bladder Diary (48-72h) is MANDATORY to assess baseline capacity and polyuria." }
                 ],
-                "2. Stepwise Treatment Algorithms (Exact Doses)": [
+                "2. Stepwise Treatment Algorithms": [
                     { q: "Step 1: Lifestyle & Alarms", a: "• Fluid restriction 2h before bed, double voiding, treat constipation.\n• Enuresis Conditioning Alarm (Curative first-line for MNE)." },
                     { q: "Step 3: Desmopressin (DDAVP) Dosing & Safety", a: "• Desmopressin Dosage: Oral Lyophilisate (melt) 120–240 mcg OR Tablets 0.2–0.4 mg 1 hour before bedtime.\n• CRITICAL SAFETY RULE: Strictly limit fluid intake to ≤200 mL starting 1 hour before and lasting for 8 hours after taking desmopressin to prevent life-threatening water intoxication and fatal dilutional hyponatremia!" }
                 ]
