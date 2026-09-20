@@ -4486,5 +4486,116 @@ if(typeof _finalDiseaseSelector!=='undefined'&&_finalDiseaseSelector)_finalDisea
   attach();
 }());
 </script>
+    <script>
+(function () {
+  "use strict";
+
+  var ORACLE_ORDER = [
+    "Ca Prostate",
+    "Ca Bladder",
+    "UTUC",
+    "Ca Kidney",
+    "Ca Penis",
+    "Ca Testis",
+    "Urethral Cancer"
+  ];
+
+  function hasOwn(object, key) {
+    return Object.prototype.hasOwnProperty.call(object, key);
+  }
+
+  function availableSchemas() {
+    try {
+      if (typeof FINAL_ORACLE_SCHEMAS !== "undefined" && FINAL_ORACLE_SCHEMAS) {
+        return FINAL_ORACLE_SCHEMAS;
+      }
+    } catch (ignoreFinalSchema) {}
+
+    try {
+      if (typeof ORACLE_SCHEMAS !== "undefined" && ORACLE_SCHEMAS) {
+        return ORACLE_SCHEMAS;
+      }
+    } catch (ignoreBaseSchema) {}
+
+    try {
+      if (window.__URO_ORACLE_V5__ && window.__URO_ORACLE_V5__.schema) {
+        return window.__URO_ORACLE_V5__.schema;
+      }
+    } catch (ignoreV5Schema) {}
+
+    return {};
+  }
+
+  function optionNames(schema) {
+    var available = [];
+
+    ORACLE_ORDER.forEach(function (name) {
+      if (hasOwn(schema, name)) available.push(name);
+    });
+
+    return available.length ? available : ORACLE_ORDER.slice();
+  }
+
+  function sameOptions(select, names) {
+    if (select.options.length !== names.length) return false;
+
+    for (var index = 0; index < names.length; index += 1) {
+      if (select.options[index].value !== names[index]) return false;
+    }
+
+    return true;
+  }
+
+  function populateOracleDisease() {
+    var select = document.getElementById("oracleDisease");
+    if (!select) return "";
+
+    var oldValue = select.value;
+    var names = optionNames(availableSchemas());
+
+    if (!sameOptions(select, names)) {
+      select.replaceChildren();
+
+      names.forEach(function (name) {
+        var option = document.createElement("option");
+        option.value = name;
+        option.textContent = name;
+        select.appendChild(option);
+      });
+    }
+
+    select.value = names.indexOf(oldValue) !== -1 ? oldValue : names[0];
+    return select.value;
+  }
+
+  function renderWithValidDisease() {
+    var selectedDisease = populateOracleDisease();
+
+    if (selectedDisease && typeof window.renderOracleForm === "function") {
+      window.renderOracleForm();
+    }
+  }
+
+  var previousOpenOracle = window.openOracle;
+
+  window.openOracle = function () {
+    populateOracleDisease();
+
+    var result;
+    if (typeof previousOpenOracle === "function") {
+      result = previousOpenOracle.apply(this, arguments);
+    }
+
+    renderWithValidDisease();
+    return result;
+  };
+
+  document.addEventListener("DOMContentLoaded", populateOracleDisease, {
+    once: true
+  });
+
+  populateOracleDisease();
+}());
+</script>
 </body>
 </html>
