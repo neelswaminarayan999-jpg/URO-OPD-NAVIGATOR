@@ -160,7 +160,6 @@
         </div>
     </div>
 
-    <!-- Complete Clinical Database with Exact Dosages & Expanded Scores -->
     <script>
         const clinicalData = {
             "Drug Dosages": {
@@ -206,6 +205,7 @@
             },
             "Ca Bladder": {
                 "1. Diagnostic Workup & Biomarkers": [
+                    { q: "VISUAL FLOWCHART: Hematuria / LUTS Algorithm", a: "Follow this clinical pathway for initial evaluation:\n<div class=\"mermaid\">\ngraph TD\n    A[Hematuria / LUTS] --> B(CT Urogram)\n    A --> C(Flexible Cystoscopy)\n    B --> D{Lesion Found?}\n    C --> D\n    D -- Yes --> E[TURBT]\n    E --> F{Muscle Invasive?}\n    F -- No --> G[NMIBC Protocol]\n    F -- Yes --> H[Staging CT C/A/P]\n    H --> I[MIBC Protocol]\n    D -- No --> J[Observe / Medical Therapy]\n</div>" },
                     { q: "Initial Hematuria & LUTS Workup Algorithm", a: "Initial Presentation Workup:\n• Gross Hematuria or persistent microscopic hematuria (>3 RBC/HPF), or persistent unexplained storage LUTS.\n• CT Urogram (Split-bolus triphasic): MANDATORY to evaluate upper tracts.\n• Flexible Cystoscopy: In-office mucosal inspection.\n• TURBT: Must resect superficial exophytic tumor and deep detrusor muscle separately.\n• Staging CT C/A/P: MANDATORY if TURBT demonstrates muscle-invasive disease (≥T2)." },
                     { q: "The Paris System 2.0 (TPS) for Urinary Cytology", a: "Paris System 2.0 Diagnostic Categories:\n• Unsatisfactory / Non-diagnostic: <10 cells.\n• Negative for High-Grade (NHGUC).\n• Atypical Urothelial Cells (AUC): N:C ratio 0.5–0.7. ROM: 15%–30%.\n• Suspicious for High-Grade (SHGUC): N:C ratio >0.7. ROM: 60%–80%.\n• High-Grade Urothelial Carcinoma (HGUC): N:C ratio ≥0.7, coarse chromatin. ROM: >90%." },
                     { q: "Investigations: Sensitivity & Specificity", a: "Diagnostic Accuracy:\n• Voided Urine Cytology: High-Grade / CIS: Sens 80%–90%, Spec >95%.\n• White Light Flexible Cystoscopy: Sens: 85%–90%, Spec: 80%–85%.\n• Photodynamic Diagnosis (Hexvix): Sens: 92%–96%, Spec: 65%–75%." }
@@ -231,7 +231,10 @@
                     { q: "First-Line Systemic Therapies & Maintenance Doses", a: "• Cisplatin-Eligible: Gemcitabine (1,000 mg/m² D1,8) + Cisplatin (70 mg/m² D1) q3w x 4-6 cycles OR ddMVAC.\n• Switch Maintenance: Avelumab (800 mg IV every 2 weeks) for non-progressive disease.\n• Cisplatin-Ineligible: Enfortumab Vedotin (1.25 mg/kg D1,8,15) + Pembrolizumab (200 mg q3w)." }
                 ],
                 "6. Post-Operative Surveillance Protocols": [
-                    { q: "Post-Cystectomy Surveillance Schedule", a: "Schedule: CT C/A/P, renal function, and CBC every 3–6 months for 2 years, then every 6–12 months for years 3–5. Monitor Vitamin B12 and electrolytes annually." }
+                    { q: "Surveillance: Low-Risk NMIBC (Post-TURBT)", a: "• Cystoscopy at 3 months post-TURBT.\n• If negative: Follow-up cystoscopy at 9 months.\n• Then annually for 5 years.\n• Routine urine cytology is NOT indicated for pure low-risk disease." },
+                    { q: "Surveillance: Intermediate-Risk NMIBC (Post-TURBT)", a: "• Cystoscopy + Urine Cytology at 3 months, 6 months, 9 months, and 12 months.\n• Then every 6 months for 2 years.\n• Annually thereafter." },
+                    { q: "Surveillance: High-Risk NMIBC (Post-TURBT)", a: "• Cystoscopy + Urine Cytology every 3 months for 2 years.\n• Every 6 months for years 3–5.\n• Annually thereafter.\n• Upper tract CT Urogram every 12–24 months." },
+                    { q: "Surveillance: Post-Radical Cystectomy (MIBC)", a: "• CT Chest/Abdomen/Pelvis, renal function, and CBC every 3–6 months for 2 years.\n• Every 6–12 months for years 3–5.\n• Annually thereafter.\n• Monitor Vitamin B12 and electrolytes annually (especially hyperchloremic metabolic acidosis from ileal conduit/neobladder)." }
                 ]
             },
             "Ca Prostate": {
@@ -256,7 +259,9 @@
                     { q: "mCRPC Targeted Protocols & Dosages", a: "• Olaparib: 300 mg PO BID for BRCA1/2 mutations.\n• Lutetium-177 PSMA-617: 7.4 GBq (200 mCi) IV every 6 weeks for up to 6 cycles." }
                 ],
                 "6. Post-Operative Surveillance Protocols": [
-                    { q: "Surveillance: Post-RP vs Post-RT", a: "Based on management choice:\n• Post-Radical Prostatectomy (RP): PSA every 3-6 months for 5 years, then annually. (BCR defined as PSA ≥0.2 ng/mL).\n• Post-Radiotherapy (RT): PSA every 6 months. (BCR defined by Phoenix criteria as Nadir + 2.0 ng/mL)." }
+                    { q: "Surveillance: Active Surveillance (Low Risk Cohort)", a: "• PSA every 6 months.\n• Digital Rectal Examination (DRE) annually.\n• Repeat mpMRI Prostate at 12–18 months.\n• Confirmatory prostate biopsy within 12–24 months (or earlier if PSA velocity increases or MRI progresses)." },
+                    { q: "Surveillance: Post-Radical Prostatectomy (RP)", a: "• PSA every 3–6 months for 5 years, then annually.\n• Biochemical Recurrence (BCR) Definition: PSA ≥ 0.2 ng/mL confirmed on two consecutive measurements 2–4 weeks apart.\n• Restaging & Action: 68Ga-PSMA-11 PET-CT. Salvage RT to prostatic bed (64–70 Gy)." },
+                    { q: "Surveillance: Post-Radiotherapy (EBRT)", a: "• PSA every 6 months.\n• Biochemical Recurrence (BCR) Definition (Phoenix Criteria): PSA rise of ≥ 2.0 ng/mL above the post-treatment nadir.\n• Restaging & Action: 68Ga-PSMA-11 PET-CT." }
                 ]
             },
             "Ca Kidney": {
@@ -270,15 +275,17 @@
                 ],
                 "3. Localized Management & Surgery": [
                     { q: "VISUAL FLOWCHART: Management by Stage", a: "Clinical pathway for surgical management depending on stage:\n<div class=\"mermaid\">\ngraph TD\n    A[Renal Mass] --> B{Clinical Stage?}\n    B -- T1 a/b --> C[Partial Nephrectomy]\n    B -- T2 a/b --> D[Radical Nephrectomy]\n    B -- T3/T4 --> E[Radical Nephrectomy + LND +/- Thrombectomy]\n    C --> F[Surveillance: Baseline CT 3-6m, then annual USG/CT]\n    D --> G[Surveillance: Baseline CT 3-6m, then annual CT]\n    E --> H[Surveillance: CT C/A/P every 3-6m for 3 years]\n</div>" },
-                    { q: "Partial vs Radical Nephrectomy Protocols", a: "Surgical Rules:\n• T1 Tumors (≤7 cm): Partial Nephrectomy is the absolute standard of care to preserve renal function.\n• T2 Tumors (>7 cm): Radical Nephrectomy is standard.\n• Adjuvant Therapy: Pembrolizumab (200 mg IV q3w for 1 year) indicated for high-risk recurrence post-nephrectomy." },
-                    { q: "Active Surveillance & Thermal Ablation (SRMs)", a: "Protocol: Active surveillance preferred for frail/elderly with SRMs <4 cm. Thermal ablation (Cryo/RFA) ideal for exophytic tumors ≤3 cm." }
+                    { q: "Partial vs Radical Nephrectomy Protocols", a: "Surgical Rules:\n• T1 Tumors (≤7 cm): Partial Nephrectomy is the absolute standard of care to preserve renal function.\n• T2 Tumors (>7 cm): Radical Nephrectomy is standard.\n• Adjuvant Therapy: Pembrolizumab (200 mg IV q3w for 1 year) indicated for high-risk recurrence post-nephrectomy." }
                 ],
                 "4. Advanced Disease & Systemic Therapy": [
                     { q: "IMDC (Heng) Risk Criteria for mRCC", a: "Prognostic Risk Criteria (1 point each): KPS <80%, time from diagnosis to treatment <1 yr, low Hb, high corrected calcium, high neutrophils, high platelets.\n• Favorable (0 pts), Intermediate (1-2 pts), Poor (3-6 pts)." },
                     { q: "First-Line Systemic Therapy Regimens (Exact Doses)", a: "• Favorable Risk: Pembrolizumab (200 mg IV q3w) + Axitinib (5 mg BID) OR Pembrolizumab + Lenvatinib.\n• Intermediate / Poor Risk: Nivolumab (360 mg IV q3w or 480 mg q4w) + Ipilimumab (1 mg/kg IV q3w x 4 cycles) followed by Nivolumab maintenance." }
                 ],
                 "5. Post-Operative Surveillance Protocols": [
-                    { q: "Surveillance: Partial vs Radical Nephrectomy (T1/T2)", a: "Based on surgical management choice:\n• Post-Partial Nephrectomy (T1): Baseline CT/MRI Abdomen at 3-6 months. Then USG or CT Abdomen annually. Chest X-ray annually for 3-5 years (to minimize radiation while monitoring the preserved kidney).\n• Post-Radical Nephrectomy (T1/T2): Baseline CT Abdomen at 3-6 months. Then CT Abdomen/Pelvis annually. Chest X-ray annually.\n• High-Risk (T3/T4 or N+) Post-Nephrectomy: CT Chest/Abdomen/Pelvis every 3-6 months for 3 years, then every 6 months for years 4-5, then annually." }
+                    { q: "Surveillance: Post-Partial Nephrectomy (T1/T2)", a: "• Baseline CT or MRI Abdomen at 3–6 months.\n• Annually thereafter: USG Abdomen or CT/MRI Abdomen.\n• Chest X-ray annually for 3–5 years.\n• Goal: Minimize ionizing radiation while strictly monitoring the preserved kidney." },
+                    { q: "Surveillance: Post-Radical Nephrectomy (T1/T2)", a: "• Baseline CT Abdomen at 3–6 months.\n• Annually thereafter: CT Abdomen/Pelvis.\n• Chest X-ray annually." },
+                    { q: "Surveillance: High-Risk (T3/T4/N+) Post-Nephrectomy", a: "• CT Chest/Abdomen/Pelvis every 3–6 months for 3 years.\n• Every 6 months for years 4–5.\n• Annually thereafter." },
+                    { q: "Surveillance: Post-Thermal Ablation & SRMs", a: "• Contrast-enhanced CT or MRI every 3-6 months for the first year.\n• Every 6-12 months thereafter.\n• Triggers for active SRM intervention: Growth >0.5 cm/year or size progression to >4 cm." }
                 ]
             },
             "Adrenal Mass": {
@@ -309,7 +316,9 @@
                     { q: "Neoadjuvant TIP Regimen (Exact Doses)", a: "TIP Chemotherapy Protocol:\n• Paclitaxel: 175 mg/m² IV (Day 1)\n• Ifosfamide: 1,200 mg/m² IV (Days 1–3) with Mesna\n• Cisplatin: 25 mg/m² IV (Days 1–3) q21d x 3-4 cycles." }
                 ],
                 "6. Post-Operative Surveillance Protocols": [
-                    { q: "Surveillance Schedule", a: "Years 1-2: Physical exam of penis and groins q3mo (80% of recurrences occur within 24 mo). USG of groins q3-6mo." }
+                    { q: "Surveillance: Post Penile-Sparing Surgery", a: "• Years 1-2: Physical exam of penis and groins every 3 months. USG of groins every 3-6 months.\n• Years 3-5: Clinical exam every 6 months." },
+                    { q: "Surveillance: Post Partial / Total Penectomy", a: "• Years 1-2: Physical exam of stump and groins every 3 months.\n• Years 3-5: Clinical exam every 6 months.\n• 80% of all recurrences occur within the first 24 months." },
+                    { q: "Surveillance: Clinically N0 Groins (Watchful Waiting)", a: "• Only applicable for Low Risk (Tis, Ta, T1aLG, LVI negative).\n• Physical examination and high-resolution Ultrasound of the groins every 3 months for the first 2 years." }
                 ]
             },
             "Ca Testis": {
@@ -331,7 +340,9 @@
                     { q: "Seminoma Residual Mass Algorithm", a: "If mass ≥ 3 cm: 18F-FDG PET-CT scan at least 6–8 weeks post-chemo. If positive -> Surgery/Biopsy." }
                 ],
                 "6. Post-Operative Surveillance Protocols": [
-                    { q: "Survivorship Care", a: "Year 1: CT A/P q3-4mo, Markers q2mo. CRITICAL SAFETY RULE: Minimize ionizing CT scans after year 3 to reduce secondary radiation-induced malignancies." }
+                    { q: "Surveillance: Stage 1 Seminoma", a: "• Year 1: H&P and Tumor Markers every 3-6 months. CT Abdomen/Pelvis at 6 months.\n• Year 2: H&P and Markers every 6 months. CT A/P at 12 and 24 months." },
+                    { q: "Surveillance: Stage 1 NSGCT", a: "• Year 1: H&P and Tumor Markers every 2-3 months. CT Abdomen/Pelvis every 3-4 months.\n• Year 2: H&P and Markers every 3-4 months. CT A/P every 6 months." },
+                    { q: "Surveillance: Post-Chemotherapy (Advanced)", a: "• Year 1: H&P and Tumor Markers every 2 months. CT Abdomen/Pelvis every 3-4 months. CXR every 2 months.\n• CRITICAL SAFETY RULE: Minimize ionizing CT scans after year 3 to reduce secondary radiation-induced malignancies. Screen for metabolic syndrome and hypogonadism." }
                 ]
             },
             "BPH": {
@@ -587,10 +598,10 @@
             document.getElementById('printBtn').classList.remove('hidden');
         }
 
-        // --- PWA SERVICE WORKER REGISTRATION ---
+        // --- PWA SERVICE WORKER REGISTRATION WITH CACHE BUSTER ---
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js').then(reg => {
+                navigator.serviceWorker.register('sw.js?v=3').then(reg => {
                     console.log('ServiceWorker registered:', reg.scope);
                 }).catch(err => console.log('ServiceWorker error:', err));
             });
