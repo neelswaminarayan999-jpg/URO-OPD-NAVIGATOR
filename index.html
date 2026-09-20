@@ -135,44 +135,43 @@ input,select,textarea{outline:none} input:focus,select:focus,textarea:focus{box-
 // ==========================================
 const DISEASES = {
 "Ca Prostate":{
-  emoji:"🧬", color:"sky", tagline:"Diagnostics • LND Templates • mHSPC • mCRPC",
+  emoji:"🧬", color:"sky", tagline:"TNM • ISUP • LND Templates • mHSPC • mCRPC",
   sections:[
-   {title:"1. Diagnostic & Biomarkers",items:[
+   {title:"1. Staging, Grading & Classifications (Exhaustive)",items:[
+    ["AJCC TNM Staging Details","<b>T1a:</b> Incidental histologic finding in ≤ 5% of tissue resected.\n<b>T1b:</b> Incidental finding in > 5% of tissue resected.\n<b>T1c:</b> Tumor identified by needle biopsy (elevated PSA).\n<b>T2a:</b> Involves ≤ 50% of one lobe.\n<b>T2b:</b> Involves > 50% of one lobe but not both.\n<b>T2c:</b> Involves both lobes.\n<b>T3a:</b> Extraprostatic extension (unilateral/bilateral) or microscopic invasion of bladder neck.\n<b>T3b:</b> Tumor invades seminal vesicle(s).\n<b>T4:</b> Tumor is fixed or invades adjacent structures (external sphincter, rectum, bladder, levator muscles, pelvic wall).\n<b>N1:</b> Metastasis in regional LN(s) (true pelvis).\n<b>M1a:</b> Non-regional LN(s).\n<b>M1b:</b> Bone(s).\n<b>M1c:</b> Other visceral sites with or without bone disease."],
+    ["ISUP Gleason Scoring Details","<b>Grade Group 1:</b> Gleason score ≤ 6 (Only well-formed glands).\n<b>Grade Group 2:</b> Gleason score 3 + 4 = 7 (Predominantly well-formed glands with lesser component of poorly-formed/fused/cribriform glands).\n<b>Grade Group 3:</b> Gleason score 4 + 3 = 7 (Predominantly poorly-formed/fused/cribriform glands).\n<b>Grade Group 4:</b> Gleason score 4 + 4 = 8; 3 + 5 = 8; 5 + 3 = 8.\n<b>Grade Group 5:</b> Gleason scores 9-10 (Lack of gland formation, sheets, cords, single cells, solid nests, comedonecrosis).\n<b>CRITICAL RULE:</b> Presence of Cribriform morphology or Intraductal Carcinoma (IDC-P) is an independent adverse prognostic factor. Tertiary Pattern 5 in a radical prostatectomy specimen (>5%) heavily upgrades clinical risk."],
+    ["NCCN Risk Stratification (Exhaustive)","<b>Very Low:</b> T1c AND GG1 AND PSA <10 AND <3 positive biopsy cores AND ≤50% cancer in any core AND PSA density <0.15.\n<b>Low:</b> T1-T2a AND GG1 AND PSA <10.\n<b>Favorable Intermediate:</b> 1 intermediate risk factor (T2b-T2c OR GG2-3 OR PSA 10-20) AND GG1 or GG2 AND <50% biopsy cores positive.\n<b>Unfavorable Intermediate:</b> GG3 OR ≥50% positive cores OR ≥2 intermediate risk factors.\n<b>High:</b> T3a OR GG4-5 OR PSA >20.\n<b>Very High:</b> T3b-T4 OR Primary Pattern 5 OR >4 cores of GG4-5."]
+   ]},
+   {title:"2. Diagnostic & Biomarkers",items:[
     ["mpMRI Prostate","PI-RADS v2.1. T2-Weighted (T2W): Primary for Transition Zone. DWI/ADC: Primary for Peripheral Zone. Restricted diffusion = bright on high b-value DWI, dark on ADC. Sens 85-92%, Spec 75-85% for csPCa."],
     ["PSA Density (PSAD)","Calculated as PSA / Prostate Volume. PSAD ≥0.15 ng/mL/cc strongly predictive of csPCa. Drives biopsy decision even if PI-RADS is 3."]
    ]},
-   {title:"2. Histology & Pathology",items:[
-    ["Standard & Variant Subtypes","Acinar Adenocarcinoma (>95%). Ductal Adenocarcinoma: aggressive, central, lower PSA relative to volume -> upfront surgery. Small Cell/Neuroendocrine: highly aggressive, non-PSA secreting, treat with SCLC protocols (Platinum+Etoposide)."],
-    ["ISUP Grade Group & Rules","Primary pattern (most extensive) + Secondary (highest non-primary). GG1=6, GG2=3+4, GG3=4+3, GG4=8, GG5=9-10. Tertiary pattern 5 in RP specimen (>5%) severely upgrades biological risk."]
-   ]},
-   {title:"3. TNM & Risk Stratification",items:[
-    ["NCCN / EAU Risk Matrix","Low: T1-T2a, GG1, PSA <10, <3 positive cores. Favorable Int: 1 int factor, GG1-2, <50% cores. Unfavorable Int: GG3 OR ≥50% cores OR multiple int factors. High: T3a OR GG4-5 OR PSA >20. Very High: T3b-T4, primary 5, >4 cores GG4-5."],
-    ["TNM Basics","T1c: Biopsy. T2: Confined. T3a: EPE. T3b: SVI. T4: Fixed. N1: Regional nodes. M1a: Non-regional LN. M1b: Bone. M1c: Visceral."]
-   ]},
-   {title:"4. Localized Treatment & LN Templates",items:[
+   {title:"3. Localized Treatment & LN Templates",items:[
     ["Active Surveillance (AS)","Curative intent. Protocol: PSA q6mo, DRE annually, confirmatory mpMRI/Biopsy at 12-24 mo. Triggers: Upgrade to GG ≥2, volume increase."],
-    ["Definitive Treatment (Int/High)","Unfavorable Int: RP+ePLND OR EBRT+Short-course ADT (4-6mo). High/Very High: RP+ePLND (expect salvage) OR EBRT (78-80 Gy) + Long-course ADT (18-36mo) ± Brachytherapy boost."],
+    ["Definitive Treatment (Int/High)","Unfavorable Int: RP+ePLND OR EBRT+Short-course ADT (4-6mo).\nHigh/Very High: RP+ePLND (expect salvage) OR EBRT (78-80 Gy) + Long-course ADT (18-36mo) ± Brachytherapy boost."],
     ["Extended Pelvic LND (ePLND) Boundaries","MANDATORY for High/Very High risk. Cranial: Common iliac bifurcation. Lateral: Genitofemoral nerve & psoas. Medial: Internal iliac. Distal: Node of Cloquet / femoral ring. Dorsal: Obturator fossa."]
    ]},
-   {title:"5. Advanced: mHSPC & mCRPC",items:[
+   {title:"4. Advanced: mHSPC & mCRPC",items:[
     ["mHSPC Doublet & Triplet Therapy","Continuous ADT backbone. High Volume (CHAARTED): Triplet therapy MANDATORY -> ADT + Docetaxel + Darolutamide (ARASENS) or Abiraterone (PEACE-1). Low Volume: Doublet -> ADT + Enza/Apa/Abi + MANDATORY RT to primary (STAMPEDE)."],
     ["mCRPC Targeted Selection","Maintain castrate testosterone. BRCA/HRR Mutated -> PARP Inhibitors (Olaparib - PROfound). PSMA PET+ -> Lu-177 PSMA-617 (VISION). Docetaxel-refractory -> Cabazitaxel (TROPIC)."],
     ["Biochemical Recurrence (BCR)","Post-RP: PSA ≥0.2 confirmed. Post-RT: Phoenix criteria (Nadir + 2.0). Action: PSMA PET-CT restaging. Salvage RT best given early (PSA <0.5) ± ADT."]
    ]},
-   {title:"6. Follow-up Protocol",items:[
+   {title:"5. Follow-up Protocol",items:[
     ["Surveillance Post-Curative Tx","PSA every 3-6 months for 2 years, then every 6 months for years 3-4, then annually. Monitor bone health (DEXA) and cardiovascular risk during ADT."]
    ]}
   ]
 },
 "Ca Bladder":{
-  emoji:"🫧",color:"indigo",tagline:"Variant Histology • Re-TURBT • Cystectomy • EV-302",
+  emoji:"🫧",color:"indigo",tagline:"TNM • Variants • NMIBC/MIBC Criteria • EV-302",
   sections:[
-   {title:"1. Diagnostics & Workup",items:[
+   {title:"1. Staging, Grading & Classifications (Exhaustive)",items:[
+    ["AJCC TNM Staging Details","<b>Ta:</b> Non-invasive papillary carcinoma.\n<b>Tis:</b> Carcinoma in situ ('flat tumor').\n<b>T1:</b> Tumor invades subepithelial connective tissue (lamina propria).\n<b>T2a:</b> Tumor invades superficial muscularis propria (inner half).\n<b>T2b:</b> Tumor invades deep muscularis propria (outer half).\n<b>T3a:</b> Microscopically invades perivesical tissue.\n<b>T3b:</b> Macroscopically invades perivesical tissue (extravesical mass).\n<b>T4a:</b> Tumor invades prostatic stroma, seminal vesicles, uterus, or vagina.\n<b>T4b:</b> Tumor invades pelvic wall or abdominal wall.\n<b>N1:</b> Single regional lymph node metastasis in the true pelvis.\n<b>N2:</b> Multiple regional lymph node metastases in the true pelvis.\n<b>N3:</b> Lymph node metastasis to the common iliac lymph nodes.\n<b>M1a:</b> Non-regional lymph node metastasis.\n<b>M1b:</b> Other distant metastasis."],
+    ["EAU 2021 NMIBC Risk Grouping","<b>Low Risk:</b> Primary, single, Ta, LG/G1, <3 cm, no CIS in patients ≤70 years OR Primary, Ta, LG/G1, no CIS with at most one additional risk factor (age >70, multiple, ≥3cm).\n<b>Intermediate Risk:</b> Patients not defined in Low, High, or Very High categories.\n<b>High Risk:</b> T1 LG/G1 if age >70, multiple, or ≥3cm. Ta HG/G3 without CIS but age >70, multiple, or ≥3cm. T1 HG/G3 without CIS.\n<b>Very High Risk:</b> Any T1 HG/G3 with concurrent bladder CIS, OR multiple/large Ta HG/G3 with CIS, OR any tumor with prostatic urethra CIS, variant histology, or LVI."],
+    ["Variant Histologies (CRITICAL)","Squamous Cell (SCC) & Adenocarcinoma: Highly chemoresistant -> Upfront Radical Cystectomy (RC). Micropapillary / Plasmacytoid: Highly aggressive early micromets -> Upfront RC (BCG heavily discouraged). Small Cell/Neuroendocrine: Treat as systemic SCLC -> Neoadj Platinum+Etoposide -> Local consolidation."]
+   ]},
+   {title:"2. Diagnostics & Re-TURBT Rules",items:[
     ["Hematuria Workup","CT Urogram (split-bolus) mandatory for upper tracts. Flexible cystoscopy. The Paris System 2.0 for cytology (requires N:C ratio ≥0.7 for HG)."],
     ["TURBT Principles","Resect exophytic tumor and deep detrusor muscle separately. MANDATORY Re-TURBT within 2-6 weeks if: 1. Detrusor muscle absent (30-40% upstaging risk). 2. Any T1 tumor. 3. High Grade disease."]
-   ]},
-   {title:"2. Histological Variants (CRITICAL)",items:[
-    ["Variant-Specific Pathways","Squamous Cell (SCC) & Adenocarcinoma: Chemoresistant -> Upfront Radical Cystectomy (RC). Micropapillary / Plasmacytoid: Highly aggressive early micromets -> Upfront RC (BCG discouraged). Small Cell/Neuroendocrine: Treat as systemic -> Neoadj Platinum+Etoposide -> Local consolidation."]
    ]},
    {title:"3. NMIBC Management & Dosages",items:[
     ["Immediate Post-Op Instillation (SIO)","Give within 2-6 hrs post-TURBT. Doses: Mitomycin C 40mg/40mL OR Gemcitabine 2000mg/100mL. CONTRAINDICATION: Bladder perforation or severe bleeding."],
@@ -190,41 +189,40 @@ const DISEASES = {
   ]
 },
 "Ca Kidney":{
-  emoji:"🫘",color:"emerald",tagline:"Bosniak • Histology • Adjuvant Pembro • IMDC",
+  emoji:"🫘",color:"emerald",tagline:"TNM • IMDC • Bosniak • Adjuvant Pembro",
   sections:[
-   {title:"1. Diagnostics & Bosniak Criteria",items:[
-    ["Imaging Metrics","Multiphasic CT Urogram. Enhancement ≥15-20 HU from unenhanced to contrast phase confirms solid renal malignancy."],
-    ["Bosniak 2019 (Cystic Masses)","I/II: Simple/Minimally complex (~0% malignant). IIF: Thin septa, follow-up required (~5%). III: Irregular thick walls with MEASURABLE enhancement (~50% malignant, surgical). IV: Enhancing nodular tissue (~90% malignant, surgical)."]
+   {title:"1. Staging, Grading & Classifications (Exhaustive)",items:[
+    ["AJCC TNM Staging Details","<b>T1a:</b> Tumor ≤ 4 cm, limited to kidney.\n<b>T1b:</b> Tumor > 4 cm but ≤ 7 cm, limited to kidney.\n<b>T2a:</b> Tumor > 7 cm but ≤ 10 cm, limited to kidney.\n<b>T2b:</b> Tumor > 10 cm, limited to kidney.\n<b>T3a:</b> Tumor macroscopically involves renal vein or its segmental branches, or invades perirenal and/or renal sinus fat but not beyond Gerota's fascia.\n<b>T3b:</b> Tumor grossly extends into vena cava below diaphragm.\n<b>T3c:</b> Tumor grossly extends into vena cava above diaphragm or invades wall of vena cava.\n<b>T4:</b> Tumor invades beyond Gerota's fascia (including contiguous extension into ipsilateral adrenal gland).\n<b>N1:</b> Metastasis in regional lymph node(s)."],
+    ["WHO / ISUP Grading Details","<b>Grade 1:</b> Nucleoli absent or inconspicuous and basophilic at 400x magnification.\n<b>Grade 2:</b> Nucleoli conspicuous and eosinophilic at 400x magnification, visible but not prominent at 100x.\n<b>Grade 3:</b> Nucleoli conspicuous and eosinophilic at 100x magnification.\n<b>Grade 4:</b> Extreme pleomorphism, multinucleated giant cells, and/or sarcomatoid and/or rhabdoid differentiation."],
+    ["Bosniak 2019 Classification (Cystic Masses)","<b>I:</b> Simple cyst, homogeneous, water density, thin walls (Malignancy ~0%).\n<b>II:</b> Minimally complex, thin septa (≤2mm), thin calcification, hyperdense >70 HU (Malignancy ~0%).\n<b>IIF:</b> Multiple thin septa, minimal thickening, no measurable enhancement (Malignancy ~5%, requires serial imaging).\n<b>III:</b> Irregular, thick walls or septa (≥4mm) with MEASURABLE enhancement (Malignancy ~50%, surgical indication).\n<b>IV:</b> One or more enhancing solid macroscopic nodular soft-tissue components (Malignancy ~90%, surgical indication)."],
+    ["IMDC (Heng) Criteria Detailed","Six criteria (1 point each): 1. KPS < 80%. 2. Time from diagnosis to systemic therapy < 1 year. 3. Hemoglobin < lower limit of normal. 4. Corrected calcium > upper limit of normal (ULN, e.g., >10.2 mg/dL). 5. Neutrophil count > ULN. 6. Platelet count > ULN.\n<b>Favorable Risk:</b> 0 factors.\n<b>Intermediate Risk:</b> 1 or 2 factors.\n<b>Poor Risk:</b> 3 to 6 factors."]
    ]},
-   {title:"2. Histology & ISUP Grading",items:[
-    ["Subtypes","Clear Cell (75%): VHL mutation, highly vascular, responds to IO/TKIs. Papillary (15%): Type 1 MET mutated (responds to Cabozantinib - SWOG 1500). Chromophobe: BHD syndrome, good prognosis. Medullary/Collecting Duct: Highly aggressive, sickle-cell trait link, requires Platinum-chemo."],
-    ["ISUP Grade","Grade 1-3 based on nucleoli at 400x/100x. Grade 4: Extreme pleomorphism, sarcomatoid or rhabdoid differentiation (triggers highest risk pathways)."]
-   ]},
-   {title:"3. Surgical & Adjuvant Guidelines",items:[
+   {title:"2. Surgical & Adjuvant Guidelines",items:[
     ["Surgical Boundaries","Partial Nephrectomy standard for T1 (≤7 cm); minimal 1-2mm margin safe. Radical Nephrectomy for T2+ or complex anatomy. LND only if clinically suspicious."],
     ["Adjuvant Therapy (KEYNOTE-564)","Pembrolizumab 200mg q3w for 1 year is MANDATORY for Clear Cell RCC with high-risk features: Grade 4, Sarcomatoid, pT3/T4, or N+. Markedly improves DFS/OS."]
    ]},
-   {title:"4. Metastatic (IMDC) Treatment",items:[
-    ["IMDC (Heng) Criteria","1 point each: KPS <80%, Time Dx to Tx <1 yr, Low Hb, High Ca, High Neutrophils, High Platelets. Favorable (0), Int (1-2), Poor (3-6)."],
+   {title:"3. Metastatic (IMDC) Treatment",items:[
     ["First-Line Systemic","Favorable: Pembro+Axitinib (KEYNOTE-426) or Pembro+Lenvatinib (CLEAR). Int/Poor: Nivolumab+Ipilimumab (CheckMate-214, IO-IO doublet preferred)."],
     ["Cytoreductive Nephrectomy (CN)","CARMENA trial discouraged upfront CN. CN is now reserved ONLY for highly selected Favorable risk patients post-systemic response."]
    ]}
   ]
 },
 "Ca Testis":{
-  emoji:"🥚",color:"amber",tagline:"Tumor Markers • IGCCCG • Stage I • Post-Chemo RPLND",
+  emoji:"🥚",color:"amber",tagline:"TNM • IGCCCG • Stage I • Post-Chemo RPLND",
   sections:[
-   {title:"1. Diagnostics & Strict Rules",items:[
+   {title:"1. Staging, Grading & Classifications (Exhaustive)",items:[
+    ["AJCC TNM Staging Details","<b>pT1:</b> Tumor limited to testis and epididymis without vascular/lymphatic invasion (may invade tunica albuginea but not tunica vaginalis).\n<b>pT2:</b> Tumor limited to testis and epididymis with vascular/lymphatic invasion, OR extending through tunica albuginea with involvement of tunica vaginalis.\n<b>pT3:</b> Tumor invades spermatic cord with or without vascular/lymphatic invasion.\n<b>pT4:</b> Tumor invades scrotum with or without vascular/lymphatic invasion.\n<b>N1:</b> LN mass ≤ 2 cm and ≤ 5 nodes positive.\n<b>N2:</b> LN mass > 2 cm but ≤ 5 cm, OR > 5 nodes positive, OR evidence of extranodal extension.\n<b>N3:</b> LN mass > 5 cm.\n<b>M1a:</b> Non-regional LN or pulmonary metastasis.\n<b>M1b:</b> Non-pulmonary visceral metastasis (e.g., Liver, Brain, Bone)."],
+    ["Serum Tumor Markers (S Stage)","<b>S1:</b> LDH < 1.5x Normal AND hCG < 5,000 AND AFP < 1,000.\n<b>S2:</b> LDH 1.5-10x Normal OR hCG 5,000-50,000 OR AFP 1,000-10,000.\n<b>S3:</b> LDH > 10x Normal OR hCG > 50,000 OR AFP > 10,000."],
+    ["IGCCCG Risk Classification (Detailed)","<b>Good Risk (Seminoma):</b> Any primary site, no non-pulmonary visceral mets, normal AFP, any hCG/LDH.\n<b>Intermediate Risk (Seminoma):</b> Non-pulmonary visceral mets present.\n<b>Good Risk (NSGCT):</b> Testis/Retroperitoneal primary AND no non-pulm visceral mets AND S1 markers.\n<b>Intermediate Risk (NSGCT):</b> Testis/Retroperitoneal primary AND no non-pulm visceral mets AND S2 markers.\n<b>Poor Risk (NSGCT):</b> Mediastinal primary OR non-pulm visceral mets OR S3 markers."]
+   ]},
+   {title:"2. Diagnostics & Histology",items:[
     ["Pre-Orchiectomy","Mandatory: High-frequency scrotal Doppler USG and Serum Tumor Markers (AFP, beta-hCG, LDH)."],
-    ["CRITICAL SAFETY RULE","Scrotal violation, FNAC, or trans-scrotal biopsy is ABSOLUTELY CONTRAINDICATED. Standard is Radical Inguinal Orchiectomy."]
+    ["CRITICAL SAFETY RULE","Scrotal violation, FNAC, or trans-scrotal biopsy is ABSOLUTELY CONTRAINDICATED. Standard is Radical Inguinal Orchiectomy."],
+    ["Seminoma vs NSGCT","Seminoma NEVER secretes AFP. (If pathology says Seminoma but AFP >10, treat entirely as NSGCT). NSGCT sub-components: Embryonal, Yolk Sac, Choriocarcinoma, Teratoma (Chemo/Radio-resistant, requires surgical excision)."]
    ]},
-   {title:"2. Histology & Marker Dynamics",items:[
-    ["Seminoma","Highly radiosensitive, lymphatic spread. NEVER secretes AFP. (If pathology says Seminoma but AFP >10, treat entirely as NSGCT). hCG elevated in ~15%."],
-    ["NSGCT","Embryonal (highly malignant, secretes hCG/AFP). Yolk Sac (prepubertal, secretes AFP). Choriocarcinoma (pure is rare, early hematogenous brain/lung mets, sky-high hCG). Teratoma (Chemo/Radio-resistant, requires surgical excision)."]
-   ]},
-   {title:"3. IGCCCG Risk & Systemic Therapy",items:[
-    ["Good Risk","Seminoma (no non-pulm visceral mets). NSGCT (AFP <1k, hCG <5k, LDH <1.5x normal). Tx: 3 cycles BEP or 4 cycles EP."],
-    ["Intermediate & Poor Risk","Int: Seminoma (with non-pulm visceral mets) or NSGCT (moderate markers). Poor (NSGCT only): Mediastinal primary, Liver/Brain/Bone mets, or AFP >10k, hCG >50k. Tx: 4 cycles BEP or 4 cycles VIP."]
+   {title:"3. Localized & Systemic Treatment",items:[
+    ["Stage I Management","Seminoma: Surveillance preferred. Adjuvant single-dose Carboplatin (AUC 7) if >4 cm. NSGCT: Surveillance preferred if LVI negative. If LVI positive -> Primary Nerve-Sparing RPLND OR 1 cycle BEP."],
+    ["Systemic Therapy Dosing","Good Risk: 3 cycles BEP or 4 cycles EP. Intermediate/Poor Risk: 4 cycles BEP or 4 cycles VIP (if Bleomycin contraindicated)."]
    ]},
    {title:"4. Post-Chemotherapy Residual Mass",items:[
     ["NSGCT Rule","MANDATORY: If mass >1 cm and markers have normalized, Nerve-Sparing RPLND is required. (Path yields: 50% Teratoma, 35% Necrosis, 15% Viable). PET-CT has high false-negative rates for Teratoma, do not use it to avoid surgery."],
@@ -233,18 +231,18 @@ const DISEASES = {
   ]
 },
 "Ca Penis":{
-  emoji:"⚕️",color:"rose",tagline:"Organ Sparing • Nodal Templates • Contralateral Rules • NACT TIP",
+  emoji:"⚕️",color:"rose",tagline:"TNM • Nodal Templates • Contralateral Rules • NACT",
   sections:[
-   {title:"1. Histology & Staging",items:[
-    ["Subtypes","Usual SCC (>80%). HPV-Associated (Basaloid, Warty - p16+). Verrucous (destructive but rarely metastasizes). Sarcomatoid (highly aggressive)."],
-    ["TNM Highlights","T1a: Subepithelial, LVI negative, Grade 1-2. T1b: LVI+ or Grade 3/4. T2: Corpus Spongiosum. T3: Corpus Cavernosum. cN1: Unilateral mobile. cN2: Bilateral/multiple mobile. cN3: Fixed mass or pelvic nodes."]
+   {title:"1. Staging, Grading & Classifications (Exhaustive)",items:[
+    ["AJCC TNM Staging Details","<b>Ta:</b> Non-invasive localized squamous cell carcinoma (e.g., verrucous).\n<b>Tis:</b> Carcinoma in situ (PeIN).\n<b>T1a:</b> Tumor invades subepithelial connective tissue without LVI and is not poorly differentiated (Grade 3-4).\n<b>T1b:</b> Tumor invades subepithelial connective tissue with LVI or is poorly differentiated.\n<b>T2:</b> Tumor invades corpus spongiosum (either glans or ventral shaft) with or without urethral invasion.\n<b>T3:</b> Tumor invades corpus cavernosum (including tunica albuginea) with or without urethral invasion.\n<b>T4:</b> Tumor invades other adjacent structures (e.g., scrotum, prostate, pubic bone).\n<b>N1:</b> Metastasis in 1 or 2 unilateral inguinal lymph nodes.\n<b>N2:</b> Metastasis in ≥ 3 unilateral inguinal lymph nodes or bilateral inguinal lymph nodes.\n<b>N3:</b> Extranodal extension (ENE) of lymph node metastasis or pelvic lymph node metastasis."],
+    ["EAU Nodal Risk Stratification","<b>Low Risk cN0:</b> Tis, Ta, T1G1 (Occult mets <15%).\n<b>Intermediate/High Risk cN0:</b> T1G2, T1b, T2, T3, T4 or LVI positive (Occult mets >20%, triggers mandatory invasive staging)."]
    ]},
    {title:"2. Primary Management",items:[
     ["Low Risk (PeIN, Ta, T1a)","Topical (Imiquimod 5% or 5-FU 5%), laser, or wide local excision with 3-5mm negative margins."],
     ["Invasive (T1b - T3)","Partial Penectomy (requires 2-3 cm functional stump). Total Penectomy with Perineal Urethrostomy for proximal/massive tumors."]
    ]},
    {title:"3. Inguinal Node Management",items:[
-    ["cN0 (Non-palpable)","Low Risk primary: Surveillance. Intermediate/High Risk (≥T1b, G3, or LVI+): Occult metastasis risk >20%. Surveillance is CONTRAINDICATED. MANDATORY Dynamic Sentinel Node Biopsy (DSNB) or modified Inguinal LND."],
+    ["cN0 (Non-palpable)","Low Risk primary: Surveillance. Intermediate/High Risk: Surveillance is CONTRAINDICATED. MANDATORY Dynamic Sentinel Node Biopsy (DSNB) or modified Inguinal LND."],
     ["cN1 / cN2 (Palpable Mobile)","Upfront Radical Inguinal LND (Superficial + Deep packets)."],
     ["Contralateral / Pelvic Rules","MANDATORY: If ipsilateral ILND yields ≥2 positive nodes OR any Extranodal Extension (ENE+), prophylactic contralateral staging ILND must be performed. Pelvic LND MANDATORY if ≥2 inguinal nodes positive, or ENE+ present, or Cloquet's node positive."]
    ]},
@@ -254,11 +252,11 @@ const DISEASES = {
   ]
 },
 "UTUC":{
-  emoji:"↗️",color:"violet",tagline:"Kidney-Sparing • RNU • Systemic Therapy • POUT Trial",
+  emoji:"↗️",color:"violet",tagline:"TNM • EAU Risk • RNU • Systemic Therapy • POUT Trial",
   sections:[
-   {title:"1. Diagnosis & Risk Stratification",items:[
-    ["Diagnostic Modalities","CT Urography is principal. Ureteroscopy with biopsy/cytology defines grade and eligibility for kidney-sparing."],
-    ["Risk Stratification","Low Risk: Unifocal, <2cm, low-grade cytology/biopsy, non-invasive imaging. High Risk: Hydronephrosis, >2cm, high-grade cytology/biopsy, multifocal, variant histology, or previous radical cystectomy."]
+   {title:"1. Staging, Grading & Classifications (Exhaustive)",items:[
+    ["AJCC TNM Staging Details","<b>Ta:</b> Non-invasive papillary carcinoma.\n<b>Tis:</b> Carcinoma in situ.\n<b>T1:</b> Tumor invades subepithelial connective tissue.\n<b>T2:</b> Tumor invades the muscularis.\n<b>T3:</b> For renal pelvis: invades beyond muscularis into peripelvic fat or renal parenchyma. For ureter: invades beyond muscularis into periureteric fat.\n<b>T4:</b> Tumor invades adjacent organs, or through kidney into perinephric fat.\n<b>N1:</b> Metastasis in a single regional lymph node ≤ 2 cm.\n<b>N2:</b> Metastasis in a single regional lymph node > 2 cm, or multiple regional lymph nodes."],
+    ["EAU Risk Stratification","<b>Low Risk:</b> Unifocal, tumor size <2cm, low-grade on cytology/biopsy, no invasive aspect on imaging, no hydronephrosis.\n<b>High Risk:</b> Hydronephrosis present, tumor size >2cm, high-grade on cytology/biopsy, multifocal, previous radical cystectomy for bladder cancer, variant histology."]
    ]},
    {title:"2. Local Treatment",items:[
     ["Low Risk","Kidney-sparing preferred: Endoscopic laser ablation/resection or segmental ureterectomy with close ureteroscopic surveillance."],
@@ -272,11 +270,11 @@ const DISEASES = {
   ]
 },
 "Urethral Cancer":{
-  emoji:"〰️",color:"slate",tagline:"Male/Female Urethral • Local • Nodal • Chemoradiation",
+  emoji:"〰️",color:"slate",tagline:"Male/Female Urethral • TNM • Local • Nodal",
   sections:[
-   {title:"1. Histology & Staging",items:[
-    ["Histology","Distal/anterior = Squamous (SCC). Prostatic/periurethral = Urothelial or Glandular. Adeno, SCC, and Urothelial dictate systemic paths."],
-    ["Staging Basics","T1: Subepithelial. T2: Spongiosum/Prostate/Periurethral muscle. T3: Corpora/Adjacent. T4: Adjacent Organs. Nodal staging is highly dependent on anterior vs posterior location."]
+   {title:"1. Staging, Grading & Classifications (Exhaustive)",items:[
+    ["AJCC TNM Staging Details","<b>Male Urethra:</b>\n<b>T1:</b> Subepithelial connective tissue.\n<b>T2:</b> Invades corpus spongiosum, prostate, or periurethral muscle.\n<b>T3:</b> Invades corpus cavernosum, beyond prostatic capsule, anterior vagina, or bladder neck.\n<b>T4:</b> Invades other adjacent organs.\n<b>Female Urethra:</b>\n<b>T1:</b> Subepithelial connective tissue.\n<b>T2:</b> Invades periurethral muscle.\n<b>T3:</b> Invades anterior vagina or bladder neck.\n<b>T4:</b> Invades other adjacent organs."],
+    ["Histology","Distal/anterior = Squamous (SCC). Prostatic/periurethral = Urothelial or Glandular. Adeno, SCC, and Urothelial dictate systemic paths."]
    ]},
    {title:"2. Treatment Principles",items:[
     ["Localized","Distal superficial: urethra-preserving excision with negative margins. Invasive: Penectomy/Urethrectomy or Cystoprostatectomy based on location."],
@@ -338,7 +336,7 @@ function openSection(viewId) {
 function esc(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));}
 function formatText(t){
   let text = t.replace(/\n/g,'<br>');
-  const redFlags = ['MANDATORY', 'CONTRAINDICATED', 'ABSOLUTELY CONTRAINDICATED', 'CRITICAL RULE', 'CRITICAL SAFETY RULE'];
+  const redFlags = ['MANDATORY', 'CONTRAINDICATED', 'ABSOLUTELY CONTRAINDICATED', 'CRITICAL RULE', 'CRITICAL SAFETY RULE', 'CRITICAL'];
   redFlags.forEach(flag => {
     const regex = new RegExp(`(${flag})`, 'g');
     text = text.replace(regex, '<span class="text-red-700 font-black bg-red-100 px-1.5 py-0.5 rounded shadow-sm border border-red-200 tracking-wide">$1</span>');
