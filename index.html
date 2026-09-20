@@ -158,6 +158,7 @@
         </div>
     </div>
 
+    <!-- Complete Clinical Database -->
     <script>
         const clinicalData = {
             "Ca Bladder": {
@@ -198,6 +199,7 @@
             "Ca Prostate": {
                 "1. Diagnostic Workup & Investigations": [
                     { q: "Elevated PSA & MRI Workflow", a: "Diagnostic Evaluation:\n• Repeat PSA in 2–4 weeks.\n• mpMRI Prostate (PI-RADS v2.1): MANDATORY standard of care before biopsy.\n• PSAD ≥0.15 ng/mL/cc strongly indicates csPCa." },
+                    { q: "mpMRI Prostate: Viewing Hacks & Interpretation", a: "• <b>T2-Weighted (T2W):</b> Best for anatomical detail and Transition Zone (TZ). Look for 'erased charcoal' smudges (tumor) against bright normal peripheral zone (PZ). TZ tumors appear as lenticular/water-drop homogeneous low-signal masses.\n• <b>Diffusion-Weighted Imaging (DWI/ADC):</b> The primary sequence for Peripheral Zone (PZ). Prostate cancer is dense -> restricts water diffusion. Result: Bright on high B-value DWI (B>1400) and dark/black on ADC map. (Hack: Always match the black spot on ADC with a bright spot on DWI).\n• <b>Dynamic Contrast Enhancement (DCE):</b> Looks for early/rapid enhancement and washout. Used mostly as a tie-breaker for PI-RADS 3 in the PZ to upgrade it to PI-RADS 4.\n• <b>PI-RADS v2.1 Golden Rule:</b> For PZ -> rely on DWI. For TZ -> rely on T2W." },
                     { q: "Investigations: Sensitivity & Specificity", a: "• Total PSA: Sens 70%–80%, Spec 30%–40%.\n• DRE: Sens 50%–60%, Spec 80%–90%.\n• mpMRI (PI-RADS ≥3): Sens 85%–92%, Spec 75%–85%, NPV 88%–95%.\n• 68Ga-PSMA PET-CT (Nodal Staging): Sens 40%–55%, Spec 95%–98%." }
                 ],
                 "2. TNM Staging & ISUP Grading": [
@@ -218,6 +220,47 @@
                 ],
                 "6. Follow-Up & Biochemical Recurrence (BCR)": [
                     { q: "BCR Definitions & Action", a: "Criteria:\n• Post-RP: PSA ≥ 0.2 ng/mL confirmed twice.\n• Post-RT: PSA rise of ≥ 2.0 ng/mL above nadir.\nAction: Restage with PSMA PET-CT. Salvage RT to prostatic bed (64-70 Gy)." }
+                ]
+            },
+            "Ca Kidney": {
+                "1. Diagnostic Workup & Bosniak": [
+                    { q: "Imaging Modalities & Protocols", a: "• Multiphasic CT Urogram: Gold standard. Requires unenhanced, corticomedullary (30-40s), nephrographic (90-100s), and excretory (5-7m) phases.\n• Enhancement Criterion: Increase of ≥15-20 HU from unenhanced to contrast phase strongly suggests malignancy.\n• Renal Mass Biopsy: Indicated for small renal masses (SRM) <4cm when active surveillance or ablation is considered, or in metastatic disease prior to systemic therapy." },
+                    { q: "Bosniak 2019 Classification (Cystic Masses)", a: "• I: Simple cyst. Hairline thin wall (≤2mm). 0% malignancy. No follow-up.\n• II: Benign complicated cyst. Thin septa (≤2mm), fine calcifications, or hyperdense non-enhancing (≥70 HU). ~0% malignancy. No follow-up.\n• IIF: Minimally complex. Multiple thin septa, thick/nodular calcifications, or perceived enhancement (but not measurable). 5% malignancy. USG/MRI follow-up at 6, 12, 24 months.\n• III: Indeterminate. Thickened irregular walls or septa (≥3mm) with MEASURABLE enhancement. 50% malignancy. Requires surgery.\n• IV: Clearly malignant. Enhancing soft-tissue nodular components (≥4mm convex protrusion). 90% malignancy. Requires surgery." }
+                ],
+                "2. TNM Staging & Histological Grading": [
+                    { q: "AJCC 8th Edition TNM Staging", a: "Primary Tumor (T):\n• T1a: Tumor ≤4 cm, limited to kidney.\n• T1b: Tumor >4 cm but ≤7 cm, limited to kidney.\n• T2a: Tumor >7 cm but ≤10 cm, limited to kidney.\n• T2b: Tumor >10 cm, limited to kidney.\n• T3a: Tumor invades renal vein (or its segmental branches), or invades perirenal/renal sinus fat, but remains within Gerota's fascia.\n• T3b: Tumor extends into inferior vena cava (IVC) below diaphragm.\n• T3c: Tumor extends into IVC above diaphragm or invades IVC wall.\n• T4: Tumor invades beyond Gerota's fascia (including contiguous extension into ipsilateral adrenal gland)." },
+                    { q: "Histology & ISUP / WHO Grading", a: "Histological Subtypes:\n• Clear Cell RCC (ccRCC): ~75%. Arises from proximal tubule. VHL gene mutation.\n• Papillary RCC (pRCC): ~15%. Arises from proximal tubule.\n• Chromophobe RCC: ~5%. Arises from intercalated cells of collecting duct. Better prognosis.\n\nISUP/WHO Grading (Replaces Fuhrman):\n• Grade 1: Nucleoli absent or inconspicuous at 400x magnification.\n• Grade 2: Nucleoli conspicuous at 400x but not 100x.\n• Grade 3: Nucleoli conspicuous at 100x magnification.\n• Grade 4: Extreme nuclear pleomorphism, sarcomatoid, or rhabdoid differentiation." }
+                ],
+                "3. Localized Management & Surgery": [
+                    { q: "Partial vs Radical Nephrectomy (EAU Guidelines)", a: "• T1 Tumors (≤7 cm): Partial Nephrectomy is the absolute standard of care to preserve renal function, assuming it is technically feasible. Radical nephrectomy only if tumor location precludes partial.\n• T2 Tumors (>7 cm): Radical Nephrectomy is standard, though Partial can be considered in highly selected patients with imperative indications (solitary kidney, CKD, bilateral disease).\n• Surgical Margins: For partial nephrectomy, enucleation or a minimal 1-2 mm margin is sufficient. Positive surgical margin (PSM) does NOT mandate completion nephrectomy; active surveillance is advised.\n• Adjuvant Therapy: Pembrolizumab (Keytruda) is indicated for 1 year in patients at high risk of recurrence post-nephrectomy (e.g., T3/T4, or Grade 4, or node-positive)." },
+                    { q: "Active Surveillance & Ablation (SRMs)", a: "• Active Surveillance: Preferred for elderly patients or those with severe comorbidities with Small Renal Masses (<4 cm). Growth rate >0.5 cm/year triggers intervention.\n• Thermal Ablation (Cryo/RFA): Requires prior percutaneous biopsy. Superior outcomes for exophytic masses ≤3 cm." }
+                ],
+                "4. Advanced Disease & Systemic Therapy": [
+                    { q: "IMDC (Heng) Risk Criteria", a: "Prognostic Factors (1 point each):\n1. Karnofsky Performance Status < 80%\n2. Time from diagnosis to systemic treatment < 1 year\n3. Hemoglobin less than lower limit of normal\n4. Calcium > upper limit of normal\n5. Neutrophils > upper limit of normal\n6. Platelets > upper limit of normal\n\nRisk Groups:\n• Favorable (0 points): Median OS 43 months.\n• Intermediate (1-2 points): Median OS 22.5 months.\n• Poor (3-6 points): Median OS 7.8 months." },
+                    { q: "First-Line Systemic Therapy (Clear Cell)", a: "Standard of Care: IO-TKI or IO-IO Combinations.\n• Favorable Risk: Pembrolizumab + Axitinib, OR Pembrolizumab + Lenvatinib, OR Nivolumab + Cabozantinib.\n• Intermediate / Poor Risk: Nivolumab + Ipilimumab (IO-IO), OR Pembrolizumab + Lenvatinib, OR Nivolumab + Cabozantinib.\n• Note: Pure targeted TKI monotherapy (e.g., Sunitinib/Pazopanib) is now mostly historical or reserved for patients with contraindications to immunotherapy." }
+                ]
+            },
+            "Adrenal Mass": {
+                "1. Incidentaloma Diagnostic Workup": [
+                    { q: "Imaging Assessment (CT Washout Criteria)", a: "Adrenal Washout Protocol on CT:\n• Unenhanced Phase: If attenuation is < 10 HU, the mass is a benign lipid-rich adenoma. No further imaging required.\n• If ≥ 10 HU, perform contrast washout protocol at 15 minutes.\n• Absolute Washout (APW) = [ (Enhanced - Delayed) / (Enhanced - Unenhanced) ] x 100. APW > 60% indicates benign adenoma.\n• Relative Washout (RPW) = [ (Enhanced - Delayed) / Enhanced ] x 100. RPW > 40% indicates benign adenoma.\n• MRI: Chemical shift imaging (loss of signal on out-of-phase imaging) confirms intracellular lipid (adenoma)." },
+                    { q: "Functional Endocrine Evaluation", a: "MANDATORY Endocrine Workup for all incidentalomas:\n1. Pheochromocytoma: Plasma free metanephrines or 24h urinary fractionated metanephrines.\n2. Subclinical Cushing's Syndrome: 1mg overnight Dexamethasone Suppression Test (DST). (Cortisol >1.8 µg/dL is abnormal).\n3. Primary Aldosteronism (Conn's Syndrome): Aldosterone to Renin Ratio (ARR) >20-30 with absolute Aldosterone >15 ng/dL. (ONLY required if patient has hypertension or hypokalemia).\n4. Adrenocortical Carcinoma: Evaluate DHEAS, Androstenedione, Testosterone, 17-OHP." }
+                ],
+                "2. Surgical Indications & Management": [
+                    { q: "Indications for Adrenalectomy", a: "Surgical Rules:\n• Any biochemically functional/active tumor (Pheochromocytoma, Cushing's, Aldosteronoma).\n• Any non-functioning mass > 4-5 cm (due to increased risk of Adrenocortical Carcinoma).\n• Radiographic suspicion of malignancy (e.g., heterogeneous, unenhanced HU > 20-30, delayed washout <60%, local invasion).\n• Note: Biopsy of an adrenal mass is ABSOLUTELY CONTRAINDICATED until a pheochromocytoma has been biochemically ruled out (risk of fatal hypertensive crisis)." }
+                ]
+            },
+            "Scores & Class": {
+                "1. Stone Scoring Systems": [
+                    { q: "S.T.O.N.E. Nephrolithometry", a: "Predicts stone-free rate post-PCNL:\n• (S)ize: Stone burden / cross-sectional area.\n• (T)ract length: Skin to stone distance.\n• (O)bstruction: Degree of hydronephrosis.\n• (N)umber of calyces: Number of calyces containing stones.\n• (E)ssence: Stone density in Hounsfield Units (HU)." },
+                    { q: "Guy's Stone Score (GSS)", a: "Grading stone complexity for PCNL:\n• Grade I: Solitary stone in mid/lower pole or pelvis with normal anatomy.\n• Grade II: Solitary upper pole stone; multiple stones in normal anatomy; or solitary stone in abnormal anatomy.\n• Grade III: Multiple stones in abnormal anatomy, caliceal diverticulum, or partial staghorn.\n• Grade IV: Complete staghorn stone, or any stone in a patient with spina bifida / spinal injury." }
+                ],
+                "2. Renal Mass Scoring": [
+                    { q: "R.E.N.A.L. Nephrometry Score", a: "Predicts complexity of Partial Nephrectomy:\n• (R)adius (max diameter): ≤4cm (1), 4-7cm (2), >7cm (3).\n• (E)xophytic/Endophytic: ≥50% exophytic (1), <50% exophytic (2), entirely endophytic (3).\n• (N)earness to collecting system/sinus: ≥7mm (1), 4-7mm (2), ≤4mm (3).\n• (A)nterior (a) / Posterior (p) / Neither (x).\n• (L)ocation relative to polar lines: Entirely above/below polar lines (1), lesion crosses polar line (2), >50% of mass is across polar line / is at the hilum (3).\n• + 'h' suffix if abutting main renal artery/vein." },
+                    { q: "P.A.D.U.A. Score", a: "Preoperative Aspects and Dimensions Used for Anatomical classification:\nEvaluates tumor size, exophytic rate, renal rim involvement, relationship with renal sinus, and depth of collecting system invasion." }
+                ],
+                "3. Pediatric & Surgical Classifications": [
+                    { q: "FECal (Fecal Loading) Assessment (Enuresis)", a: "Fecal loading on AXR (e.g., Leech or Barr scores) is a critical diagnostic step for pediatric nocturnal enuresis. High fecal loading directly compresses the bladder, reduces functional capacity, and causes detrusor overactivity. Treatment of constipation often resolves NMNE." },
+                    { q: "Clavien-Dindo Classification of Surgical Complications", a: "• Grade I: Any deviation from normal post-op course (no special drugs/interventions required).\n• Grade II: Requires pharmacological treatment (e.g., blood transfusion, antibiotics).\n• Grade III: Requires surgical, endoscopic, or radiological intervention.\n  - IIIa: Intervention NOT under general anesthesia.\n  - IIIb: Intervention UNDER general anesthesia.\n• Grade IV: Life-threatening complication requiring ICU management.\n  - IVa: Single organ dysfunction.\n  - IVb: Multiorgan dysfunction.\n• Grade V: Death of the patient." }
                 ]
             },
             "Ca Penis": {
@@ -304,9 +347,9 @@
 
         let currentDisease = '';
         let currentPhase = '';
-        let currentMode = 'clinical'; // tracks which tab is active
+        let currentMode = 'clinical'; 
 
-        // Render Navigation Tabs
+        // Render Navigation Tabs dynamically from JSON
         Object.keys(clinicalData).forEach(disease => {
             const btn = document.createElement('button');
             btn.className = 'px-4 py-2 bg-slate-100 text-slate-600 rounded-full text-xs font-bold hover:bg-sky-100 hover:text-sky-700 transition-colors border border-slate-200 tab-btn';
@@ -327,22 +370,17 @@
         handoutBtn.onclick = () => selectTab('Handouts', handoutBtn, 'handout');
         tabsContainer.appendChild(handoutBtn);
 
-        // Core Text Formatter (Solves the Mermaid bug!)
+        // Core Text Formatter 
         function formatClinicalText(text) {
-            // Split the text into parts: everything before/after the mermaid chart, and the chart itself
             let parts = text.split('<div class="mermaid">');
-            
-            // Format standard text: replace \n with <br>
             let formattedText = parts[0].replace(/\n/g, '<br>');
             
-            // Apply Red Flag highlights only to the standard text
             const redFlags = ['CRITICAL SAFETY RULE', 'MANDATORY', 'ABSOLUTE CONTRAINDICATION', 'ABSOLUTELY CONTRAINDICATED', 'CONTRAINDICATED'];
             redFlags.forEach(flag => {
                 const regex = new RegExp(`(${flag})`, 'g');
                 formattedText = formattedText.replace(regex, '<span class="text-red-700 font-bold bg-red-100 px-1.5 py-0.5 rounded shadow-sm border border-red-200 tracking-wide">$1</span>');
             });
             
-            // Reattach the Mermaid chart completely untouched (keeping \n intact)
             if (parts.length > 1) {
                 formattedText += '<div class="mermaid">' + parts[1]; 
             }
@@ -515,7 +553,7 @@
             document.getElementById('printBtn').classList.remove('hidden');
         }
 
-        // --- PWA SERVICE WORKER REGISTRATION & OFFLINE DETECTION ---
+        // --- PWA SERVICE WORKER REGISTRATION ---
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('sw.js').then(reg => {
