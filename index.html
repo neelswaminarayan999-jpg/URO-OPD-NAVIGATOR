@@ -327,13 +327,25 @@
         handoutBtn.onclick = () => selectTab('Handouts', handoutBtn, 'handout');
         tabsContainer.appendChild(handoutBtn);
 
-        function formatRedFlags(text) {
-            let formattedText = text.replace(/\n/g, '<br>');
+        // Core Text Formatter (Solves the Mermaid bug!)
+        function formatClinicalText(text) {
+            // Split the text into parts: everything before/after the mermaid chart, and the chart itself
+            let parts = text.split('<div class="mermaid">');
+            
+            // Format standard text: replace \n with <br>
+            let formattedText = parts[0].replace(/\n/g, '<br>');
+            
+            // Apply Red Flag highlights only to the standard text
             const redFlags = ['CRITICAL SAFETY RULE', 'MANDATORY', 'ABSOLUTE CONTRAINDICATION', 'ABSOLUTELY CONTRAINDICATED', 'CONTRAINDICATED'];
             redFlags.forEach(flag => {
                 const regex = new RegExp(`(${flag})`, 'g');
                 formattedText = formattedText.replace(regex, '<span class="text-red-700 font-bold bg-red-100 px-1.5 py-0.5 rounded shadow-sm border border-red-200 tracking-wide">$1</span>');
             });
+            
+            // Reattach the Mermaid chart completely untouched (keeping \n intact)
+            if (parts.length > 1) {
+                formattedText += '<div class="mermaid">' + parts[1]; 
+            }
             return formattedText;
         }
 
@@ -350,13 +362,11 @@
                 return;
             }
 
-            // Hide standard UI
             navContainer.classList.add('hidden');
             formSection.classList.add('hidden');
             calcSection.classList.add('hidden');
             handoutSection.classList.add('hidden');
             
-            // Show search results
             searchResultsDiv.classList.remove('hidden');
             searchResultsContent.innerHTML = '';
             
@@ -372,7 +382,7 @@
                             card.innerHTML = `
                                 <div class="text-[10px] font-bold text-slate-400 mb-1 uppercase tracking-wider">${disease} > ${phase}</div>
                                 <h3 class="text-sm font-bold text-sky-800 mb-2">${item.q}</h3>
-                                <div class="text-sm text-slate-700 leading-relaxed">${formatRedFlags(item.a)}</div>
+                                <div class="text-sm text-slate-700 leading-relaxed">${formatClinicalText(item.a)}</div>
                             `;
                             searchResultsContent.appendChild(card);
                         }
@@ -384,7 +394,6 @@
                 searchResultsContent.innerHTML = '<div class="text-center text-sm text-slate-500 py-4">No protocols found for "' + query + '"</div>';
             }
 
-            // Attempt to render Mermaid if a flowchart is in the search results
             if(searchResultsContent.innerHTML.includes('class="mermaid"')) {
                 try { mermaid.run(); } catch (e) { console.log(e); }
             }
@@ -392,7 +401,7 @@
 
         function selectTab(tabName, clickedBtn, type) {
             currentMode = type;
-            searchInput.value = ''; // clear search on tab switch
+            searchInput.value = ''; 
             searchResultsDiv.classList.add('hidden');
             
             document.querySelectorAll('.tab-btn').forEach(b => {
@@ -450,7 +459,7 @@
             const scenarioIndex = e.target.value;
             const data = clinicalData[currentDisease][currentPhase][scenarioIndex];
             
-            resultContent.innerHTML = formatRedFlags(data.a);
+            resultContent.innerHTML = formatClinicalText(data.a);
             resultCard.classList.remove('hidden');
 
             if(data.a.includes('class="mermaid"')) {
@@ -519,15 +528,6 @@
         window.addEventListener('online', () => document.getElementById('offlineBadge').classList.add('hidden'));
         if (!navigator.onLine) document.getElementById('offlineBadge').classList.remove('hidden');
 
-        // Optional: GoatCounter Analytics (Requires signing up at goatcounter.com)
-        // To use, uncomment below and replace 'YOUR_CODE' with your GoatCounter code.
-        /*
-        let script = document.createElement('script');
-        script.dataset.goatcounter = 'https://YOUR_CODE.goatcounter.com/count';
-        script.async = true;
-        script.src = '//gc.zgo.at/count.js';
-        document.body.appendChild(script);
-        */
     </script>
 </body>
 </html>
