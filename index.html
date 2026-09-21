@@ -335,6 +335,229 @@ header.sticky-top button{background:#173650!important;color:#fff!important;borde
 @media(max-width:1200px){.core-home-guideline-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:680px){.core-home-guideline-grid{grid-template-columns:1fr}}
 </style>
+
+<style id="oracleFinalUXPatch">
+/* ===== ORACLE FINAL UX / SURGERY / LAYOUT PASS — 21 SEP 2026 ===== */
+/* Keep the three-column decision workspace, but do not reserve scrollbar tracks when content fits. */
+#oracleView .oracle-grid{overflow:visible!important}
+#oracleView #oracleForm,#oracleView #oracleRiskPanel,#oracleView #oracleOutput{overflow-y:auto!important;overflow-x:hidden!important;scrollbar-gutter:auto!important;overscroll-behavior:contain!important}
+#oracleView #oracleForm::-webkit-scrollbar,#oracleView #oracleRiskPanel::-webkit-scrollbar,#oracleView #oracleOutput::-webkit-scrollbar{width:8px}
+#oracleView #oracleForm::-webkit-scrollbar-track,#oracleView #oracleRiskPanel::-webkit-scrollbar-track,#oracleView #oracleOutput::-webkit-scrollbar-track{background:transparent}
+#oracleView #oracleForm::-webkit-scrollbar-thumb,#oracleView #oracleRiskPanel::-webkit-scrollbar-thumb,#oracleView #oracleOutput::-webkit-scrollbar-thumb{background:#a8b8c3;border-radius:8px}
+.oracle-mode-tabs{display:flex;gap:7px;flex-wrap:wrap;margin:0 0 14px;padding:5px;border:1px solid #cddce4;border-radius:12px;background:#f6fafc}
+.oracle-mode-tab{appearance:none;border:1px solid #bfd2dc;border-radius:9px;background:#fff;color:#264b60;padding:9px 13px;font:900 10.5px/1.2 system-ui;cursor:pointer}
+.oracle-mode-tab:hover{background:#eef7fa}
+.oracle-mode-tab.active{background:#0b4f68;border-color:#0b4f68;color:#fff}
+#oracleSurgeryPanel{margin:0 0 16px;border:1px solid #bdd7e0;border-radius:16px;background:linear-gradient(180deg,#fbfdfe 0%,#f1f8fa 100%);overflow:visible}
+.oracle-surgery-head{padding:14px 16px;border-bottom:1px solid #d4e4e9;background:#eaf6f8}
+.oracle-surgery-head h3{margin:0;color:#143b50;font-size:15px}
+.oracle-surgery-head p{margin:4px 0 0;color:#597281;font-size:10px;line-height:1.5}
+.oracle-surgery-tools{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}
+.oracle-surgery-body{padding:13px 16px}
+.oracle-surgery-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.oracle-surgery-card{border:1px solid #d4e1e7;border-radius:12px;background:#fff;padding:11px}
+.oracle-surgery-card h4{margin:0;color:#183c50;font-size:11px;line-height:1.35}
+.oracle-surgery-meta{margin-top:4px;color:#607784;font-size:9.5px;line-height:1.45}
+.oracle-surgery-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.oracle-surgery-empty{padding:12px;border-left:4px solid #d49320;border-radius:9px;background:#fff8e9;color:#684d19;font-size:10px;line-height:1.5}
+.oracle-risk-compact{padding:10px 11px;border:1px solid #d3e1e8;border-radius:11px;background:#fbfdfe}
+.oracle-risk-compact h4{margin:0 0 5px;color:#1a4053;font-size:11px}
+.oracle-gate{padding:10px;border-radius:10px;border-left:4px solid #0b6a81;background:#eef8fa;color:#31576a;font-size:10px;line-height:1.5}
+.oracle-gate.warn{border-left-color:#c44740;background:#fff3f1;color:#6b302c}
+.oracle-gate.ok{border-left-color:#2f8f61;background:#eff9f3;color:#20533b}
+.oracle-key-list{margin:6px 0 0;padding-left:16px}
+.oracle-key-list li{font-size:9.5px;line-height:1.45;color:#4f6a78}
+.oracle-risk-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}
+@media(max-width:900px){.oracle-surgery-grid{grid-template-columns:1fr}}
+</style>
+<script id="oracleFinalUXPatchScript">
+(function(){
+  'use strict';
+  if(window.__ORACLE_FINAL_UX_PATCH_V1) return;
+  window.__ORACLE_FINAL_UX_PATCH_V1=true;
+
+  function esc2(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+  function getDisease(){return document.getElementById('oracleDisease')?.value||'';}
+  function getVals(){
+    if(typeof window.getOracleValues==='function'){
+      try{return window.getOracleValues()||{};}catch(e){}
+    }
+    var v={};
+    document.querySelectorAll('#oracleForm select,#oracleForm input').forEach(function(e){if(e.id&&e.id.indexOf('o-')===0)v[e.id.slice(2)]=e.value||'';});
+    return v;
+  }
+  function lib(){return window.URO_SURGERY_LIBRARY_2026||{};}
+
+  function proceduresFor(d,v){
+    var a=[];
+    if(typeof window.__ORACLE_RELEVANT_SURGERY==='function'){
+      try{return window.__ORACLE_RELEVANT_SURGERY(d,v).filter(Boolean).filter(function(n){return lib()[n];});}catch(e){}
+    }
+    var map={
+      'Ca Prostate':['Radical prostatectomy — open/robotic','Extended pelvic lymph node dissection — prostate'],
+      'Ca Bladder':['TURBT — transurethral resection of bladder tumour','Repeat TURBT — re-resection','Radical cystectomy + pelvic lymph node dissection','Ileal conduit urinary diversion','Orthotopic neobladder','Partial cystectomy','Cutaneous ureterostomy / ureteroileal conduit alternatives'],
+      'UTUC':['Diagnostic / therapeutic ureteroscopy for UTUC','Distal ureterectomy + ureteroneocystostomy','Radical nephroureterectomy + bladder cuff'],
+      'Ca Kidney':['Partial nephrectomy — RCC','Radical nephrectomy — RCC','Renal tumour thrombectomy','Cytoreductive nephrectomy — selected metastatic RCC'],
+      'Ca Penis':['Organ-sparing penile surgery','Partial penectomy','Total penectomy + perineal urethrostomy','Radical inguinal lymph node dissection — penile cancer','Pelvic lymph node dissection — penile cancer'],
+      'Ca Testis':['Radical inguinal orchiectomy','Testis-sparing surgery — selected cases','Primary nerve-sparing RPLND','Post-chemotherapy RPLND'],
+      'Urethral Cancer':['Distal urethrectomy — urethral carcinoma','Radical urethrectomy — female urethral carcinoma','Cystoprostatectomy + urethrectomy for prostatic urethral carcinoma']
+    };
+    a=(map[d]||[]).filter(function(n){return lib()[n];});
+    return a;
+  }
+
+  /* Expose an exact copy of the existing atlas mapping as a safe additive bridge. */
+  if(!window.__ORACLE_RELEVANT_SURGERY){
+    window.__ORACLE_RELEVANT_SURGERY=function(d,v){
+      var a=[];
+      if(d==='Ca Prostate')a=['Radical prostatectomy — open/robotic','Extended pelvic lymph node dissection — prostate'];
+      else if(d==='Ca Bladder')a=['TURBT — transurethral resection of bladder tumour','Repeat TURBT — re-resection','Radical cystectomy + pelvic lymph node dissection','Ileal conduit urinary diversion','Orthotopic neobladder','Partial cystectomy','Cutaneous ureterostomy / ureteroileal conduit alternatives'];
+      else if(d==='UTUC')a=['Diagnostic / therapeutic ureteroscopy for UTUC','Distal ureterectomy + ureteroneocystostomy','Radical nephroureterectomy + bladder cuff'];
+      else if(d==='Ca Kidney')a=['Partial nephrectomy — RCC','Radical nephrectomy — RCC','Renal tumour thrombectomy','Cytoreductive nephrectomy — selected metastatic RCC'];
+      else if(d==='Ca Penis')a=['Organ-sparing penile surgery','Partial penectomy','Total penectomy + perineal urethrostomy','Radical inguinal lymph node dissection — penile cancer','Pelvic lymph node dissection — penile cancer'];
+      else if(d==='Ca Testis')a=['Radical inguinal orchiectomy','Testis-sparing surgery — selected cases','Primary nerve-sparing RPLND','Post-chemotherapy RPLND'];
+      else if(d==='Urethral Cancer')a=['Distal urethrectomy — urethral carcinoma','Radical urethrectomy — female urethral carcinoma','Cystoprostatectomy + urethrectomy for prostatic urethral carcinoma'];
+      return a;
+    };
+  }
+
+  function ensureTabs(){
+    var view=document.getElementById('oracleView'), grid=view?.querySelector('.oracle-grid');
+    if(!view||!grid)return false;
+    var card=view.querySelector('.card.p-4.mb-4');
+    if(!card)return false;
+    var tabs=document.getElementById('oracleModeTabs');
+    if(!tabs){
+      tabs=document.createElement('div');tabs.id='oracleModeTabs';tabs.className='oracle-mode-tabs';
+      tabs.innerHTML='<button type="button" class="oracle-mode-tab active" data-oracle-mode="management">Management plan</button><button type="button" class="oracle-mode-tab" data-oracle-mode="surgery">Surgery & operative steps</button>';
+      card.insertAdjacentElement('afterend',tabs);
+      tabs.querySelectorAll('[data-oracle-mode]').forEach(function(b){b.addEventListener('click',function(){setMode(b.getAttribute('data-oracle-mode'));});});
+    }
+    var panel=document.getElementById('oracleSurgeryPanel');
+    if(!panel){panel=document.createElement('section');panel.id='oracleSurgeryPanel';panel.className='hidden';tabs.insertAdjacentElement('afterend',panel);}
+    return true;
+  }
+
+  function setMode(mode){
+    if(!ensureTabs())return;
+    var grid=document.querySelector('#oracleView .oracle-grid');
+    var panel=document.getElementById('oracleSurgeryPanel');
+    var tabs=document.getElementById('oracleModeTabs');
+    if(mode==='surgery'){
+      grid?.classList.add('hidden');panel?.classList.remove('hidden');
+      tabs?.querySelectorAll('[data-oracle-mode]').forEach(function(b){b.classList.toggle('active',b.getAttribute('data-oracle-mode')==='surgery');});
+      renderSurgeryTab();
+    }else{
+      panel?.classList.add('hidden');grid?.classList.remove('hidden');
+      tabs?.querySelectorAll('[data-oracle-mode]').forEach(function(b){b.classList.toggle('active',b.getAttribute('data-oracle-mode')==='management');});
+    }
+  }
+  window.setOracleMode=setMode;
+
+  function renderSurgeryTab(){
+    if(!ensureTabs())return;
+    var host=document.getElementById('oracleSurgeryPanel');if(!host)return;
+    var d=getDisease(),v=getVals(),names=proceduresFor(d,v);
+    host.innerHTML='<div class="oracle-surgery-head"><h3>🔪 '+esc2(d||'Clinical Oracle')+' — Surgical pathway</h3><p>Procedure cards are linked to the existing Surgical Atlas. Open a procedure to see indications, pre-operative checklist, operative roadmap, critical anatomy, pitfalls, complications and postoperative care.</p><div class="oracle-surgery-tools"><button type="button" class="surg-btn primary" id="oracleOpenFullAtlas">Open full Surgical Atlas</button><button type="button" class="surg-btn" id="oracleBackManagement">Back to management plan</button></div></div><div class="oracle-surgery-body">'+
+      (names.length?'<div class="oracle-surgery-grid">'+names.map(function(n){var x=lib()[n];return '<article class="oracle-surgery-card"><h4>'+esc2(n)+'</h4><div class="oracle-surgery-meta">'+esc2((x?.cat||'')+' • '+(x?.type||''))+'</div><div class="oracle-surgery-actions"><button type="button" class="surg-btn primary" data-oracle-surg-open="'+esc2(n)+'">Open operative steps</button></div></article>';}).join('')+'</div>':'<div class="oracle-surgery-empty"><b>No mapped operation for this Oracle module.</b><br>Use the full Surgical Atlas to search the complete procedure library.</div>')+
+      '<div class="oracle-surgery-empty" style="margin-top:10px"><b>Clinical note:</b> These are navigation/training links to operative roadmaps, not an automatic instruction to operate. Procedure selection remains stage-, anatomy-, fitness- and MDT-dependent.</div></div>';
+    host.querySelectorAll('[data-oracle-surg-open]').forEach(function(b){b.addEventListener('click',function(){if(typeof window.openSurgeryDetail==='function')window.openSurgeryDetail(b.getAttribute('data-oracle-surg-open'));});});
+    host.querySelector('#oracleOpenFullAtlas')?.addEventListener('click',function(){if(typeof window.openSurgicalAtlas==='function')window.openSurgicalAtlas('');});
+    host.querySelector('#oracleBackManagement')?.addEventListener('click',function(){setMode('management');});
+  }
+  window.renderOracleSurgeryTab=renderSurgeryTab;
+
+  function compactRiskPanel(d){
+    var c=document.getElementById('riskPanelContent');if(!c)return;
+    var v=getVals();
+    var missing=[];
+    try{if(typeof missingFor==='function')missing=missingFor(d,v)||[];}catch(e){}
+    var risk='';
+    try{
+      if(d==='Ca Prostate'&&typeof v5ProstateRisk==='function')risk=v5ProstateRisk(v).label;
+      else if(d==='Ca Bladder'&&typeof v5BladderRisk==='function')risk=v5BladderRisk(v).label;
+      else if(d==='Ca Penis'&&typeof v5PenileRisk==='function')risk=v5PenileRisk(v).label;
+      else if(d==='Ca Testis')risk=v.stage==='I'?(v.hist==='Seminoma'?'Stage I seminoma':'Stage I NSGCT'):(v.igcccg&&v.igcccg!=='Not metastatic'?'IGCCCG '+v.igcccg:'');
+      else if(d==='Ca Kidney')risk=v.imdc&&v.imdc!=='Not applicable'?'IMDC '+v.imdc:(v.recur==='KEYNOTE-564 eligible'?'KEYNOTE-564 risk':'Localized / risk pending');
+      else risk=v.risk||'';
+    }catch(e){}
+    var key=[];
+    if(d==='Ca Prostate')key=['PSA + Grade Group + cT','cN/cM status','life expectancy / treatment history'];
+    if(d==='Ca Bladder')key=['T depth + grade/CIS','nodes + metastatic status','cisplatin / EV+pembro / IO fitness'];
+    if(d==='UTUC')key=['Composite risk + grade','location/size/multifocality','M status + renal/cisplatin fitness'];
+    if(d==='Ca Kidney')key=['TNM + histology/grade','IMDC in metastatic disease','renal preservation / adjuvant eligibility'];
+    if(d==='Ca Penis')key=['Primary T/grade/LVI','groin nodal burden','chemotherapy fitness / resectability'];
+    if(d==='Ca Testis')key=['Histology + stage','post-orchiectomy markers / S category','residual mass after chemotherapy'];
+    if(d==='Urethral Cancer')key=['Histology + site','T/N/M + resectability','multimodal treatment feasibility'];
+    var gate=missing.length?'<div class="oracle-gate warn"><b>Decision gate:</b> '+missing.map(function(x){return esc2(typeof friendly==='function'?friendly(x):x);}).join(', ')+' required before a final treatment branch.</div>':'<div class="oracle-gate ok"><b>Decision gate:</b> required branch criteria are complete for this module. The treatment output remains conditional on the entered data.</div>';
+    c.innerHTML='<div class="oracle-risk-compact"><h4>Decision gate & risk summary</h4>'+gate+'<div style="margin-top:9px"><b style="font-size:10px;color:#23485b">Current risk/state:</b><div class="text-sm font-black text-sky-800" style="margin-top:3px">'+esc2(risk||'Complete criteria to classify')+'</div></div><div style="margin-top:10px"><b style="font-size:10px;color:#23485b">Highest-impact discriminators</b><ul class="oracle-key-list">'+key.map(function(x){return '<li>'+esc2(x)+'</li>';}).join('')+'</ul></div><div class="oracle-risk-actions"><button type="button" class="v4-btn" id="oracleRiskDefBtn">Risk definitions</button><button type="button" class="v4-btn" id="oracleFollowBtn">Follow-up</button><button type="button" class="v4-btn blue" id="oracleSurgeryBtn">Surgery & steps</button></div></div>';
+    document.getElementById('oracleRiskDefBtn')?.addEventListener('click',function(){if(typeof showRiskReferenceForCurrentV5==='function')showRiskReferenceForCurrentV5();});
+    document.getElementById('oracleFollowBtn')?.addEventListener('click',function(){if(typeof showFollowForCurrentV5==='function')showFollowForCurrentV5();});
+    document.getElementById('oracleSurgeryBtn')?.addEventListener('click',function(){setMode('surgery');});
+  }
+
+  function patchRisk(){
+    if(typeof window.v5RiskPanel!=='function'||window.v5RiskPanel.__oracleCompact)return;
+    var fn=function(d){compactRiskPanel(d);};fn.__oracleCompact=true;window.v5RiskPanel=fn;
+    window.updateRiskPanel=fn;
+  }
+
+  function keepTop(){
+    window.scrollTo({top:0,left:0,behavior:'auto'});
+    document.documentElement.scrollTop=0;document.body.scrollTop=0;
+  }
+
+  function install(){
+    ensureTabs();patchRisk();
+    var sel=document.getElementById('oracleDisease');
+    if(sel&&!sel.dataset.oracleFinalUX){
+      sel.dataset.oracleFinalUX='1';
+      sel.addEventListener('change',function(){
+        setTimeout(function(){compactRiskPanel(getDisease());renderSurgeryTab();},50);
+      });
+    }
+    var current=window.renderOracleForm;
+    if(typeof current==='function'&&!current.__oracleFinalUX){
+      var wrapped=function(){
+        var r=current.apply(this,arguments);
+        setTimeout(function(){compactRiskPanel(getDisease());if(document.getElementById('oracleSurgeryPanel')?.classList.contains('hidden')===false)renderSurgeryTab();},35);
+        return r;
+      };
+      wrapped.__oracleFinalUX=true;window.renderOracleForm=wrapped;
+    }
+    var oldRun=window.runOracle;
+    if(typeof oldRun==='function'&&!oldRun.__oracleFinalUX){
+      var runWrapped=function(){
+        var r=oldRun.apply(this,arguments);
+        setTimeout(function(){compactRiskPanel(getDisease());renderSurgeryTab();},60);
+        keepTop();
+        return r;
+      };
+      runWrapped.__oracleFinalUX=true;window.runOracle=runWrapped;
+    }
+    var oldOpen=window.openOracle;
+    if(typeof oldOpen==='function'&&!oldOpen.__oracleFinalUX){
+      var openWrapped=function(){
+        var r=oldOpen.apply(this,arguments);
+        setTimeout(function(){ensureTabs();setMode('management');compactRiskPanel(getDisease());keepTop();},25);
+        return r;
+      };
+      openWrapped.__oracleFinalUX=true;window.openOracle=openWrapped;
+    }
+    /* Prevent the older explicit run wrapper from creating a second surgical card in management output. */
+    var out=document.getElementById('oracleOutput');
+    if(out&&!out.dataset.oracleFinalUXCleanup){
+      out.dataset.oracleFinalUXCleanup='1';
+      new MutationObserver(function(){var old=document.getElementById('oracleSurgicalAtlas');if(old)old.remove();}).observe(out,{childList:true,subtree:false});
+    }
+    compactRiskPanel(getDisease());
+  }
+
+  document.addEventListener('DOMContentLoaded',install,{once:true});
+  setTimeout(install,0);setTimeout(install,200);setTimeout(install,700);
+  window.installOracleFinalUX=install;
+})();
+</script>
 </head>
 <body>
 <div class="max-w-7xl mx-auto min-h-screen">
@@ -3678,7 +3901,6 @@ try{homeView.insertAdjacentHTML('beforeend',safety2026)}catch(e){}
     const o=v5Oracle(d,v);
     document.getElementById('oracleOutput').innerHTML=header+`<div class="${o.className==='warn'?'warn':'decision'}"><div class="text-[10px] font-black uppercase tracking-wider text-slate-500">Oracle recommendation</div><h3 class="text-base font-black mt-1">${esc(o.title)}</h3><div class="text-sm leading-6 mt-2">${esc(o.plan)}</div><div class="v4-note mt-3"><b>Why:</b> ${esc(o.why)}</div><div class="alt mt-3"><b>What if this is not suitable?</b><br>${esc(o.alt)}</div></div>${o.extra||''}`;
     v5RiskPanel(d);
-    requestAnimationFrame(()=>document.getElementById('oracleOutput')?.scrollIntoView({behavior:'smooth',block:'start'}));
   }
   window.runOracleV5=function(d){renderV5(d,getOracleValues());};
   window.renderOracleForm=v5RenderForm;
@@ -6827,5 +7049,466 @@ out.appendChild(w);w.querySelector('#coreOpenDoseFromOracle').onclick=function()
   document.addEventListener('DOMContentLoaded',()=>{addHome();}, {once:true});
 })();
 </script>
-</body>
+<style id="oracleFinalLayoutV3Styles">
+/* ===== FINAL ORACLE LAYOUT V3 — additive presentation layer ===== */
+#oracleView.oracle-final-v3{height:auto!important;min-height:0!important;display:block!important;overflow:visible!important}
+#oracleView.oracle-final-v3 .oracle-grid{display:grid!important;grid-template-columns:minmax(360px,.95fr) minmax(480px,1.2fr)!important;gap:18px!important;height:auto!important;min-height:0!important;overflow:visible!important;align-items:start!important}
+#oracleView.oracle-final-v3 #oracleForm,#oracleView.oracle-final-v3 #oracleOutput{height:auto!important;max-height:none!important;min-height:0!important;overflow:visible!important;overflow-x:visible!important;overflow-y:visible!important;scrollbar-gutter:auto!important;overscroll-behavior:auto!important;-webkit-overflow-scrolling:auto!important}
+#oracleView.oracle-final-v3 #oracleRiskPanel{position:static!important;grid-column:auto!important;width:auto!important;height:auto!important;max-height:none!important;min-height:0!important;overflow:visible!important;overflow-y:visible!important;overflow-x:visible!important;scrollbar-gutter:auto!important;overscroll-behavior:auto!important;-webkit-overflow-scrolling:auto!important;margin:0 0 14px!important}
+#oracleView.oracle-final-v3 .oracle-final-gate{display:block!important;width:100%!important;box-sizing:border-box!important;background:linear-gradient(180deg,#fbfdfe 0%,#f5fafc 100%)!important;border:1px solid #c8dbe3!important;border-radius:14px!important;box-shadow:0 6px 18px rgba(15,23,42,.045)!important;padding:13px 15px!important}
+#oracleView.oracle-final-v3 .oracle-final-gate .section-title{font-size:13px!important}
+#oracleView.oracle-final-v3 .oracle-final-gate #riskPanelContent{margin-top:9px!important}
+#oracleView.oracle-final-v3 .oracle-final-gate .oracle-risk-compact{display:grid!important;grid-template-columns:minmax(200px,.9fr) minmax(300px,1.4fr) auto!important;gap:10px!important;align-items:start!important;padding:0!important;border:0!important;background:transparent!important}
+#oracleView.oracle-final-v3 .oracle-final-gate .oracle-risk-actions{justify-content:flex-end!important;margin-top:0!important}
+#oracleView.oracle-final-v3 .oracle-final-gate .oracle-key-list{margin-top:4px!important}
+#oracleView.oracle-final-v3 .oracle-final-gate .oracle-gate{height:100%!important;box-sizing:border-box!important}
+#oracleView.oracle-final-v3 #oracleModeTabs{display:flex!important;gap:8px!important;flex-wrap:wrap!important;margin:0 0 12px!important;padding:5px!important;border:1px solid #bfd6df!important;border-radius:13px!important;background:#f6fafc!important;box-shadow:0 4px 12px rgba(15,23,42,.035)!important;position:relative!important;z-index:4!important}
+#oracleView.oracle-final-v3 #oracleModeTabs .oracle-mode-tab{display:inline-flex!important;align-items:center!important;justify-content:center!important;min-height:38px!important;padding:9px 14px!important;border:1px solid #bfd2dc!important;border-radius:10px!important;background:#fff!important;color:#22485b!important;font:900 11px/1.2 system-ui!important;cursor:pointer!important;box-shadow:none!important}
+#oracleView.oracle-final-v3 #oracleModeTabs .oracle-mode-tab.active{background:#0b5870!important;border-color:#0b5870!important;color:#fff!important}
+#oracleView.oracle-final-v3 #oracleModeTabs .oracle-mode-tab[data-oracle-mode="surgery"]{border-color:#d0b36f!important;background:#fffaf0!important;color:#704d12!important}
+#oracleView.oracle-final-v3 #oracleModeTabs .oracle-mode-tab[data-oracle-mode="surgery"].active{background:#7a5717!important;border-color:#7a5717!important;color:#fff!important}
+#oracleView.oracle-final-v3 #oracleSurgeryPanel{display:block!important;margin:0 0 14px!important;overflow:visible!important}
+#oracleView.oracle-final-v3 #oracleSurgeryPanel.hidden{display:none!important}
+#oracleView.oracle-final-v3 .oracle-surgery-head{padding:15px 17px!important}
+#oracleView.oracle-final-v3 .oracle-surgery-head h3{font-size:16px!important}
+#oracleView.oracle-final-v3 .oracle-surgery-head:before{content:"SURGERY & STEPS";display:inline-block;margin-bottom:5px;padding:3px 7px;border-radius:999px;background:#fff2cf;color:#795515;font:900 9px/1.2 system-ui;letter-spacing:.05em}
+#oracleView.oracle-final-v3 .oracle-surgery-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+#oracleView.oracle-final-v3 .oracle-surgery-card{min-height:118px!important;display:flex!important;flex-direction:column!important;justify-content:space-between!important}
+#oracleView.oracle-final-v3 .oracle-surgery-card .surg-btn.primary{min-height:34px!important}
+#oracleView.oracle-final-v3 .v5StateStrip,.oracle-final-v3 #v5StateStrip{margin-bottom:14px!important}
+#homeOrganizedV3{display:flex;flex-direction:column;gap:16px;margin-top:14px}
+.home-v3-group{border:1px solid #cbdbe3;border-radius:18px;background:#fff;box-shadow:0 8px 22px rgba(15,23,42,.045);overflow:visible}
+.home-v3-head{padding:15px 18px;border-bottom:1px solid #d9e5ea;background:#f7fafc;border-radius:18px 18px 0 0}
+.home-v3-kicker{font:900 9px/1.2 system-ui;letter-spacing:.09em;text-transform:uppercase;color:#0b6a81}
+.home-v3-head h2{margin:3px 0 0;font:900 18px/1.25 system-ui;color:#17384c}
+.home-v3-head p{margin:4px 0 0;font:500 10.5px/1.5 system-ui;color:#5c7381}
+.home-v3-body{padding:13px 16px}
+.home-v3-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.home-v3-grid.compact{grid-template-columns:repeat(3,minmax(0,1fr))}
+.home-v3-grid > .home-v3-moved{min-width:0}
+.home-v3-placeholder{padding:11px;border:1px dashed #cbdce4;border-radius:10px;color:#607987;background:#fbfdfe;font-size:10px}
+#homeOrganizedV3 .ucc-home{margin-top:0!important}
+#homeOrganizedV3 .core-home-guideline-index,#homeOrganizedV3 .coreuro-home,#homeOrganizedV3 .core-enh-card,#homeOrganizedV3 .surg-home-card,#homeOrganizedV3 .ucc-home,#homeOrganizedV3 .card{margin-top:0!important}
+#homeOrganizedV3 > .home-v3-group .card{box-shadow:none!important}
+#homeOrganizedV3 #diseaseGrid{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:10px!important}
+#homeOrganizedV3 #studyMaterialV3,#homeOrganizedV3 #oncologyGridV3{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:10px!important}
+#homeOrganizedV3 #caseGroupV3 .ucc-home-grid{padding:0!important}
+@media(max-width:1000px){#oracleView.oracle-final-v3 .oracle-grid{grid-template-columns:minmax(0,1fr)!important}#oracleView.oracle-final-v3 .oracle-final-gate .oracle-risk-compact{grid-template-columns:1fr!important}.home-v3-grid,#homeOrganizedV3 #diseaseGrid,#homeOrganizedV3 #studyMaterialV3,#homeOrganizedV3 #oncologyGridV3{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+@media(max-width:620px){#oracleView.oracle-final-v3 #oracleModeTabs .oracle-mode-tab{flex:1 1 100%}.home-v3-grid,#homeOrganizedV3 #diseaseGrid,#homeOrganizedV3 #studyMaterialV3,#homeOrganizedV3 #oncologyGridV3{grid-template-columns:1fr!important}}
+</style>
+<script id="oracleFinalLayoutV3Script">
+(function(){
+  'use strict';
+  if(window.__ORACLE_FINAL_LAYOUT_V3)return;
+  window.__ORACLE_FINAL_LAYOUT_V3=true;
+
+  function esc3(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c];});}
+  function oracleView(){return document.getElementById('oracleView');}
+  function disease(){return document.getElementById('oracleDisease')?.value||'';}
+  function values(){
+    try{if(typeof window.getOracleValues==='function')return window.getOracleValues()||{};}catch(e){}
+    const v={};document.querySelectorAll('#oracleForm select,#oracleForm input').forEach(function(e){if(e.id&&e.id.indexOf('o-')===0)v[e.id.slice(2)]=e.value||'';});return v;
+  }
+  function fieldLabel(d,k){
+    const aliases={state:'Disease state',gg:'Grade Group',psa:'PSA',ct:'cT',cn:'cN',cm:'cM',cores:'Positive cores',pirads:'PI-RADS',psad:'PSA density',crib:'Cribriform / IDC',le:'Life expectancy',t:'T category',nodes:'Nodes',m:'M',grade:'Grade',cis:'CIS',histology:'Histology',hist:'Histology',risk:'Composite risk',location:'Location',size:'Tumour size',multi:'Multifocal',hydronephrosis:'Hydronephrosis',invasive:'Invasive imaging',cyto:'Cytology',cisplatin:'Cisplatin eligibility',met:'Metastatic status',stage:'Clinical stage',markers:'Markers',s:'S category',resect:'Resectable',site:'Site',primary:'Primary T stage',lvi:'LVI',pnl:'Positive nodes',imdc:'IMDC'};
+    return aliases[k]||k;
+  }
+  function missingFields(d,v){
+    let a=[];
+    try{
+      if(typeof window.requiredFor==='function')a=window.requiredFor(d,v)||[];
+      else if(window.__URO_ORACLE_V5__?.requirements?.[d]){
+        const r=window.__URO_ORACLE_V5__.requirements[d];a=r[v?.state]||r[v?.stage]||r[v?.met]||r.all||[];
+      }
+    }catch(e){}
+    a=a.filter(function(k){return v[k]===undefined||v[k]===null||v[k]===''||/^(Select|Unknown|Not tested|Not applicable|N\/A|—)$/.test(String(v[k]));});
+    if(!a.length){
+      const must={
+        'Ca Prostate':['state','gg','psa','ct','cn','cm'],
+        'Ca Bladder':['state','t','grade','cis','nodes'],
+        'UTUC':['state','risk','grade','location','met'],
+        'Ca Kidney':['hist','t','nodes','met'],
+        'Ca Penis':['primary','grade','nodes','met'],
+        'Ca Testis':['hist','stage','markers'],
+        'Urethral Cancer':['hist','site','t','nodes','met']
+      };
+      (must[d]||[]).forEach(function(k){if(!v[k]||/^(Select|Unknown|Not tested|Not applicable|N\/A|—)$/.test(String(v[k])))a.push(k);});
+    }
+    return a;
+  }
+  function derive(d,v){
+    if(d==='Ca Prostate'){
+      if(v.cm&&v.cm!=='M0')return 'M1 prostate cancer';
+      if(v.cn==='N1'||v.state==='Locally advanced / cN+')return 'Node-positive / locally advanced prostate cancer';
+      if(v.state==='BCR after RP'||v.state==='BCR after RT')return 'Biochemical recurrence';
+      if(v.state==='mHSPC'||v.state==='nmCRPC'||v.state==='mCRPC')return v.state;
+      return v.ct&&/^T[34]/.test(v.ct)?'Locally advanced disease':'Localized disease';
+    }
+    if(d==='Ca Bladder'){
+      if(v.state==='Metastatic/Unresectable'||v.nodes==='cN+ / N1–3'||v.t==='T4b')return 'Advanced / metastatic or unresectable bladder cancer';
+      if(['T2','T3','T4a'].includes(v.t)||v.state==='MIBC cT2–T4a M0'||v.state==='MIBC cN+ M0')return 'Muscle-invasive bladder cancer';
+      return 'Non-muscle-invasive bladder cancer';
+    }
+    if(d==='Ca Kidney')return v.met==='M1'?'Metastatic RCC':'Localized / locally advanced RCC';
+    if(d==='UTUC')return v.met==='M1'?'Metastatic UTUC':v.risk==='Low'?'Low-risk localized UTUC':v.risk==='High'?'High-risk localized UTUC':'UTUC — risk not fully classified';
+    if(d==='Ca Penis')return v.met==='M1'||v.nodes==='cN3 / fixed or pelvic'?'Advanced penile cancer':(v.nodes&&v.nodes!=='cN0'?'Node-positive penile cancer':'Primary/local penile cancer');
+    if(d==='Ca Testis')return v.stage==='I'?'Stage I testicular cancer':v.stage?'Stage II/III testicular cancer':'Testicular cancer — stage incomplete';
+    if(d==='Urethral Cancer')return v.met==='M1'?'Metastatic urethral carcinoma':v.resect==='No'?'Unresectable localized urethral carcinoma':'Localized/resectable urethral carcinoma';
+    return 'Clinical pathway';
+  }
+  function riskOrGate(d,v){
+    const miss=missingFields(d,v), state=derive(d,v), flags=[];
+    if(v.lvi==='Yes'||v.crib==='Yes'||v.variant==='Yes')flags.push('Adverse pathology feature entered');
+    if(v.cn==='N1'||v.nodes==='cN+'||v.nodes==='cN+ / N1–3'||v.pnl==='≥3'||v.pnl==='1–2')flags.push('Nodal disease / nodal-risk feature entered');
+    if(v.cm&&v.cm!=='M0'||v.met==='M1')flags.push('Metastatic disease entered');
+    if(v.cis==='Yes')flags.push('CIS entered');
+    if(v.cisplatin==='No')flags.push('Cisplatin ineligible');
+    if(v.priorARPI==='Yes'||v.priorDoc==='Yes'||v.priorIO==='Yes'||v.priorEV==='Yes'||v.priorPlatinum==='Yes')flags.push('Prior systemic exposure affects sequencing');
+    if(v.muscle==='No')flags.push('Detrusor muscle absent from specimen');
+    if(v.surgery==='No'||v.tmt==='No'||v.resect==='No')flags.push('Definitive local treatment constraint entered');
+    const gate=miss.length?'<div class="oracle-gate warn"><b>Decision gate:</b> '+miss.length+' key field'+(miss.length===1?' is':'s are')+' still incomplete. Complete the highlighted clinical interview before treating the output as a complete branch.</div>':'<div class="oracle-gate ok"><b>Decision gate:</b> core branch criteria are populated. Treatment output remains conditional on pathology, imaging, fitness, organ function and current guideline/label verification.</div>';
+    const flagHtml=flags.length?'<ul class="oracle-key-list">'+flags.slice(0,5).map(x=>'<li>'+esc3(x)+'</li>').join('')+'</ul>':'<div class="text-xs text-slate-500 mt-1">No additional high-impact modifier was entered.</div>';
+    const actions='<div class="oracle-risk-actions"><button type="button" class="v4-btn dark" data-v3-management>Management</button><button type="button" class="v4-btn amber" data-v3-surgery>Surgery &amp; steps</button></div>';
+    return '<div class="oracle-risk-compact"><div><h4>Decision gate</h4>'+gate+'<div class="mt-2 text-xs text-slate-600"><b>Current layer:</b> '+esc3(state)+'</div></div><div><h4>High-impact modifiers only</h4>'+flagHtml+'<div class="text-[10px] text-slate-500 mt-2">The full clinical criteria stay in the left interview; this box deliberately does not repeat them.</div></div><div>'+actions+'</div></div>';
+  }
+  function renderGate(){
+    const risk=document.getElementById('oracleRiskPanel');if(!risk)return;
+    risk.classList.add('oracle-final-gate');
+    const heading=risk.querySelector('.section-title');if(heading)heading.textContent='Decision gate / high-impact risk';
+    const d=disease(),v=values();
+    const host=document.getElementById('riskPanelContent');if(host)host.innerHTML=riskOrGate(d,v);
+    risk.querySelector('[data-v3-management]')?.addEventListener('click',function(){window.setOracleMode?.('management');});
+    risk.querySelector('[data-v3-surgery]')?.addEventListener('click',function(){window.setOracleMode?.('surgery');});
+  }
+  function compactLayout(){
+    const view=oracleView(),grid=view?.querySelector('.oracle-grid'),risk=document.getElementById('oracleRiskPanel');if(!view||!grid||!risk)return;
+    view.classList.add('oracle-final-v3');
+    // Keep the risk gate above the two true workspaces instead of as a third tall duplicate column.
+    if(risk.parentElement===grid)grid.parentElement.insertBefore(risk,grid);
+    renderGate();
+  }
+  function ensureSurgeryTabs(){
+    const view=oracleView();if(!view)return;
+    let selectorCard=view.querySelector('.card.p-4.mb-4');if(!selectorCard)return;
+    let tabs=document.getElementById('oracleModeTabs');
+    if(!tabs){
+      tabs=document.createElement('div');tabs.id='oracleModeTabs';tabs.className='oracle-mode-tabs';
+      tabs.innerHTML='<button type="button" class="oracle-mode-tab active" data-oracle-mode="management">🧭 Management plan</button><button type="button" class="oracle-mode-tab" data-oracle-mode="surgery">🔪 Surgery &amp; operative steps</button>';
+      selectorCard.insertAdjacentElement('afterend',tabs);
+    }
+    tabs.style.setProperty('display','flex','important');
+    tabs.querySelectorAll('[data-oracle-mode]').forEach(function(b){
+      if(b.dataset.v3Bound)return;b.dataset.v3Bound='1';
+      b.addEventListener('click',function(){
+        const mode=b.getAttribute('data-oracle-mode');
+        if(typeof window.setOracleMode==='function')window.setOracleMode(mode);
+        else{
+          const g=view.querySelector('.oracle-grid'),p=document.getElementById('oracleSurgeryPanel');
+          if(mode==='surgery'){g?.classList.add('hidden');p?.classList.remove('hidden');window.renderOracleSurgeryTab?.();}
+          else{p?.classList.add('hidden');g?.classList.remove('hidden');}
+        }
+        tabs.querySelectorAll('[data-oracle-mode]').forEach(function(x){x.classList.toggle('active',x===b);});
+      });
+    });
+    let panel=document.getElementById('oracleSurgeryPanel');
+    if(!panel){panel=document.createElement('section');panel.id='oracleSurgeryPanel';panel.className='hidden';tabs.insertAdjacentElement('afterend',panel);}
+    if(panel.parentElement!==tabs.parentElement)tabs.insertAdjacentElement('afterend',panel);
+    return {tabs,panel};
+  }
+  function openSurgery(){ensureSurgeryTabs();if(typeof window.setOracleMode==='function')window.setOracleMode('surgery');else document.querySelector('#oracleModeTabs [data-oracle-mode="surgery"]')?.click();}
+  function openManagement(){ensureSurgeryTabs();if(typeof window.setOracleMode==='function')window.setOracleMode('management');else document.querySelector('#oracleModeTabs [data-oracle-mode="management"]')?.click();}
+  function render(){
+    compactLayout();ensureSurgeryTabs();
+    // Preserve explicit surgery tab after every Oracle form rerender.
+    const panel=document.getElementById('oracleSurgeryPanel');
+    if(panel&&!panel.classList.contains('hidden')&&typeof window.renderOracleSurgeryTab==='function')window.renderOracleSurgeryTab();
+    renderGate();
+  }
+  function hardTop(){
+    try{window.scrollTo(0,0);}catch(e){}
+    try{document.documentElement.scrollTop=0;document.body.scrollTop=0;}catch(e){}
+    const view=oracleView();if(view){view.setAttribute('tabindex','-1');try{view.focus({preventScroll:true});}catch(e){}}
+    requestAnimationFrame(function(){try{window.scrollTo({top:0,left:0,behavior:'auto'});}catch(e){}});
+    setTimeout(function(){try{window.scrollTo(0,0);document.documentElement.scrollTop=0;document.body.scrollTop=0;}catch(e){}},40);
+    setTimeout(function(){try{window.scrollTo(0,0);}catch(e){}},180);
+  }
+
+  // Organized home: reparent existing content; nothing is duplicated or deleted.
+  function addGroup(id,title,desc){
+    const g=document.createElement('section');g.id=id;g.className='home-v3-group';g.innerHTML='<div class="home-v3-head"><div class="home-v3-kicker">'+esc3(title)+'</div><h2>'+esc3(title)+'</h2><p>'+esc3(desc)+'</p></div><div class="home-v3-body"></div>';
+    return g;
+  }
+  function isDiseaseButton(el){
+    if(!el||el.tagName!=='BUTTON')return false;
+    const t=(el.innerText||'').trim();
+    return ['Ca Prostate','Ca Bladder','UTUC','Ca Kidney','Ca Penis','Ca Testis','Urethral Cancer','Clinical Oracle'].some(function(x){return t.indexOf(x)>=0;});
+  }
+  function splitDiseaseGrid(dg,oncGrid,studyGrid){
+    if(!dg||!oncGrid||!studyGrid)return;
+    [...dg.children].forEach(function(ch){
+      ch.classList.add('home-v3-moved');
+      if(isDiseaseButton(ch))oncGrid.appendChild(ch);else studyGrid.appendChild(ch);
+    });
+    // Keep the historical ID as a hidden compatibility anchor so older functions cannot fail on a missing node.
+    dg.style.display='none';
+    dg.setAttribute('aria-hidden','true');
+    const anchor=dg.parentElement;
+    const grouped=anchor?.closest('#homeOrganizedV3');
+    if(!grouped&&oncGrid?.parentElement?.parentElement)oncGrid.parentElement.parentElement.parentElement.appendChild(dg);
+  }
+  function reorganizeHome(){
+    const home=document.getElementById('homeView');if(!home)return;
+    if(document.getElementById('homeOrganizedV3')){
+      const existing=document.getElementById('diseaseGrid');
+      const og=document.getElementById('oncologyGridV3'),sg=document.getElementById('studyMaterialV3');
+      if(existing&&existing.children.length)splitDiseaseGrid(existing,og,sg);
+      return;
+    }
+    const hero=home.firstElementChild;if(!hero)return;
+    const wrap=document.createElement('div');wrap.id='homeOrganizedV3';
+    const onc=addGroup('oncologyGroupV3','Oncology','Cancer pathways, treatment Oracle, staging/risk, surgery and uro-oncology decision support.');
+    const core=addGroup('nonOncologyGroupV3','Core Urology / Non-Oncology','Paediatric, reconstructive, LUTS, infection, stone and neuro-urology pathways plus the full Surgical Atlas.');
+    const study=addGroup('studyGroupV3','Study Material / Reference','Calculators, drug and protocol references, trials, guideline deltas, source registry and classification tools.');
+    const cases=addGroup('caseGroupV3','Case-Based / Clinical Command Center','Case Mode, emergencies, renal preservation, pathology, imaging, andrology, trauma and DrNB teaching.');
+    const og=onc.querySelector('.home-v3-body'),cg=core.querySelector('.home-v3-body'),sg=study.querySelector('.home-v3-body'),kg=cases.querySelector('.home-v3-body');
+    const oncGrid=document.createElement('div');oncGrid.id='oncologyGridV3';oncGrid.className='home-v3-grid';og.appendChild(oncGrid);
+    const studyGrid=document.createElement('div');studyGrid.id='studyMaterialV3';studyGrid.className='home-v3-grid';sg.appendChild(studyGrid);
+    const movable=[...home.children].filter(function(x){return x!==hero&&x.id!=='homeOrganizedV3';});
+    home.appendChild(wrap);[onc,core,study,cases].forEach(function(x){wrap.appendChild(x);});
+    const dg=document.getElementById('diseaseGrid');
+    if(dg)splitDiseaseGrid(dg,oncGrid,studyGrid);
+    const nonOncoIds=['coreHomeGuidelineIndex','coreUroHome','coreEnhHome','surgicalAtlasHome'];
+    const caseIds=['uccHomeCard'];
+    const studyIds=['doseHomeQuick','v4HomeTools','v5CockpitCard','eau2026HomeLibrary','v4SourceCard'];
+    const classify=function(x){
+      if(nonOncoIds.includes(x.id)){cg.appendChild(x);return true;}
+      if(caseIds.includes(x.id)){kg.appendChild(x);return true;}
+      if(studyIds.includes(x.id)){studyGrid.appendChild(x);return true;}
+      const txt=(x.innerText||'').toLowerCase();
+      if(/2026 changes that materially affect|source registry|protocol \/ template layer|score \/ classification directory|how the oracle is structured|clinical safety/.test(txt)){studyGrid.appendChild(x);return true;}
+      if(x.classList.contains('card')){studyGrid.appendChild(x);return true;}
+      return false;
+    };
+    movable.forEach(function(x){if(x===wrap||x===hero||!x.isConnected)return;classify(x);});
+    const observer=new MutationObserver(function(){
+      if(!document.getElementById('homeOrganizedV3'))return;
+      const pending=[...home.children].filter(function(x){return x!==hero&&x!==wrap&&x.parentElement===home;});
+      pending.forEach(classify);
+      const newDg=document.getElementById('diseaseGrid');
+      if(newDg&&newDg.children.length)splitDiseaseGrid(newDg,oncGrid,studyGrid);
+    });
+    observer.observe(home,{childList:true});
+  }
+
+
+  function clearStaleOracleOutput(){
+    const out=document.getElementById('oracleOutput');if(!out)return;
+    out.innerHTML='<div class="text-sm font-black">Management output</div><div class="text-xs text-slate-500 mt-1">Diagnosis changed. Re-enter/confirm the relevant clinical criteria and run the treatment plan for the current diagnosis.</div>';
+  }
+  function markOracleRun(){window.__ORACLE_V3_LAST_RUN_AT=Date.now();}
+  function bindDiseaseReset(){
+    const sel=document.getElementById('oracleDisease');if(!sel||sel.dataset.v3ResetBound)return;
+    sel.dataset.v3ResetBound='1';
+    sel.addEventListener('change',function(){
+      const stamp=Date.now();window.__ORACLE_V3_LAST_DISEASE_CHANGE_AT=stamp;
+      clearStaleOracleOutput();
+      setTimeout(function(){renderGate();openManagement();hardTop();},30);
+      setTimeout(function(){
+        if((window.__ORACLE_V3_LAST_RUN_AT||0)<=stamp && (window.__ORACLE_V3_LAST_DISEASE_CHANGE_AT||0)===stamp)clearStaleOracleOutput();
+      },220);
+    });
+  }
+
+
+  function patchOpen(){
+    const prev=window.openOracle;
+    if(typeof prev==='function'&&!prev.__oracleV3Open){
+      const fn=function(){const args=arguments;const r=prev.apply(this,args);hardTop();setTimeout(function(){compactLayout();ensureSurgeryTabs();openManagement();render();hardTop();},10);setTimeout(function(){hardTop();},220);return r;};
+      fn.__oracleV3Open=true;window.openOracle=fn;
+    }
+  }
+  function patchRender(){
+    const prev=window.renderOracleForm;
+    if(typeof prev==='function'&&!prev.__oracleV3Render){
+      const fn=function(){const r=prev.apply(this,arguments);setTimeout(render,15);return r;};fn.__oracleV3Render=true;window.renderOracleForm=fn;
+    }
+    const prevRun=window.runOracle;
+    if(typeof prevRun==='function'&&!prevRun.__oracleV3Run){
+      const fn=function(){markOracleRun();const r=prevRun.apply(this,arguments);setTimeout(render,25);return r;};fn.__oracleV3Run=true;window.runOracle=fn;
+    }
+  }
+  function install(){
+    history.scrollRestoration='manual';
+    patchOpen();patchRender();bindDiseaseReset();reorganizeHome();
+    if(oracleView()?.classList.contains('hidden')===false)render();
+    const rh=window.renderHome;
+    if(typeof rh==='function'&&!rh.__oracleV3Home){
+      const fn=function(){const r=rh.apply(this,arguments);setTimeout(function(){reorganizeHome();splitDiseaseGrid(document.getElementById('diseaseGrid'),document.getElementById('oncologyGridV3'),document.getElementById('studyMaterialV3'));},20);return r;};
+      fn.__oracleV3Home=true;window.renderHome=fn;
+    }
+  }
+  document.addEventListener('DOMContentLoaded',function(){try{install();}catch(e){window.__ORACLE_FINAL_LAYOUT_V3_INSTALL_ERROR=String(e);}}, {once:true});
+  [0,100,350,900,1500].forEach(function(ms){setTimeout(function(){try{install();}catch(e){window.__ORACLE_FINAL_LAYOUT_V3_INSTALL_ERROR=String(e);}} ,ms);});
+  // Independent safety hooks: each can succeed even if an older wrapper on the same page throws.
+  [250,900,1500,2500].forEach(function(ms){setTimeout(function(){try{reorganizeHome();}catch(e){window.__ORACLE_FINAL_LAYOUT_V3_HOME_ERROR=String(e);}try{bindDiseaseReset();}catch(e){}try{ensureSurgeryTabs();}catch(e){}},ms);});
+  window.__ORACLE_FINAL_LAYOUT_V3_API={render,compactLayout,ensureSurgeryTabs,openSurgery,openManagement,reorganizeHome,hardTop,clearStaleOracleOutput};
+})();
+</script>
+
+<style id="oracleV4FixStyles">
+/* ===== ORACLE V4 — navigation + complete surgery pathway integration ===== */
+#oracleView.oracle-final-v3 #v4StateStrip,#oracleView.oracle-final-v3 #v5StateStrip{display:none!important}
+#oracleView.oracle-final-v3 #oracleSurgeryPanel .oracle-surgery-core-note{margin-top:10px;padding:10px 12px;border:1px solid #d4e1e7;border-radius:10px;background:#fbfdfe;color:#526c7a;font-size:10px;line-height:1.5}
+#oracleView.oracle-final-v3 #oracleSurgeryPanel .oracle-surgery-section-title{font-size:10px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:#527184;margin:12px 0 7px}
+</style>
+<script id="oracleV4FixScript">
+(function(){
+  'use strict';
+  if(window.__ORACLE_V4_FIX)return;
+  window.__ORACLE_V4_FIX=true;
+
+  const VIEWS=['homeView','diseaseView','oracleView','calcView','drugView','trialView','searchView','surgeryView','clinicalCommandView'];
+  function hideAllViews(except){
+    VIEWS.forEach(function(id){const e=document.getElementById(id);if(!e)return;e.classList.toggle('hidden',id!==except);});
+  }
+  function wrapNavigation(name,target){
+    const prior=window[name];
+    if(typeof prior!=='function'||prior.__oracleV4Nav)return;
+    const fn=function(){
+      let result;
+      try{result=prior.apply(this,arguments);}catch(e){
+        hideAllViews(target);
+        throw e;
+      }
+      hideAllViews(target);
+      return result;
+    };
+    fn.__oracleV4Nav=true;
+    window[name]=fn;
+  }
+  ['showHome','openDisease','openOracle','openCalculators','openDrugs','openTrials','openSurgicalAtlas','openClinicalCommandCenter'].forEach(function(name){
+    const target={showHome:'homeView',openDisease:'diseaseView',openOracle:'oracleView',openCalculators:'calcView',openDrugs:'drugView',openTrials:'trialView',openSurgicalAtlas:'surgeryView',openClinicalCommandCenter:'clinicalCommandView'}[name];
+    wrapNavigation(name,target);
+  });
+
+  const CORE_SURGERY={
+    'Hypospadias':['TIP hypospadias repair — Snodgrass','Mathieu hypospadias repair','Bracka staged hypospadias reconstruction'],
+    'Urethral Stricture':['DVIU — direct vision internal urethrotomy','EPA urethroplasty — excision and primary anastomosis','BMG urethroplasty — buccal mucosal graft','Staged urethroplasty — complex stricture','Perineal urethrostomy'],
+    'Nocturnal Enuresis':[],
+    'BPH / Male LUTS':['TURP — transurethral resection of prostate','HoLEP — holmium laser enucleation','Aquablation','PUL — prostatic urethral lift','Simple prostatectomy — open/laparoscopic/robotic'],
+    'Female LUTS + Urinary Incontinence':['Mid-urethral sling — female SUI','Burch colposuspension','Urethral bulking injection','Detrusor onabotulinumtoxinA injection — OAB','Sacral neuromodulation'],
+    'UTI / Urological Infection':['DJ ureteric stent — drainage','PCN — percutaneous nephrostomy'],
+    'Urolithiasis':['URS — ureteroscopic stone clearance','RIRS — retrograde intrarenal surgery','PCNL — standard percutaneous nephrolithotomy','ECIRS — combined antegrade + retrograde intrarenal surgery','SWL — shock-wave lithotripsy','DJ ureteric stent — drainage','PCN — percutaneous nephrostomy','Ureterolithotomy — laparoscopic/open'],
+    'Neurogenic Bladder':['Detrusor onabotulinumtoxinA injection — OAB','Sacral neuromodulation','Augmentation cystoplasty','Mitrofanoff / catheterisable channel']
+  };
+  function atlas(){return window.URO_SURGERY_LIBRARY_2026||{};}
+  function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c];});}
+  function coreRender(d){
+    const host=document.getElementById('oracleSurgeryPanel');if(!host)return;
+    const lib=atlas(), names=(CORE_SURGERY[d]||[]).filter(function(n){return !!lib[n];});
+    let body='';
+    if(names.length){
+      body+='<div class="oracle-surgery-section-title">Mapped procedures</div><div class="oracle-surgery-grid">'+names.map(function(n){const x=lib[n]||{};return '<article class="oracle-surgery-card"><h4>'+esc(n)+'</h4><div class="oracle-surgery-meta">'+esc((x.cat||'')+' • '+(x.type||''))+'</div><div class="oracle-surgery-actions"><button type="button" class="surg-btn primary" data-oracle-surg-open="'+esc(n)+'">Open operative steps</button></div></article>';}).join('')+'</div>';
+    }else if(d==='Nocturnal Enuresis'){
+      body+='<div class="oracle-surgery-empty"><b>No routine surgical pathway.</b><br>Monosymptomatic nocturnal enuresis is managed with assessment, behavioural measures, alarm and/or desmopressin according to the clinical pathway. Surgery is reserved for a separately identified structural/urological diagnosis.</div>';
+    }else{
+      body+='<div class="oracle-surgery-empty"><b>No mapped operation for this module.</b><br>Use the full Surgical Atlas to search the complete procedure library.</div>';
+    }
+    host.innerHTML='<div class="oracle-surgery-head"><h3>🔪 '+esc(d||'Clinical Oracle')+' — Surgical / procedural pathway</h3><p>These links open the existing Surgical Atlas operative roadmaps: indications, preparation, operative sequence, anatomy, pitfalls, complications and postoperative care. They are training/navigation aids, not a substitute for case-specific planning.</p><div class="oracle-surgery-tools"><button type="button" class="surg-btn primary" id="oracleOpenFullAtlas">Open full Surgical Atlas</button><button type="button" class="surg-btn" id="oracleBackManagement">Back to management plan</button></div></div><div class="oracle-surgery-body">'+body+'<div class="oracle-surgery-core-note"><b>Clinical note:</b> The mapped procedure list is deliberately broader than a single recommended operation. Choose among these only after anatomy, diagnosis/stage, functional goals, patient factors, expertise, current guideline/order-set requirements and MDT input are established.</div></div>';
+    host.querySelectorAll('[data-oracle-surg-open]').forEach(function(b){b.addEventListener('click',function(){if(typeof window.openSurgeryDetail==='function')window.openSurgeryDetail(b.getAttribute('data-oracle-surg-open'));});});
+    host.querySelector('#oracleOpenFullAtlas')?.addEventListener('click',function(){if(typeof window.openSurgicalAtlas==='function')window.openSurgicalAtlas('');});
+    host.querySelector('#oracleBackManagement')?.addEventListener('click',function(){window.setOracleMode?.('management');});
+  }
+
+  const oldSurgRender=window.renderOracleSurgeryTab;
+  if(typeof oldSurgRender==='function'&&!oldSurgRender.__oracleV4Surg){
+    const fn=function(){
+      const d=document.getElementById('oracleDisease')?.value||'';
+      if(Object.prototype.hasOwnProperty.call(CORE_SURGERY,d)){coreRender(d);return;}
+      return oldSurgRender.apply(this,arguments);
+    };
+    fn.__oracleV4Surg=true;
+    window.renderOracleSurgeryTab=fn;
+  }
+
+  // Keep the core surgery tab refreshed after a core diagnosis render.
+  const oldCoreRender=window.renderCoreForm;
+  if(typeof oldCoreRender==='function'&&!oldCoreRender.__oracleV4CoreRefresh){
+    const fn=function(){const r=oldCoreRender.apply(this,arguments);setTimeout(function(){if(document.querySelector('#oracleSurgeryPanel:not(.hidden)'))window.renderOracleSurgeryTab?.();},20);return r;};
+    fn.__oracleV4CoreRefresh=true;window.renderCoreForm=fn;
+  }
+
+  // Hide any new top-level view that is left behind by an older navigation function.
+  setTimeout(function(){
+    const visible=VIEWS.map(function(id){const e=document.getElementById(id);return e&&!e.classList.contains('hidden')?id:'';}).filter(Boolean);
+    if(visible.length>1){
+      const priority=['clinicalCommandView','surgeryView','oracleView','calcView','drugView','trialView','diseaseView','homeView','searchView'];
+      const keep=priority.find(function(x){return visible.includes(x);});
+      if(keep)hideAllViews(keep);
+    }
+  },20);
+  window.__ORACLE_V4_FIX_API={hideAllViews,coreRender,CORE_SURGERY};
+})();
+</script><script id="oracleV41CoreSurgeryBridge">
+(function(){
+  'use strict';
+  if(window.__ORACLE_V41_CORE_SURGERY)return;
+  window.__ORACLE_V41_CORE_SURGERY=true;
+  const coreMap=(window.__ORACLE_V4_FIX_API&&window.__ORACLE_V4_FIX_API.CORE_SURGERY)||{};
+  const coreRender=(window.__ORACLE_V4_FIX_API&&window.__ORACLE_V4_FIX_API.coreRender)||null;
+  const prior=window.setOracleMode;
+  if(typeof prior==='function'&&!prior.__oracleV41){
+    const fn=function(mode){
+      const r=prior.apply(this,arguments);
+      const d=document.getElementById('oracleDisease')?.value||'';
+      if(mode==='surgery'&&Object.prototype.hasOwnProperty.call(coreMap,d)&&typeof coreRender==='function')coreRender(d);
+      return r;
+    };
+    fn.__oracleV41=true;
+    window.setOracleMode=fn;
+  }
+  // Refresh the custom core procedure list whenever the surgery panel is already open.
+  [30,120,350,900].forEach(function(ms){setTimeout(function(){try{const d=document.getElementById('oracleDisease')?.value||'';if(document.getElementById('oracleSurgeryPanel')&&!document.getElementById('oracleSurgeryPanel').classList.contains('hidden')&&Object.prototype.hasOwnProperty.call(coreMap,d)&&typeof coreRender==='function')coreRender(d);}catch(e){}},ms);});
+})();
+</script><script id="oracleV42CaseHandoffFix">
+(function(){
+  'use strict';
+  if(window.__ORACLE_V42_CASE_FIX)return;
+  window.__ORACLE_V42_CASE_FIX=true;
+  function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c];});}
+  function syncCaseRibbon(){
+    const c=window.URO_CASE;if(!c)return;
+    const form=document.getElementById('oracleForm');if(!form)return;
+    const old=document.getElementById('uccCaseRibbon');if(old)old.remove();
+    const ribbon=document.createElement('div');ribbon.id='uccCaseRibbon';ribbon.className='ucc-case-ribbon';
+    ribbon.innerHTML='<b>Case context</b> '+esc(c.id||'Unnamed')+' • '+esc(c.age||'Age—')+' y • '+esc(c.sex||'Sex—')+' • '+esc(c.weight||'Wt—')+' kg'+(c.creatinine?' • Cr '+esc(c.creatinine):'')+'<span class="ucc-case-note">Values are context only unless a downstream field explicitly accepts them.</span>';
+    form.insertBefore(ribbon,form.firstChild);
+    [['age',c.age],['weight',c.weight],['creatinine',c.creatinine],['sex',c.sex]].forEach(function(pair){
+      const key=pair[0],val=pair[1];if(!val)return;
+      ['o-'+key,'o-patientAge','o-weightKg','o-wt','o-cr','o-scr'].forEach(function(id){
+        const e=document.getElementById(id);if(e&&!e.value&&((key==='age'&&/age/i.test(e.id))||(key==='weight'&&/(weight|wt)/i.test(e.id))||(key==='creatinine'&&/(creatinine|scr|cr$)/i.test(e.id))||(key==='sex'&&/sex|gender/i.test(e.id))))e.value=val;
+      });
+    });
+  }
+  function fixButton(){
+    const b=document.getElementById('uccOpenCase');if(!b||b.dataset.v42Bound)return;
+    b.dataset.v42Bound='1';
+    b.onclick=function(){
+      const save=document.getElementById('uccBuildCase');if(save)save.click();
+      const c=window.URO_CASE||{};const d=c.diagnosis||'';
+      if(['Male infertility','Erectile dysfunction','Hypogonadism','Ischaemic priapism','Varicocele','Peyronie disease'].includes(d)){
+        const ad=document.getElementById('uccAndDx');if(ad)ad.value=d;
+        if(typeof window.openClinicalCommandCenter==='function')window.openClinicalCommandCenter('uccAndPanel');
+        return;
+      }
+      if(!d||typeof window.openOracle!=='function')return;
+      // Passing the diagnosis is intentional: the ordinary no-argument Oracle opener resets to the default disease.
+      window.openOracle(d);
+      setTimeout(syncCaseRibbon,120);
+    };
+  }
+  [0,100,300,800,1500].forEach(function(ms){setTimeout(fixButton,ms);});
+  window.__ORACLE_V42_CASE_FIX_API={syncCaseRibbon,fixButton};
+})();
+</script></body>
 </html>
