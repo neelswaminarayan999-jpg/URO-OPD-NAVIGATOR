@@ -5677,5 +5677,343 @@ if(typeof _finalDiseaseSelector!=='undefined'&&_finalDiseaseSelector)_finalDisea
 })();
 
 </script>
+
+<style id="coreUroOracleStyles">
+.coreuro-card{margin-top:14px;border:1px solid #bfd6df;border-radius:16px;background:linear-gradient(180deg,#ffffff 0%,#f5fafc 100%);box-shadow:0 8px 24px rgba(15,23,42,.055);overflow:hidden}
+.coreuro-head{padding:16px 18px;background:linear-gradient(115deg,#092337 0%,#0d5369 100%);color:#fff;display:flex;justify-content:space-between;gap:12px;align-items:center}
+.coreuro-head h3{margin:2px 0 0;font-size:17px;color:#fff}.coreuro-kicker{font-size:10px;font-weight:900;letter-spacing:.09em;text-transform:uppercase;color:#bfe7ee}.coreuro-pill{border:1px solid rgba(255,255,255,.25);border-radius:999px;padding:4px 8px;font-size:10px;font-weight:900;color:#fff;background:rgba(255,255,255,.10);white-space:nowrap}
+.coreuro-body{padding:16px 18px}.coreuro-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.coreuro-field{min-width:0}.coreuro-field label{display:block;font-size:11px;font-weight:900;color:#476174;margin-bottom:5px}.coreuro-field input,.coreuro-field select{width:100%;border:1px solid #bfd0da;border-radius:11px;padding:10px 11px;background:#fff;color:#173247;font-size:12px;box-sizing:border-box}.coreuro-field input:focus,.coreuro-field select:focus{outline:none;border-color:#2f7894;box-shadow:0 0 0 3px rgba(15,107,134,.12)}
+.coreuro-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}.coreuro-btn{border:1px solid #b7cdd7;border-radius:10px;padding:9px 12px;background:#fff;color:#17394d;font-size:11px;font-weight:900;cursor:pointer}.coreuro-btn.primary{background:#0a344b;color:#fff;border-color:#0a344b}.coreuro-btn.blue{background:#eef8fb;color:#075985;border-color:#b7dce9}.coreuro-btn.warn{background:#fff7e8;color:#7c4b08;border-color:#ecd18e}
+.coreuro-out{margin-top:14px}.coreuro-section{padding:12px 13px;border:1px solid #d9e6eb;border-radius:12px;background:#fff}.coreuro-section + .coreuro-section{margin-top:10px}.coreuro-section h4{margin:0 0 6px;font-size:12px;color:#17384c}.coreuro-section p,.coreuro-section li{font-size:12px;line-height:1.58;color:#3f5e6d}.coreuro-section ul{margin:7px 0 0;padding-left:18px}.coreuro-alert{margin-top:10px;border-left:4px solid #d68d1f;background:#fff8e9;color:#694d16;border-radius:8px;padding:10px 12px;font-size:11px;line-height:1.55}.coreuro-danger{margin-top:10px;border-left:4px solid #c43a35;background:#fff3f1;color:#67302c;border-radius:8px;padding:10px 12px;font-size:11px;line-height:1.55}.coreuro-ok{margin-top:10px;border-left:4px solid #2a8a5c;background:#f0faf5;color:#25533d;border-radius:8px;padding:10px 12px;font-size:11px;line-height:1.55}
+.coreuro-home{margin-top:14px;border:1px solid #c7dbe3;border-radius:16px;background:linear-gradient(135deg,#f2fafc,#ffffff);padding:15px}.coreuro-home-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin-top:10px}.coreuro-home-btn{border:1px solid #c4d7df;border-radius:11px;background:#fff;padding:10px 11px;text-align:left;color:#17384d;font-size:11px;font-weight:900;cursor:pointer;min-height:62px}.coreuro-home-btn:hover{background:#eef8fb;border-color:#8eb8c8}.coreuro-home-btn span{display:block;font-size:10px;font-weight:600;color:#5b7382;margin-top:3px;line-height:1.35}
+.coreuro-ref{margin-top:10px;font-size:10px;color:#607887}.coreuro-ref a{color:#056b95;font-weight:800;margin-right:10px;text-decoration:underline}
+@media(max-width:900px){.coreuro-grid,.coreuro-home-grid{grid-template-columns:1fr}.coreuro-head{display:block}.coreuro-pill{display:inline-flex;margin-top:8px}}
+</style>
+
+
+<script id="coreUroOracleModule">
+(function(){
+  'use strict';
+
+  const CORE_KEYS=[
+    'Hypospadias','Urethral Stricture','Nocturnal Enuresis',"BPH / Male LUTS",
+    'Female LUTS + Urinary Incontinence','UTI / Urological Infection','Urolithiasis','Neurogenic Bladder'
+  ];
+
+  const CORE_SOURCES={
+    ped:'https://uroweb.org/guidelines/paediatric-urology',
+    hypo:'https://uroweb.org/guidelines/paediatric-urology/chapter/hypospadias',
+    stricture:'https://uroweb.org/guidelines/urethral-strictures',
+    mluts:'https://uroweb.org/guidelines/management-of-non-neurogenic-male-luts',
+    fluts:'https://uroweb.org/guidelines/non-neurogenic-female-luts',
+    uti:'https://uroweb.org/guidelines/urological-infections',
+    stones:'https://uroweb.org/guidelines/urolithiasis',
+    neuro:'https://uroweb.org/guidelines/neuro-urology',
+    auaBph:'https://www.auanet.org/guidelines-and-quality/guidelines/bph-guideline',
+    auaSui:'https://www.auanet.org/guidelines-and-quality/guidelines/stress-urinary-incontinence-(sui)-guideline',
+    auaOab:'https://www.auanet.org/guidelines-and-quality/guidelines/idiopathic-overactive-bladder',
+    auaRuti:'https://www.auanet.org/guidelines-and-quality/guidelines/recurrent-uti',
+    auaStone:'https://www.auanet.org/guidelines-and-quality/guidelines/stone-disease'
+  };
+
+  const CORE_SCHEMAS={
+    'Hypospadias':[
+      ['age','Age (months)','number'],
+      ['type','Anatomical type',['Distal','Middle/penile','Proximal/penoscrotal/scrotal/perineal']],
+      ['curvature','Curvature',['None / <30°','≥30°']],
+      ['meatus','Meatus / stream',['Adequate / no significant spraying','Spraying / obstructive / meatal stenosis']],
+      ['plate','Urethral plate',['Good / preserved','Narrow / unsuitable','Requires transection for straightening']],
+      ['testes','Testes',['Both descended','Unilateral undescended','Bilateral undescended']],
+      ['dsd','DSD concern',['No','Yes / cannot exclude']],
+      ['prior','Previous repair',['No','Yes']],
+      ['adultSymptom','Adult/late presentation',['No','Yes']]
+    ],
+    'Urethral Stricture':[
+      ['sex','Sex',['Male','Female']],['site','Primary site',['Meatus/fossa navicularis','Penile','Bulbar','Membranous/posterior']],
+      ['length','Stricture length',['<1 cm','1–2 cm','>2 cm','Unknown']],['etiology','Likely etiology',['Idiopathic','Iatrogenic/instrumentation','Traumatic','Lichen sclerosus','Radiation/oncologic','Other']],
+      ['prior','Prior endoscopic treatment',['None','Dilation/DVIU once','Multiple dilation/DVIU']],['retention','Retention / severe emptying',['No','Yes']],
+      ['pvr','PVR',['<100 mL','100–300 mL','>300 mL','Unknown']],['rug','RUG/VCUG',['Not done','Defines location/length']],['cysto','Cystoscopy',['Not done','Performed / defines lumen']],['recurrent','Recurrent stricture',['No','Yes']],['ls','Active lichen sclerosus',['No','Yes/likely']]
+    ],
+    'Nocturnal Enuresis':[
+      ['age','Age (years)','number'],['day','Daytime LUT symptoms',['Absent — monosymptomatic','Present — non-monosymptomatic']],['constipation','Constipation/encopresis',['No','Yes']],
+      ['uti','Recurrent UTI / dysuria',['No','Yes']],['polyuria','Polydipsia/polyuria / diabetes concern',['No','Yes']],['osa','Snoring/OSA symptoms',['No','Yes']],
+      ['diary','Micturition diary/questionnaire',['Available','Not done']],['urine','Urine test',['Normal/negative','Abnormal / infection / glucose concern','Not done']],
+      ['motivation','Family/child motivation',['Low','Good']],['nightpoly','Night-time polyuria',['No/unknown','Yes/proven']]
+    ],
+    'BPH / Male LUTS':[
+      ['ipss','IPSS',['0–7 mild','8–19 moderate','20–35 severe']],['bother','QoL/bother',['Acceptable','Bothersome']],['pred','Dominant phenotype',['Voiding','Storage','Mixed']],
+      ['pvr','PVR',['<100 mL','100–300 mL','>300 mL','Unknown']],['qmax','Qmax',['≥15 mL/s','10–14 mL/s','<10 mL/s','Unknown']],['prostate','Prostate volume',['<30 mL','30–80 mL','>80 mL','Unknown']],
+      ['middle','Middle lobe',['No','Yes','Unknown']],['psa','PSA evaluated',['Yes / appropriate','No / needs consideration']],['retention','Recurrent/refractory retention',['No','Yes']],
+      ['uti','Recurrent UTI',['No','Yes']],['stones','Bladder stones/diverticulum',['No','Yes']],['hematuria','Refractory macroscopic haematuria attributed to BPO',['No','Yes']],['upper','Upper tract dilatation / renal insufficiency from BPO',['No','Yes']]
+    ],
+    'Female LUTS + Urinary Incontinence':[
+      ['age','Age (years)','number'],['type','Incontinence phenotype',['Urgency urinary incontinence / OAB','Stress urinary incontinence','Mixed urinary incontinence']],['bother','Most bothersome component',['Urgency/frequency','Stress leakage','Both / unclear']],
+      ['pvr','PVR',['Normal/low','Elevated','Unknown']],['ua','Urine test',['Negative/no infection','Abnormal / infection / haematuria','Not done']],['pop','Pelvic organ prolapse',['No/none significant','Yes']],
+      ['neuro','Neurological disease',['No','Yes']],['menopause','Menopausal/GSM features',['No','Yes/likely']],['pfmt','Prior supervised PFMT ≥3 months',['No','Yes']],['uds','Urodynamics',['Not needed yet','May change invasive treatment','Already performed / informs pathway']],
+      ['recurrent','Recurrent UTI',['No','Yes']],['voiding','Voiding dysfunction / significant PVR',['No','Yes']]
+    ],
+    'UTI / Urological Infection':[
+      ['sex','Sex',['Female','Male']],['age','Age group',['Child','Adult']],['preg','Pregnancy',['No','Yes']],['syndrome','Syndrome',['Localised cystitis','Systemic UTI / pyelonephritis','Catheter-associated / instrumentation-related','Recurrent UTI','Urethritis/STI phenotype','Fungal UTI concern']],
+      ['systemic','Systemic features',['No','Yes']],['obstruction','Obstruction/stone/retention',['No','Yes/possible']],['risk','Risk factors',['None major','Anatomic/functional abnormality','Catheter/foreign body','Immunocompromise/comorbidity']],
+      ['culture','Culture',['Not yet','Obtained']],['recurrence','Recurrence definition',['Not recurrent','≥2 in 6 months','≥3 in 12 months']],['sepsis','Sepsis/shock concern',['No','Yes']],
+      ['maleProstate','Possible prostate involvement in male',['No / excluded','Yes / likely','Unknown']]
+    ],
+    'Urolithiasis':[
+      ['site','Stone site',['Renal pelvis/upper-middle calyx','Lower pole renal','Ureter','Bladder','Complex/staghorn']],['size','Stone size',['<5 mm','5–10 mm','10–20 mm','>20 mm']],['obstruct','Obstruction',['No','Yes']],
+      ['infection','UTI/sepsis with obstruction',['No','Yes/possible']],['pain','Pain',['Controlled / intermittent','Refractory']],['renal','Renal function',['Preserved','AKI / deterioration','CKD / reduced baseline']],
+      ['solitary','Solitary kidney',['No','Yes']],['preg','Pregnancy',['No','Yes']],['distal','For ureter: location',['Proximal','Mid','Distal']],['density','CT density',['<1000 HU','≥1000 HU','Unknown']],
+      ['staghorn','Staghorn',['No','Partial','Complete']],['metabolic','Stone analysis/metabolic status',['Not done','Stone analysed/basic evaluation','High-risk / full metabolic evaluation']]
+    ],
+    'Neurogenic Bladder':[
+      ['cause','Neurological condition',['SCI','MS','Spina bifida/dysraphism','Parkinsonism/central disorder','Peripheral/cauda equina','Other']],['pattern','LUT pattern',['Storage predominant','Emptying predominant','Mixed']],
+      ['pvr','PVR',['Low','Elevated','Very high / >300 mL','Unknown']],['uds','Urodynamics',['Not done','Low-risk / reassuring','High-pressure NDO/poor compliance','DSD / outlet dysfunction']],
+      ['upper','Upper urinary tract',['No dilation/scarring','Hydronephrosis/scarring/other risk']],['renal','Renal function',['Stable','Reduced/declining']],['uti','Recurrent symptomatic UTI',['No','Yes']],
+      ['ic','Intermittent catheterisation',['Able/willing','Unable/unwilling','Already on IC']],['indwelling','Long-term indwelling catheter',['No','Yes']],['ad','Autonomic dysreflexia risk',['No','Yes / at risk']],['continence','Incontinence',['No/controlled','Refractory']]
+    ]
+  };
+
+  function escx(s){
+    if(typeof esc==='function') return esc(String(s));
+    return String(s).replace(/[&<>\"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[c];});
+  }
+  function valx(id){const e=document.getElementById('o-'+id);return e?e.value:'';}
+  function values(){const o={};const d=document.getElementById('oracleDisease');const k=d?d.value:'';for(const f of (CORE_SCHEMAS[k]||[])){const e=document.getElementById('o-'+f[0]);o[f[0]]=e?e.value:'';}return o;}
+  function optList(type){return Array.isArray(type)?type:[];}
+  function field(f){const id=f[0],label=f[1],type=f[2];let input='';if(type==='number')input='<input id="o-'+escx(id)+'" type="number" min="0" step="any" placeholder="'+escx(label)+'">';else input='<select id="o-'+escx(id)+'"><option value="">Select…</option>'+optList(type).map(x=>'<option value="'+escx(x)+'">'+escx(x)+'</option>').join('')+'</select>';return '<div class="coreuro-field"><label for="o-'+escx(id)+'">'+escx(label)+'</label>'+input+'</div>';}
+  function sourceLinks(names){return '<div class="coreuro-ref"><b>Guideline sources:</b> '+names.map(([n,u])=>'<a href="'+escx(u)+'" target="_blank" rel="noopener noreferrer">'+escx(n)+' ↗</a>').join('')+'</div>';}
+  function bullet(arr){return '<ul>'+arr.map(x=>'<li>'+x+'</li>').join('')+'</ul>';}
+  function section(title,html){return '<div class="coreuro-section"><h4>'+title+'</h4>'+html+'</div>';}
+
+  function renderCoreForm(){
+    const d=document.getElementById('oracleDisease')?.value;
+    if(!CORE_SCHEMAS[d]) return false;
+    const schema=CORE_SCHEMAS[d];
+    const advanced=['etiology','prior','pvr','rug','cysto','recurrent','ls','constipation','uti','polyuria','osa','diary','urine','motivation','nightpoly','bother','pred','qmax','prostate','middle','psa','retention','stones','hematuria','upper','neuro','menopause','pfmt','uds','recurrent','voiding','culture','risk','maleProstate','metabolic','density','staghorn','renal','solitary','distal','cause','pattern','ic','indwelling','ad','continence'];
+    const core=schema.filter(f=>!advanced.includes(f[0]));
+    const adv=schema.filter(f=>advanced.includes(f[0]));
+    document.getElementById('oracleForm').innerHTML='<div class="coreuro-card"><div class="coreuro-head"><div><div class="coreuro-kicker">Non-oncology urology pathway</div><h3>'+escx(d)+'</h3></div><span class="coreuro-pill">EAU 2026 / current cross-guidance</span></div><div class="coreuro-body"><div class="section-title" style="margin-bottom:9px">Core decision inputs</div><div class="coreuro-grid">'+core.map(field).join('')+'</div>'+(adv.length?'<details style="margin-top:14px"><summary style="font-size:11px;font-weight:900;color:#274a5c;cursor:pointer">Advanced modifiers / investigations</summary><div class="coreuro-grid" style="margin-top:10px">'+adv.map(field).join('')+'</div></details>':'')+'<div class="coreuro-actions"><button type="button" class="coreuro-btn primary" id="coreRun">Find pathway</button><button type="button" class="coreuro-btn" id="coreReset">Reset</button></div><div id="coreOut" class="coreuro-out"></div></div></div>';
+    document.getElementById('coreRun').onclick=function(){runCore(d)};
+    document.getElementById('coreReset').onclick=function(){renderCoreForm()};
+    document.querySelectorAll('#oracleForm select,#oracleForm input').forEach(e=>e.addEventListener('change',function(){coreRiskPreview(d)}));
+    coreRiskPreview(d);
+    return true;
+  }
+
+  function coreRiskPreview(d){
+    const v=values();
+    let text='Complete the core fields to expose the main branch. The Oracle will not force a high-stakes plan from missing data.';
+    if(d==='Hypospadias') text='Birth assessment: classify meatus, curvature, plate and testes; bilateral undescended testes or other DSD concern should trigger DSD evaluation.';
+    if(d==='Urethral Stricture') text='The treatment branch depends heavily on site, length, prior treatment and recurrence; define anatomy before choosing repeat endoscopic treatment versus reconstruction.';
+    if(d==='Nocturnal Enuresis') text='First split monosymptomatic from non-monosymptomatic enuresis. Daytime LUT symptoms, constipation, infection or polyuria move the child to a different pathway.';
+    if(d==='BPH / Male LUTS') text='Assess symptom burden, emptying, prostate size, renal consequences and absolute surgical indications before selecting drug versus surgery.';
+    if(d==='Female LUTS + Urinary Incontinence') text='Classify SUI, UUI/OAB or MUI. PVR, urinalysis, prolapse, neurological disease and voiding dysfunction determine whether the uncomplicated pathway applies.';
+    if(d==='UTI / Urological Infection') text='First separate localised from systemic infection and identify obstruction/sepsis. Pregnancy, male sex, childhood, recurrence and risk factors alter investigation and antimicrobial strategy.';
+    if(d==='Urolithiasis') text='Stone size, site and emergency features drive the intervention branch. Infected obstruction is an emergency; definitive stone treatment follows sepsis control.';
+    if(d==='Neurogenic Bladder') text='Protect the upper tract first: define storage pressure/compliance, emptying efficiency, recurrent infection and renal/upper-tract risk before symptom-only treatment.';
+    const rp=document.getElementById('riskPanelContent');
+    if(rp) rp.innerHTML='<div class="coreuro-section"><h4>Pathway trigger</h4><p>'+escx(text)+'</p></div><div class="coreuro-alert">Missing criteria are deliberate: they prevent the Oracle from converting an incomplete clinical assessment into a false treatment recommendation.</div>';
+  }
+
+  function runCore(d){
+    const v=values(); let title='',steps=[],tests=[],alerts=[],refs=[];
+    const miss=[];
+    const req={
+      'Hypospadias':['age','type','curvature','meatus','plate','testes','dsd'],
+      'Urethral Stricture':['sex','site','length','etiology','prior','retention'],
+      'Nocturnal Enuresis':['age','day','constipation','polyuria','motivation','nightpoly'],
+      'BPH / Male LUTS':['ipss','bother','pred','pvr','prostate','retention','uti','stones','hematuria','upper'],
+      'Female LUTS + Urinary Incontinence':['age','type','bother','pvr','ua','neuro','recurrent','voiding'],
+      'UTI / Urological Infection':['sex','age','preg','syndrome','systemic','obstruction','sepsis'],
+      'Urolithiasis':['site','size','obstruct','infection','pain','renal','solitary','preg'],
+      'Neurogenic Bladder':['cause','pattern','pvr','uds','upper','renal','uti','ic','ad']
+    };
+    for(const id of (req[d]||[])) if(!v[id]){const f=(CORE_SCHEMAS[d]||[]).find(x=>x[0]===id);miss.push(f?f[1]:id);}
+    if(miss.length){
+      document.getElementById('coreOut').innerHTML='<div class="coreuro-danger"><b>Complete the clinical criteria.</b>'+bullet(miss.map(escx))+'<div style="margin-top:6px">No high-stakes treatment branch is inferred from an empty field.</div></div>';
+      return;
+    }
+
+    if(d==='Hypospadias'){
+      refs=[['EAU Paediatric Urology 2026',CORE_SOURCES.ped],['EAU Hypospadias',CORE_SOURCES.hypo]];
+      title='Hypospadias — structured paediatric pathway';
+      tests=['Document meatal position/width and stream, penile length, glans morphology, preputial hood, scrotum and curvature.','If bilateral undescended testes or DSD cannot be excluded, escalate for genetic/endocrine evaluation rather than treating as isolated hypospadias.','Routine urinary imaging is not required for uncomplicated hypospadias.'];
+      if(v.adultSymptom==='Yes') tests.push('Late/adult presentation: assess spraying, obstruction, fistula, residual curvature and urethral stricture; consider reconstructive-urethrology input.');
+      if(v.curvature==='≥30°') steps.push('<b>Correct clinically significant curvature.</b> EAU uses ≥30° as the usual threshold and recommends intraoperative erection testing with stepwise correction.');
+      if(v.age!=='') steps.push('<b>Timing:</b> primary repair is usually performed at 6–18 months when feasible.');
+      if(v.type==='Distal' && v.plate==='Good / preserved' && v.curvature==='None / <30°') steps.push('<b>Distal, good plate, minimal curvature:</b> a tubularised incised plate (TIP) / distal reconstruction is within the standard algorithm when anatomy is suitable.');
+      else if(v.type==='Proximal/penoscrotal/scrotal/perineal' && (v.plate==='Narrow / unsuitable'||v.plate==='Requires transection for straightening')) steps.push('<b>Proximal/complex anatomy:</b> preserve or transect the plate according to curvature and anatomy; onlay or staged reconstruction may be appropriate.');
+      else steps.push('<b>Technique is anatomy-dependent:</b> base reconstruction on meatal location, plate quality and degree/cause of curvature; do not choose a technique from meatal location alone.');
+      if(v.prior==='Yes') alerts.push('Previous repair: treat as complex/reoperative hypospadias and assess fistula, stenosis, diverticulum and recurrent curvature before selecting revision technique.');
+      steps.push('<b>Follow-up:</b> continue beyond childhood when indicated to detect stricture, voiding dysfunction, recurrent curvature, ejaculation problems and patient dissatisfaction.');
+    }
+
+    if(d==='Urethral Stricture'){
+      refs=[['EAU Urethral Strictures 2026',CORE_SOURCES.stricture]];
+      title='Urethral stricture — reconstructive pathway';
+      tests=['Uroflowmetry + PVR and symptom assessment.','Define site and length with RUG/VCUG and/or urethroscopy; document meatal involvement, spongiofibrosis/etiology and prior procedures.','Urine culture when infection is suspected or before intervention.'];
+      if(v.retention==='Yes') alerts.push('Severe retention: establish safe bladder drainage first and then define the urethral anatomy; do not repeatedly force traumatic instrumentation through a known stricture.');
+      if(v.recurrent==='Yes' || v.prior==='Multiple dilation/DVIU') alerts.push('Recurrent/multiple endoscopic treatment should trigger a urethroplasty discussion rather than an automatic cycle of repeat dilation/DVIU.');
+      if(v.site==='Bulbar' && (v.length==='<1 cm'||v.length==='1–2 cm') && v.prior==='None' && v.etiology!=='Lichen sclerosus') steps.push('<b>Primary short bulbar stricture:</b> endoscopic dilation/DVIU can be considered in selected short, non-obliterative bulbar strictures.');
+      else steps.push('<b>Reconstructive branch:</b> penile, long, recurrent or complex strictures generally move toward urethroplasty rather than repeated endoscopic treatment.');
+      if(v.site==='Meatus/fossa navicularis') steps.push('<b>Distal stricture:</b> plan meatotomy/meatoplasty or distal urethral reconstruction according to extent and tissue quality.');
+      if(v.etiology==='Lichen sclerosus' || v.ls==='Yes/likely') alerts.push('Lichen sclerosus: assess active disease and avoid using diseased urethral/skin tissue as an uncritical reconstruction substrate; reconstruction should be tailored by a reconstructive specialist.');
+      steps.push('<b>Recurrence prevention/follow-up:</b> follow symptoms, flow and PVR after treatment; cystoscopy or imaging is used when recurrence is suspected.');
+    }
+
+    if(d==='Nocturnal Enuresis'){
+      refs=[['EAU Paediatric Urology 2026',CORE_SOURCES.ped]];
+      title='Nocturnal enuresis — monosymptomatic versus non-monosymptomatic';
+      tests=['Use a voiding/micturition diary or validated questionnaire to identify daytime LUT symptoms and night-time urine production.','Urine testing should exclude infection and causes of polyuria such as glycosuria/diabetes-related disease.','Assess constipation, behavioural/sleep symptoms and fluid timing.'];
+      if(+v.age<5) alerts.push('Below 5 years: EAU recommends education/support rather than routine active treatment because spontaneous resolution is common.');
+      if(v.day==='Present — non-monosymptomatic') steps.push('<b>Non-monosymptomatic:</b> treat the daytime LUT condition first/alongside enuresis; constipation and bowel dysfunction should be addressed.');
+      else steps.push('<b>Monosymptomatic:</b> supportive measures plus either alarm therapy in motivated families and/or desmopressin when night-time polyuria is proven and fluid restriction/safety can be followed.');
+      if(v.nightpoly==='Yes/proven') steps.push('<b>Night-time polyuria:</b> desmopressin is a guideline-supported option; the app should link to the medication calculator/order set rather than duplicate dose tables.');
+      if(v.motivation==='Good') steps.push('<b>Alarm:</b> appropriate when the child and family can actively participate and persist with therapy; follow-up improves success.');
+      if(v.osa==='Yes') alerts.push('Snoring/possible OSA: evaluate and address sleep-disordered breathing because this may contribute to enuresis.');
+      if(v.constipation==='Yes') alerts.push('Constipation/encopresis: treat the bowel disorder before declaring enuresis treatment failure.');
+      steps.push('<b>Safety:</b> intranasal desmopressin is not the routine approach; fluid restriction and hyponatraemia/water-intoxication precautions must be explicit.');
+    }
+
+    if(d==='BPH / Male LUTS'){
+      refs=[['EAU Male LUTS 2026',CORE_SOURCES.mluts],['AUA BPH guideline registry',CORE_SOURCES.auaBph]];
+      title='BPH / male LUTS — phenotype and treatment pathway';
+      tests=['History + medication review + physical examination + IPSS/QoL.','Urinalysis; consider PSA when it will change management, prostate volume imaging when it affects drug/surgical selection, and uroflowmetry/PVR as appropriate.','Cystoscopy/urodynamics only when indicated by diagnostic uncertainty, haematuria, stricture suspicion or before selected interventions.'];
+      if(v.retention==='Yes'||v.uti==='Yes'||v.stones==='Yes'||v.hematuria==='Yes'||v.upper==='Yes') alerts.push('Absolute/strong surgical-indication branch: recurrent or refractory retention, recurrent UTI, bladder stones/diverticula, refractory macroscopic haematuria attributed to BPO, or upper-tract dilatation/renal impairment due to BPO generally requires surgical consideration.');
+      else if(v.bother==='Acceptable'||v.ipss==='0–7 mild') steps.push('<b>Low-burden/acceptable symptoms:</b> watchful waiting with lifestyle and periodic review is appropriate.');
+      else steps.push('<b>Bothersome LUTS:</b> begin with behavioural/lifestyle measures, then choose pharmacotherapy according to phenotype, prostate size, progression risk, PVR and sexual priorities.');
+      if(v.prostate==='30–80 mL') steps.push('<b>30–80 mL:</b> TURP remains a reference surgical option; bipolar or monopolar TURP and selected laser/ablation alternatives can be considered according to expertise and patient priorities.');
+      if(v.prostate==='<30 mL'&&v.middle==='No') steps.push('<b>&lt;30 mL without middle lobe:</b> TUIP is an established surgical option for moderate-to-severe BPO/LUTS.');
+      if(v.prostate==='>80 mL') steps.push('<b>Large gland:</b> enucleation techniques (e.g. HoLEP/other AEEP) or simple prostatectomy/selected large-gland approaches become particularly relevant; choose based on anatomy, expertise, comorbidity and availability.');
+      if(v.pred==='Storage') steps.push('<b>Storage-predominant:</b> evaluate for OAB/detrusor overactivity; antimuscarinic or β3-agonist therapy may be added when appropriate, with attention to PVR/retention risk.');
+      if(v.pred==='Mixed') steps.push('<b>Mixed phenotype:</b> address obstruction and storage symptoms together rather than assuming every symptom is caused by prostate size alone.');
+    }
+
+    if(d==='Female LUTS + Urinary Incontinence'){
+      refs=[['EAU Female LUTS 2026',CORE_SOURCES.fluts],['AUA/SUFU OAB',CORE_SOURCES.auaOab],['AUA/SUFU SUI',CORE_SOURCES.auaSui]];
+      title='Female LUTS with incontinence — SUI/UUI/MUI pathway';
+      tests=['History, symptom classification, examination including pelvic examination/prolapse assessment, urinalysis and PVR.','Use a bladder diary when urgency/frequency or mixed symptoms need clarification.','Do not routinely perform urodynamics for uncomplicated SUI or uncomplicated OAB first-line treatment; use it when diagnostic uncertainty exists or when results may change invasive treatment.'];
+      if(v.type==='Stress urinary incontinence') steps.push('<b>SUI:</b> supervised intensive pelvic floor muscle training for at least 3 months is first-line.');
+      if(v.type==='Urgency urinary incontinence / OAB') steps.push('<b>UUI/OAB:</b> bladder training/behavioural measures first, followed by antimuscarinic or β3-agonist medication when appropriate; refractory cases can progress to intradetrusor botulinum toxin, PTNS or sacral neuromodulation according to context.');
+      if(v.type==='Mixed urinary incontinence') {steps.push('<b>MUI:</b> characterize as stress- or urgency-predominant and treat the most bothersome component first. Start with conservative therapy; surgery is less predictably curative than for isolated SUI.');alerts.push('MUI with diagnostic uncertainty or significant voiding dysfunction: consider bladder diary and urodynamics before invasive treatment.');}
+      if(v.voiding==='Yes'||v.pvr==='Elevated') alerts.push('Elevated PVR/voiding dysfunction changes the pathway: assess obstruction, underactive bladder, prolapse or prior sling before escalating storage therapy.');
+      if(v.recurrent==='Yes') steps.push('<b>Recurrent UTI:</b> incorporate infection prevention/evaluation rather than attributing all urgency/frequency to OAB.');
+      if(v.menopause==='Yes/likely') steps.push('<b>GSM:</b> consider local genitourinary syndrome of menopause assessment and treatment when symptoms fit.');
+    }
+
+    if(d==='UTI / Urological Infection'){
+      refs=[['EAU Urological Infections 2026',CORE_SOURCES.uti],['AUA recurrent UTI guidance',CORE_SOURCES.auaRuti]];
+      title='UTI — localised vs systemic and risk-factor pathway';
+      tests=['Obtain urine culture before antibiotics when systemic infection, pregnancy, male UTI, recurrent infection, significant risk factors, treatment failure or unusual organisms are present.','Search for obstruction, stone, catheter/foreign body, retention and anatomic/functional abnormality when infection is recurrent or systemic.'];
+      if(v.sepsis==='Yes'||(v.systemic==='Yes'&&v.obstruction==='Yes/possible')) {alerts.push('<b>UROLOGICAL EMERGENCY:</b> systemic infection with an obstructed infected collecting system requires urgent decompression plus immediate antibiotics; definitive stone treatment is delayed until sepsis is controlled.');steps.push('<b>Decompression:</b> ureteral stent or percutaneous nephrostomy according to anatomy/availability. Re-culture after drainage when feasible.');}
+      else if(v.syndrome==='Localised cystitis'&&v.sex==='Female'&&v.preg==='No') steps.push('<b>Localised cystitis:</b> use guideline-supported first-line oral agents guided by local resistance, contraindications and renal function; current EAU advises against routine fluoroquinolones for cystitis.');
+      else if(v.syndrome==='Recurrent UTI') steps.push('<b>Recurrent UTI:</b> confirm true symptomatic episodes with appropriate urine cultures, identify behavioural/anatomic risk factors, then consider non-antibiotic and selected prophylactic strategies after evaluation.');
+      else if(v.syndrome==='Systemic UTI / pyelonephritis') steps.push('<b>Systemic UTI:</b> culture-guided therapy, severity assessment and early imaging when obstruction or structural disease is suspected.');
+      else if(v.syndrome==='Urethritis/STI phenotype') steps.push('<b>Urethritis/STI:</b> move to STI testing and syndrome-specific treatment rather than standard cystitis therapy.');
+      if(v.sex==='Male'&&v.maleProstate==='Yes / likely') alerts.push('Possible prostate involvement: nitrofurantoin is not a general substitute for prostate-penetrating therapy; select treatment according to site and culture.');
+      if(v.preg==='Yes') alerts.push('Pregnancy is a separate pathway: choose pregnancy-compatible antimicrobials and culture follow-up according to gestational age and guideline/obstetric input.');
+      if(v.age==='Child') steps.push('<b>Child:</b> use the paediatric UTI pathway; fever/systemic illness, recurrent UTI or abnormal anatomy should trigger age-appropriate imaging and paediatric evaluation.');
+    }
+
+    if(d==='Urolithiasis'){
+      refs=[['EAU Urolithiasis 2026',CORE_SOURCES.stones],['AUA Stone Disease',CORE_SOURCES.auaStone]];
+      title='Urolithiasis — emergency, observation/MET, and active treatment pathway';
+      tests=['Non-contrast CT/ultrasound according to scenario; obtain urine testing and renal function in acute obstruction/systemic infection.','Stone analysis is recommended for first-time stone formers; high-risk patients need specific metabolic evaluation.','Before PCNL, assess collecting-system anatomy and access tract; obtain urine/stone/renal pelvis culture where feasible.'];
+      if(v.infection==='Yes/possible'&&v.obstruct==='Yes') {alerts.push('<b>EMERGENCY:</b> infected obstructed kidney → urgent decompression, antibiotics, culture and delayed definitive stone removal.');}
+      else if(v.site==='Ureter'&&v.size==='5–10 mm'&&v.distal==='Distal'&&v.pain==='Controlled / intermittent') steps.push('<b>Selected distal ureteral stone:</b> α-blocker MET is an evidence-supported option for distal stones 5–10 mm amenable to conservative management; this is off-label.');
+      else if(v.site==='Ureter'&&v.size==='<5 mm'&&v.pain==='Controlled / intermittent') steps.push('<b>Small ureteral stone:</b> observation/expectant management with analgesia and interval assessment is reasonable when there is no infection, deteriorating renal function or other indication for removal.');
+      if(v.site==='Complex/staghorn'||v.size==='>20 mm') steps.push('<b>Large/complex renal stone:</b> PCNL is the first-line active treatment for renal stones >2 cm and is central to staghorn management; combined/staged endourology may be required for complex burden.');
+      else if(v.site==='Renal pelvis/upper-middle calyx'&&(v.size==='10–20 mm'||v.size==='>20 mm')) steps.push('<b>Renal pelvis/upper-middle calyx:</b> choose SWL, RIRS or PCNL according to size, composition, anatomy, density, comorbidity and local expertise; >2 cm favours PCNL.');
+      if(v.site==='Lower pole renal'&&(v.size==='10–20 mm'||v.size==='>20 mm')) steps.push('<b>Lower pole:</b> SWL efficacy is limited by anatomy/fragment clearance; RIRS or PCNL become particularly relevant for >1 cm stones or unfavourable SWL factors.');
+      if(v.renal==='AKI / deterioration'||v.solitary==='Yes') alerts.push('Reduced renal reserve/solitary kidney lowers tolerance for prolonged obstruction; escalation and timely drainage/removal thresholds are lower.');
+      steps.push('<b>Recurrence prevention:</b> aim for high fluid intake and a 24-hour urine volume >2.5 L in appropriate adults, then tailor dietary/pharmacologic prevention to stone type and metabolic abnormality.');
+    }
+
+    if(d==='Neurogenic Bladder'){
+      refs=[['EAU Neuro-urology 2026',CORE_SOURCES.neuro]];
+      title='Neurogenic bladder — upper-tract preservation first';
+      tests=['Document neurological diagnosis, continence, storage/voiding symptoms, PVR and recurrent infection history.','Risk-stratify with renal function, upper-tract imaging and urodynamics when needed to identify high-pressure storage, poor compliance, DSD or unsafe emptying.','Review bowel management, medications, catheter technique and functional ability.'];
+      if(v.upper==='Hydronephrosis/scarring/other risk'||v.uds==='High-pressure NDO/poor compliance') alerts.push('<b>High-risk bladder:</b> prioritise pressure reduction and upper-tract protection; symptom improvement alone is not an adequate endpoint.');
+      if(v.pvr==='Very high / >300 mL') steps.push('<b>High residual:</b> intermittent catheterisation is generally preferred when feasible, especially when there is risk of upper-tract damage or persistently high PVR.');
+      if(v.ic==='Unable/unwilling'&&v.indwelling==='Yes') alerts.push('Long-term indwelling catheters carry substantial complication/UTI burden; review alternatives, including caregiver-assisted IC or a suprapubic route when necessary.');
+      if(v.pattern==='Storage predominant'||v.uds==='High-pressure NDO/poor compliance') steps.push('<b>Neurogenic storage dysfunction:</b> antimuscarinic and/or selected β3-agonist strategies can be used; combination therapy may be required.');
+      if(v.pattern==='Storage predominant'&&v.uds==='High-pressure NDO/poor compliance') steps.push('<b>Refractory NDO:</b> detrusor botulinum toxin A is a strong guideline-supported escalation after inadequate response to medication, with retention/IC counselling.');
+      if(v.uds==='DSD / outlet dysfunction') steps.push('<b>DSD/outlet dysfunction:</b> treat outlet resistance selectively and monitor pressures/upper tract; decisions should be urodynamically informed.');
+      if(v.ad==='Yes / at risk') alerts.push('Autonomic dysreflexia risk: ensure bladder drainage problems, infection and provoking stimuli are promptly recognised and managed.');
+      if(v.uti==='Yes') steps.push('<b>Recurrent symptomatic UTI:</b> optimise bladder emptying, catheterisation technique/frequency, fluid and bowel management before repeated antibiotics; avoid treating asymptomatic bacteriuria as a reflex.');
+      steps.push('<b>Long-term:</b> surveillance intensity follows risk; lifelong upper-tract/renal monitoring is required for high-risk neuro-urological patients.');
+    }
+
+    const out='<div class="coreuro-section"><h4>'+escx(title)+'</h4>'+bullet(steps.map(x=>escx(x)).map(x=>x.replace(/&lt;b&gt;/g,'<b>').replace(/&lt;\/b&gt;/g,'</b>')))+'</div>'+
+      section('Recommended work-up',bullet(tests.map(escx)))+
+      (alerts.length?'<div class="coreuro-danger"><b>Safety / escalation</b>'+bullet(alerts.map(x=>escx(x)).map(x=>x.replace(/&lt;b&gt;/g,'<b>').replace(/&lt;\/b&gt;/g,'</b>')))+'</div>':'<div class="coreuro-ok"><b>No immediate red flag identified from the entered fields.</b> Continue the disease-specific pathway and reassess if the clinical picture changes.</div>')+
+      section('How to use this result','This is a decision pathway, not a prescription. Open the separate medication calculator for numeric dosing; use the current local order set, product label and specialist/MDT judgement for drug doses, peri-operative antibiotics, chemotherapy and procedural details.')+
+      sourceLinks(refs);
+    document.getElementById('coreOut').innerHTML=out;
+    document.getElementById('coreOut').scrollIntoView({behavior:'smooth',block:'nearest'});
+  }
+
+  function refreshDiseaseOptions(){
+    const sel=document.getElementById('oracleDisease'); if(!sel)return;
+    const old=sel.value;
+    const existing=Array.from(sel.options).map(o=>o.value);
+    const merged=existing.concat(CORE_KEYS.filter(k=>!existing.includes(k)));
+    sel.innerHTML=merged.map(k=>'<option value="'+escx(k)+'">'+escx(k)+'</option>').join('');
+    if(old && merged.includes(old))sel.value=old;
+    else if(!sel.value && existing[0])sel.value=existing[0];
+  }
+
+  function dispatchRender(){
+    const d=document.getElementById('oracleDisease')?.value;
+    if(CORE_SCHEMAS[d]) return renderCoreForm();
+    if(typeof window.__corePriorRender==='function') return window.__corePriorRender();
+    return false;
+  }
+
+  function dispatchRun(d){
+    if(CORE_SCHEMAS[d]) return runCore(d);
+    if(typeof window.__corePriorRun==='function') return window.__corePriorRun.apply(this,arguments);
+  }
+
+  const priorRender=window.renderOracleForm;
+  const priorRun=window.runOracle;
+  window.__corePriorRender=priorRender;
+  window.__corePriorRun=priorRun;
+
+  window.renderOracleForm=dispatchRender;
+  window.runOracle=dispatchRun;
+
+  const priorOpen=window.openOracle;
+  window.openOracle=function(){
+    refreshDiseaseOptions();
+    const wanted=(arguments.length&&typeof arguments[0]==='string')?arguments[0]:'';
+    if(wanted && CORE_SCHEMAS[wanted]) document.getElementById('oracleDisease').value=wanted;
+    if(typeof priorOpen==='function'){
+      try{priorOpen.apply(this,arguments);}catch(e){/* keep local navigation alive */}
+    }
+    refreshDiseaseOptions();
+    if(wanted && CORE_SCHEMAS[wanted]) document.getElementById('oracleDisease').value=wanted;
+    if(CORE_SCHEMAS[document.getElementById('oracleDisease').value]) renderCoreForm(); else if(priorRender) priorRender();
+  };
+
+  const diseaseSel=document.getElementById('oracleDisease');
+  if(diseaseSel) diseaseSel.addEventListener('change',function(){if(CORE_SCHEMAS[this.value]) renderCoreForm();});
+  refreshDiseaseOptions();
+
+  function addHome(){
+    const home=document.getElementById('homeView'); if(!home||document.getElementById('coreUroHome'))return;
+    const wrap=document.createElement('section');wrap.id='coreUroHome';wrap.className='coreuro-home';
+    wrap.innerHTML='<div style="display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap"><div><div style="font-size:10px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#0b7080">Core urology Oracle</div><div style="font-size:16px;font-weight:900;color:#17364c;margin-top:2px">Non-oncology pathways</div><div style="font-size:11px;color:#5c7280;margin-top:3px">Hypospadias • stricture • enuresis • BPH/LUTS • female incontinence • UTI • stones • neurogenic bladder</div></div><button type="button" class="coreuro-btn primary" id="openCoreUro">Open pathway Oracle</button></div><div class="coreuro-home-grid">'+CORE_KEYS.map(k=>'<button type="button" class="coreuro-home-btn" data-core-open="'+escx(k)+'">'+escx(k)+'<span>Clinical pathway →</span></button>').join('')+'</div>';
+    home.appendChild(wrap);
+    wrap.querySelector('#openCoreUro').onclick=function(){window.openOracle();document.getElementById('oracleDisease').value=CORE_KEYS[0];renderCoreForm();};
+    wrap.querySelectorAll('[data-core-open]').forEach(function(btn){btn.onclick=function(){window.openOracle(btn.getAttribute('data-core-open'));};});
+  }
+
+  addHome();
+  document.addEventListener('DOMContentLoaded',addHome,{once:true});
+  window.openCoreUrology=function(name){window.openOracle(name||CORE_KEYS[0]);};
+  window.CORE_UROLOGY_SCHEMAS=CORE_SCHEMAS;
+}());
+</script>
+
 </body>
 </html>
