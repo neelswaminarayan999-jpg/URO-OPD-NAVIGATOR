@@ -7241,7 +7241,7 @@ out.appendChild(w);w.querySelector('#coreOpenDoseFromOracle').onclick=function()
   function isDiseaseButton(el){
     if(!el||el.tagName!=='BUTTON')return false;
     const t=(el.innerText||'').trim();
-    return ['Ca Prostate','Ca Bladder','UTUC','Ca Kidney','Ca Penis','Ca Testis','Urethral Cancer','Clinical Oracle'].some(function(x){return t.indexOf(x)>=0;});
+    return ['Ca Prostate','Ca Bladder','UTUC','Ca Kidney','Ca Penis','Ca Testis','Urethral Cancer','Adrenal / Neuroendocrine','Clinical Oracle'].some(function(x){return t.indexOf(x)>=0;});
   }
   function splitDiseaseGrid(dg,oncGrid,studyGrid){
     if(!dg||!oncGrid||!studyGrid)return;
@@ -7509,6 +7509,190 @@ out.appendChild(w);w.querySelector('#coreOpenDoseFromOracle').onclick=function()
   }
   [0,100,300,800,1500].forEach(function(ms){setTimeout(fixButton,ms);});
   window.__ORACLE_V42_CASE_FIX_API={syncCaseRibbon,fixButton};
+})();
+</script><style id="uroV6IntegratedStyles">
+  :root{--v6-navy:#082437;--v6-teal:#0c5972;--v6-ink:#17384d;--v6-muted:#5c7280;--v6-border:#cbdbe3;--v6-soft:#f5fafc}
+  #v6PrimaryNav{position:sticky;top:73px;z-index:40;display:flex;gap:6px;flex-wrap:wrap;padding:8px 10px;margin:0 0 14px;background:rgba(255,255,255,.96);backdrop-filter:blur(8px);border:1px solid #d8e3e9;border-radius:14px;box-shadow:0 5px 18px rgba(15,23,42,.06)}
+  #v6PrimaryNav button{border:1px solid #bfd2dc;border-radius:999px;background:#fff;color:#23495d;padding:8px 11px;font:900 10px/1.1 system-ui;cursor:pointer}
+  #v6PrimaryNav button:hover,#v6PrimaryNav button.active{background:var(--v6-teal);border-color:var(--v6-teal);color:#fff}
+  #v6CaseWorkspace{border:1px solid #c6dbe4;border-radius:18px;background:#fff;box-shadow:0 12px 32px rgba(15,23,42,.07);overflow:visible;margin:0 0 16px}
+  .v6-case-head{padding:17px 18px;background:linear-gradient(115deg,var(--v6-navy),var(--v6-teal));color:#fff;display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap}
+  .v6-case-head h2{margin:2px 0 0;font-size:20px;color:#fff}.v6-case-head p{margin:5px 0 0;font-size:11px;line-height:1.55;color:#d5edf3}.v6-kicker{font-size:10px;font-weight:900;letter-spacing:.09em;text-transform:uppercase;color:#bfe6ee}
+  .v6-case-body{padding:14px 16px}.v6-case-grid{display:grid;grid-template-columns:1.2fr repeat(4, minmax(120px,.8fr)) 1.3fr;gap:8px}.v6-field label{display:block;font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.03em;color:#506a79}.v6-field input,.v6-field select{width:100%;box-sizing:border-box;margin-top:4px;border:1px solid #bfd1da;border-radius:9px;padding:9px;background:#fff;color:#173247;font-size:10.5px}.v6-field input:focus,.v6-field select:focus{outline:none;border-color:#2c7894;box-shadow:0 0 0 3px rgba(15,107,134,.11)}
+  .v6-case-actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}.v6-btn{border:1px solid #bfd4de;border-radius:9px;padding:9px 11px;background:#fff;color:#17384d;font:900 10px/1.2 system-ui;cursor:pointer}.v6-btn.primary{background:var(--v6-navy);border-color:var(--v6-navy);color:#fff}.v6-btn.teal{background:#edf8fa;color:#0b6177;border-color:#b7dbe4}.v6-btn.amber{background:#fff7e7;color:#80520b;border-color:#edd18f}.v6-btn:hover{filter:brightness(.98);background:#eef7fa}.v6-btn.primary:hover{background:#103b52}
+  #v6CaseSummary{margin-top:10px}.v6-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}.v6-summary-card{border:1px solid #d7e4ea;border-radius:10px;padding:9px;background:#fbfdfe}.v6-summary-card b{display:block;color:#264e61;font-size:9px;text-transform:uppercase;letter-spacing:.04em}.v6-summary-card span{display:block;margin-top:3px;color:#17384d;font-size:10.5px;font-weight:800}.v6-mode-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:11px}.v6-mode{border:1px solid #d3e1e7;border-radius:11px;padding:11px;background:#fbfdfe;text-align:left;cursor:pointer}.v6-mode:hover{background:#eef7fa;border-color:#9fc7d3}.v6-mode strong{display:block;color:#173b50;font-size:10.5px}.v6-mode span{display:block;margin-top:3px;color:#607887;font-size:9px;line-height:1.4}
+  .v6-group{margin-top:16px}.v6-group-head{display:flex;justify-content:space-between;align-items:end;gap:10px;flex-wrap:wrap;margin-bottom:8px}.v6-group-head h3{margin:0;color:#17384d;font-size:15px}.v6-group-head p{margin:3px 0 0;color:#647988;font-size:10px}.v6-group-body{border:1px solid #d9e5ea;border-radius:14px;background:linear-gradient(180deg,#fff 0%,#fbfdfe 100%);padding:10px}
+  #v6OncologyGroup #diseaseGrid{margin:0!important}.v6-placeholder-note{border:1px dashed #c6d7df;border-radius:10px;padding:10px;color:#607887;background:#fbfdfe;font-size:10px}.v6-guideline-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.v6-guide-card{border:1px solid #d7e4ea;border-radius:11px;padding:10px;background:#fff}.v6-guide-card h4{margin:0;color:#1d4357;font-size:10.5px}.v6-guide-card p{margin:4px 0;color:#607887;font-size:9.5px;line-height:1.45}.v6-guide-links{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}.v6-guide-links a{font-size:9px;font-weight:900;color:#056b95;text-decoration:underline}
+  #v6GuidelinesView{padding-bottom:28px}.v6-guidelines-head{border:1px solid #c9dde5;border-radius:16px;background:linear-gradient(115deg,#082437,#0c5972);color:#fff;padding:17px 18px}.v6-guidelines-head h2{margin:2px 0 0;color:#fff;font-size:20px}.v6-guidelines-head p{margin:5px 0 0;color:#d6edf2;font-size:11px;line-height:1.55}.v6-guideline-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}.v6-guideline-toolbar input{flex:1 1 260px;border:1px solid #bfd1da;border-radius:9px;padding:9px;font-size:10px}.v6-guide-library{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:10px}
+  .v6-case-banner{margin:0 0 10px;padding:8px 10px;border:1px solid #c3dce5;border-radius:10px;background:#f0f8fa;color:#315a6b;font-size:10px;line-height:1.4}.v6-case-banner b{color:#173e52}
+  @media(max-width:1100px){.v6-case-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.v6-mode-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+  @media(max-width:800px){#v6PrimaryNav{position:relative;top:auto}.v6-case-grid,.v6-summary,.v6-guideline-grid,.v6-guide-library{grid-template-columns:1fr 1fr}.v6-mode-grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:560px){.v6-case-grid,.v6-summary,.v6-mode-grid,.v6-guideline-grid,.v6-guide-library{grid-template-columns:1fr}}
+</style>
+<script id="uroV6IntegratedCaseWorkstation">
+(function(){
+'use strict';
+if(window.__URO_V6_INTEGRATED_WORKSTATION__)return;
+window.__URO_V6_INTEGRATED_WORKSTATION__=true;
+
+const ONCO=['Ca Prostate','Ca Bladder','UTUC','Ca Kidney','Ca Penis','Ca Testis','Urethral Cancer','Adrenal / Neuroendocrine'];
+const CORE=['Hypospadias','Urethral Stricture','Nocturnal Enuresis','BPH / Male LUTS','Female LUTS + Urinary Incontinence','UTI / Urological Infection','Urolithiasis','Neurogenic Bladder'];
+const ANDRO=['Male infertility','Erectile dysfunction','Hypogonadism','Ischaemic priapism','Varicocele','Peyronie disease'];
+const ALL=[...ONCO,...CORE,...ANDRO];
+const guidelineCards=[
+  ['EAU Prostate Cancer 2026','Oncology','Risk, staging, local treatment, systemic therapy and follow-up.','https://uroweb.org/guidelines/prostate-cancer'],
+  ['EAU NMIBC 2026','Oncology','Non-muscle-invasive bladder cancer diagnosis, risk and management.','https://uroweb.org/guidelines/non-muscle-invasive-bladder-cancer'],
+  ['EAU MIBC 2026','Oncology','Muscle-invasive and metastatic bladder cancer.','https://uroweb.org/guidelines/muscle-invasive-and-metastatic-bladder-cancer'],
+  ['EAU RCC 2026','Oncology','Renal-cell carcinoma diagnosis and management.','https://uroweb.org/guidelines/renal-cell-carcinoma'],
+  ['EAU UTUC 2026','Oncology','Upper urinary tract urothelial carcinoma.','https://uroweb.org/guidelines/upper-urinary-tract-urothelial-cell-carcinoma'],
+  ['EAU Penile Cancer 2026','Oncology','Penile cancer staging, nodal management and systemic therapy.','https://uroweb.org/guidelines/penile-cancer'],
+  ['EAU Testicular Cancer 2026','Oncology','Germ-cell tumour staging, systemic treatment and surveillance.','https://uroweb.org/guidelines/testicular-cancer'],
+  ['EAU Primary Urethral Carcinoma 2026','Oncology','Primary urethral carcinoma including current TNM framework.','https://uroweb.org/guidelines/primary-urethral-carcinoma'],
+  ['EAU Urological Trauma 2026','Core / Emergency','Renal, ureteric, bladder, urethral and genital trauma.','https://uroweb.org/guidelines/urological-trauma'],
+  ['EAU Urolithiasis 2026','Core','Renal colic, ureteral stones, URS/RIRS, SWL, PCNL and prevention.','https://uroweb.org/guidelines/urolithiasis'],
+  ['EAU Urological Infections 2026','Core / Emergency','Cystitis, systemic UTI, recurrent infection, sepsis and fungal UTI.','https://uroweb.org/guidelines/urological-infections'],
+  ['EAU Urethral Strictures 2026','Core / Reconstruction','Stricture diagnosis, endoscopic management and urethroplasty.','https://uroweb.org/guidelines/urethral-strictures'],
+  ['EAU Neuro-urology 2026','Core','Risk stratification, bladder management, Botox, CIC and upper-tract preservation.','https://uroweb.org/guidelines/neuro-urology'],
+  ['EAU Non-neurogenic Male LUTS','Core','BPH/LUTS assessment and medical/surgical treatment.','https://uroweb.org/guidelines/management-of-non-neurogenic-male-luts'],
+  ['EAU Non-neurogenic Female LUTS','Core','Female LUTS and urinary incontinence.','https://uroweb.org/guidelines/non-neurogenic-female-luts'],
+  ['EAU Paediatric Urology','Core / Paediatric','Hypospadias and paediatric lower-urinary-tract conditions.','https://uroweb.org/guidelines/paediatric-urology'],
+  ['EAU Sexual & Reproductive Health 2026','Andrology','Male infertility, ED, hypogonadism, priapism and penile curvature.','https://uroweb.org/guidelines/sexual-and-reproductive-health']
+];
+
+function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));}
+function getCase(){return window.URO_CASE||{};}
+function setCase(p){
+  const c=Object.assign({},getCase(),p,{savedAt:Date.now()});
+  window.URO_CASE=c;
+  try{if(typeof window.__ORACLE_V42_CASE_FIX_API?.syncCaseRibbon==='function')window.__ORACLE_V42_CASE_FIX_API.syncCaseRibbon();}catch(e){}
+  renderCaseSummary(); renderCaseBanner();
+  return c;
+}
+function clearCase(){window.URO_CASE={};renderCaseSummary();renderCaseBanner();}
+function diagnosisOptions(){const grp=(title,vals)=>'<optgroup label="'+esc(title)+'">'+vals.map(d=>'<option value="'+esc(d)+'">'+esc(d)+'</option>').join('')+'</optgroup>';return grp('Oncology / Uro-Oncology',ONCO)+grp('Core Urology / Non-Oncology',CORE)+grp("Andrology / Men’s Health",ANDRO);}
+function currentDiagnosis(){return document.getElementById('v6CaseDiagnosis')?.value||getCase().diagnosis||'';}
+function collectCase(){
+  return {id:document.getElementById('v6CaseId')?.value?.trim()||'',age:document.getElementById('v6CaseAge')?.value||'',sex:document.getElementById('v6CaseSex')?.value||'',weight:document.getElementById('v6CaseWeight')?.value||'',creatinine:document.getElementById('v6CaseCr')?.value||'',diagnosis:currentDiagnosis()};
+}
+function renderCaseSummary(){
+  const host=document.getElementById('v6CaseSummary');if(!host)return;const c=getCase();
+  const vals=[['Patient',c.id||'Not entered'],['Age / Sex',(c.age||'—')+' / '+(c.sex||'—')],['Weight / Creatinine',(c.weight||'—')+' kg / '+(c.creatinine||'—')],['Problem',c.diagnosis||'No diagnosis selected']];
+  host.innerHTML='<div class="v6-summary">'+vals.map(x=>'<div class="v6-summary-card"><b>'+esc(x[0])+'</b><span>'+esc(x[1])+'</span></div>').join('')+'</div>';
+}
+function renderCaseBanner(){
+  const c=getCase(), ids=['oracleView','clinicalCommandView','surgeryView','diseaseView','calcView','drugView','trialView'];
+  ids.forEach(id=>{const root=document.getElementById(id);if(!root)return;let b=root.querySelector('.v6-case-banner');if(!c.diagnosis&&!c.id){if(b)b.remove();return;}if(!b){b=document.createElement('div');b.className='v6-case-banner';root.insertBefore(b,root.firstChild);}b.innerHTML='<b>Active case:</b> '+esc(c.id||'Unnamed')+' • '+esc(c.age||'Age—')+' y • '+esc(c.sex||'Sex—')+' • '+esc(c.diagnosis||'Problem not selected')+(c.weight?' • '+esc(c.weight)+' kg':'')+(c.creatinine?' • Cr '+esc(c.creatinine):'');});
+}
+function hideViews(except){
+  ['homeView','diseaseView','oracleView','calcView','drugView','trialView','searchView','surgeryView','clinicalCommandView','v6GuidelinesView'].forEach(id=>{if(id===except)document.getElementById(id)?.classList.remove('hidden');else document.getElementById(id)?.classList.add('hidden');});
+}
+function top(){try{window.scrollTo(0,0);}catch(e){}setTimeout(()=>{try{window.scrollTo(0,0);}catch(e){}},40);}
+function openCase(){hideViews('homeView');const w=document.getElementById('v6CaseWorkspace');if(w){setTimeout(()=>w.scrollIntoView({behavior:'auto',block:'start'}),20);}else top();}
+function openGuidelines(){hideViews('v6GuidelinesView');renderGuidelines();top();}
+function launchDiagnosis(d){
+  if(!d)return;
+  setCase({diagnosis:d});
+  if(d==='Adrenal / Neuroendocrine'){
+    if(typeof window.openDisease==='function')window.openDisease(d);
+    renderCaseBanner();top();return;
+  }
+  if(ONCO.includes(d)||CORE.includes(d)){
+    if(typeof window.openOracle==='function')window.openOracle(d);
+    setTimeout(()=>{try{document.getElementById('oracleDisease').value=d;document.getElementById('oracleDisease').dispatchEvent(new Event('change'));}catch(e){} renderCaseBanner();top();},120);
+    return;
+  }
+  const andDx=document.getElementById('uccAndDx');
+  if(andDx)andDx.value=d;
+  if(typeof window.openClinicalCommandCenter==='function')window.openClinicalCommandCenter('uccAndPanel');
+  else if(typeof window.openHub==='function')window.openHub('uccAndPanel');
+  renderCaseBanner();top();
+}
+function openSurgeryForCase(){
+  const d=currentDiagnosis();setCase({diagnosis:d});
+  const focus=d==='Urolithiasis'?'PCNL':d==='BPH / Male LUTS'?'TURP':d==='Urethral Stricture'?'urethroplasty':d==='Hypospadias'?'Hypospadias':d==='Adrenal / Neuroendocrine'?'Adrenalectomy':d||'';
+  if(typeof window.openSurgicalAtlas==='function')window.openSurgicalAtlas('');
+  setTimeout(()=>{const s=document.getElementById('surgSearch');if(s&&focus){s.value=focus;s.dispatchEvent(new Event('input',{bubbles:true}));}const f=document.getElementById('surgFilter');if(f)f.value='';top();},120);
+}
+function openOnCall(){if(typeof window.openClinicalCommandCenter==='function')window.openClinicalCommandCenter('uccEmergencyPanel');else if(typeof window.openHub==='function')window.openHub('uccEmergencyPanel');top();}
+function openOncology(){const d=currentDiagnosis();if(ONCO.includes(d))launchDiagnosis(d);else {hideViews('homeView');const el=document.getElementById('oncologyGroupV3');if(el)el.scrollIntoView({behavior:'auto',block:'start'});}}
+function openCore(){const d=currentDiagnosis();if(CORE.includes(d))launchDiagnosis(d);else {hideViews('homeView');const el=document.getElementById('nonOncologyGroupV3')||document.getElementById('v6CoreGroup');if(el)el.scrollIntoView({behavior:'auto',block:'start'});}}
+function renderGuidelines(filter){
+  const host=document.getElementById('v6GuideLibrary');if(!host)return;const q=(filter||document.getElementById('v6GuideSearch')?.value||'').toLowerCase().trim();
+  const arr=guidelineCards.filter(x=>!q||(x[0]+' '+x[1]+' '+x[2]).toLowerCase().includes(q));
+  host.innerHTML=arr.map(x=>'<article class="v6-guide-card"><div class="v6-kicker" style="color:#0c5972">'+esc(x[1])+'</div><h4>'+esc(x[0])+'</h4><p>'+esc(x[2])+'</p><div class="v6-guide-links"><a href="'+x[3]+'" target="_blank" rel="noopener noreferrer">Open guideline ↗</a></div></article>').join('')||'<div class="v6-placeholder-note">No guideline matched this search.</div>';
+}
+function buildGuidelinesView(){
+  if(document.getElementById('v6GuidelinesView'))return;
+  const main=document.querySelector('main');if(!main)return;
+  const sec=document.createElement('section');sec.id='v6GuidelinesView';sec.className='hidden';
+  sec.innerHTML='<div class="v6-guidelines-head"><div class="v6-kicker">Study / Reference</div><h2>Guideline Library</h2><p>Guidelines stay independent of Case Mode. Use this page to read the live guideline separately; use Case Mode when you want the guideline logic applied to a patient context.</p></div><div class="v6-guideline-toolbar"><input id="v6GuideSearch" placeholder="Search guideline library…"><button type="button" class="v6-btn primary" id="v6GuidelineHome">Home</button><button type="button" class="v6-btn teal" id="v6GuidelineTracker">2026 change tracker</button></div><div id="v6GuideLibrary" class="v6-guide-library"></div>';
+  main.appendChild(sec);
+  sec.querySelector('#v6GuideSearch').addEventListener('input',e=>renderGuidelines(e.target.value));
+  sec.querySelector('#v6GuidelineHome').onclick=()=>{hideViews('homeView');top();};
+  sec.querySelector('#v6GuidelineTracker').onclick=()=>{if(typeof window.openClinicalCommandCenter==='function')window.openClinicalCommandCenter('uccGuidePanel');else if(typeof window.openHub==='function')window.openHub('uccGuidePanel');top();};
+}
+function insertPrimaryNav(){
+  if(document.getElementById('v6PrimaryNav'))return;const main=document.querySelector('main');if(!main)return;
+  const n=document.createElement('nav');n.id='v6PrimaryNav';n.setAttribute('aria-label','Urology Oracle sections');
+  n.innerHTML='<button data-v6-nav="case">Case</button><button data-v6-nav="onco">Oncology</button><button data-v6-nav="core">Core Urology</button><button data-v6-nav="oncall">On Call</button><button data-v6-nav="ot">OT / Surgery</button><button data-v6-nav="study">Study / Guidelines</button>';
+  main.insertBefore(n,main.firstChild);
+  n.querySelector('[data-v6-nav="case"]').onclick=openCase;n.querySelector('[data-v6-nav="onco"]').onclick=openOncology;n.querySelector('[data-v6-nav="core"]').onclick=openCore;n.querySelector('[data-v6-nav="oncall"]').onclick=openOnCall;n.querySelector('[data-v6-nav="ot"]').onclick=openSurgeryForCase;n.querySelector('[data-v6-nav="study"]').onclick=openGuidelines;
+}
+function buildCaseWorkspace(){
+  if(document.getElementById('v6CaseWorkspace'))return;const home=document.getElementById('homeView');if(!home)return;
+  const intro=home.children[0];const card=document.createElement('section');card.id='v6CaseWorkspace';
+  card.innerHTML='<div class="v6-case-head"><div><div class="v6-kicker">Unified Patient / Case Engine</div><h2>Start with the patient, then choose the clinical mode</h2><p>Enter the case once. The existing Oncology Oracle, Core Urology Oracle, Emergency Oracle, Surgical Atlas, calculators and study resources remain intact; this workspace connects them without replacing their content.</p></div><div class="v6-case-actions"><button type="button" class="v6-btn" style="background:rgba(255,255,255,.1);color:#fff;border-color:rgba(255,255,255,.3)" id="v6ClearCaseTop">Clear case</button></div></div><div class="v6-case-body"><div class="v6-case-grid"><div class="v6-field"><label for="v6CaseId">Patient / Case ID</label><input id="v6CaseId" autocomplete="off" placeholder="Optional — do not enter unnecessary identifiers"></div><div class="v6-field"><label for="v6CaseAge">Age</label><input id="v6CaseAge" type="number" min="0" step="1" placeholder="Years"></div><div class="v6-field"><label for="v6CaseSex">Sex</label><select id="v6CaseSex"><option value="">Select…</option><option>Male</option><option>Female</option></select></div><div class="v6-field"><label for="v6CaseWeight">Weight</label><input id="v6CaseWeight" type="number" min="0" step="0.1" placeholder="kg"></div><div class="v6-field"><label for="v6CaseCr">Creatinine</label><input id="v6CaseCr" type="number" min="0" step="0.01" placeholder="mg/dL"></div><div class="v6-field"><label for="v6CaseDiagnosis">Clinical problem</label><select id="v6CaseDiagnosis"><option value="">Choose a problem…</option>'+diagnosisOptions()+'</select></div></div><div id="v6CaseSummary"></div><div class="v6-case-note">Case data stays in the current page session only; it is not persisted by this static app.</div><div class="v6-case-actions"><button type="button" class="v6-btn primary" id="v6LaunchCase">Open case pathway</button><button type="button" class="v6-btn teal" id="v6OpenOracleCase">Open existing Oracle</button><button type="button" class="v6-btn" id="v6OpenSurgeryCase">Open surgery / operative steps</button><button type="button" class="v6-btn amber" id="v6OpenOnCallCase">On-call / Emergency</button><button type="button" class="v6-btn" id="v6OpenGuidelineCase">Read guidelines separately</button></div><div class="v6-mode-grid"><button class="v6-mode" id="v6ModeOnco"><strong>ONCOLOGY</strong><span>Cancer modules stay complete and independent.</span></button><button class="v6-mode" id="v6ModeCore"><strong>CORE UROLOGY</strong><span>General-urology modules stay complete and independent.</span></button><button class="v6-mode" id="v6ModeOnCall"><strong>ON CALL</strong><span>Emergency recognition and immediate-action tools.</span></button><button class="v6-mode" id="v6ModeOT"><strong>OT / SURGERY</strong><span>Existing Surgical Atlas + operative steps.</span></button><button class="v6-mode" id="v6ModeStudy"><strong>STUDY / GUIDELINES</strong><span>Read guidelines without entering a patient case.</span></button></div></div>';
+  // Insert after the original hero; V6 later moves this block to the top of V5's organised home shell so the original hero remains the authoritative hero.
+  if(intro&&intro.nextSibling)home.insertBefore(card,intro.nextSibling);else home.appendChild(card);
+  const bindIds=['v6CaseId','v6CaseAge','v6CaseSex','v6CaseWeight','v6CaseCr','v6CaseDiagnosis'];
+  bindIds.forEach(id=>document.getElementById(id)?.addEventListener('change',()=>setCase(collectCase())));
+  ['input'].forEach(ev=>{['v6CaseId','v6CaseAge','v6CaseWeight','v6CaseCr'].forEach(id=>document.getElementById(id)?.addEventListener(ev,()=>setCase(collectCase())));});
+  document.getElementById('v6LaunchCase').onclick=()=>launchDiagnosis(currentDiagnosis());
+  document.getElementById('v6OpenOracleCase').onclick=()=>launchDiagnosis(currentDiagnosis());
+  document.getElementById('v6OpenSurgeryCase').onclick=openSurgeryForCase;
+  document.getElementById('v6OpenOnCallCase').onclick=openOnCall;
+  document.getElementById('v6OpenGuidelineCase').onclick=openGuidelines;
+  document.getElementById('v6ModeOnco').onclick=openOncology;document.getElementById('v6ModeCore').onclick=openCore;document.getElementById('v6ModeOnCall').onclick=openOnCall;document.getElementById('v6ModeOT').onclick=openSurgeryForCase;document.getElementById('v6ModeStudy').onclick=openGuidelines;
+  document.getElementById('v6ClearCaseTop').onclick=()=>{clearCase();bindCaseForm();};
+  bindCaseForm();renderCaseSummary();
+}
+function bindCaseForm(){
+  const c=getCase();const mp=[['v6CaseId','id'],['v6CaseAge','age'],['v6CaseSex','sex'],['v6CaseWeight','weight'],['v6CaseCr','creatinine'],['v6CaseDiagnosis','diagnosis']];
+  mp.forEach(([id,k])=>{const e=document.getElementById(id);if(e)e.value=c[k]||'';});
+}
+function arrangeHome(){
+  // V5 already has the authoritative home organiser (Oncology / Core / Study / Case).
+  // V6 does not create a second grouping system. It inserts the new Case Workspace into the existing organiser and moves only the legacy guideline index into Study/Reference.
+  const organised=document.getElementById('homeOrganizedV3');
+  const caseW=document.getElementById('v6CaseWorkspace');
+  if(organised&&caseW&&caseW.parentElement!==organised)organised.insertBefore(caseW,organised.firstChild);
+  const studyBody=document.querySelector('#studyGroupV3 .home-v3-body');
+  const coreGuide=document.getElementById('coreHomeGuidelineIndex');
+  if(studyBody&&coreGuide&&coreGuide.parentElement!==studyBody)studyBody.appendChild(coreGuide);
+}
+function enhanceGuidelineSeparation(){
+  // Preserve the existing guideline index but make it explicitly point to the separate library.
+  const g=document.getElementById('coreHomeGuidelineIndex');if(g&&!g.querySelector('[data-v6-guidelines-link]')){const h=g.querySelector('.flex.items-center.justify-between');if(h){const b=document.createElement('button');b.type='button';b.className='v4-btn';b.dataset.v6GuidelinesLink='1';b.textContent='Open full Guideline Library';b.onclick=openGuidelines;h.appendChild(b);}}
+}
+function wrapNavigation(){
+  const names=['showHome','openOracle','openCalculators','openDrugs','openTrials','openSurgicalAtlas','openClinicalCommandCenter','openCoreUrology'];
+  names.forEach(name=>{const fn=window[name];if(typeof fn!=='function'||fn.__v6Wrapped)return;const w=function(...args){const r=fn.apply(this,args);setTimeout(()=>{document.getElementById('v6GuidelinesView')?.classList.add('hidden');renderCaseBanner();top();},60);[180,360,600].forEach(ms=>setTimeout(()=>{try{document.getElementById('v6GuidelinesView')?.classList.add('hidden');window.scrollTo(0,0);}catch(e){}},ms));return r;};w.__v6Wrapped=true;window[name]=w;});
+}
+function attachPersistentCaseBridge(){
+  // V5 home grouping settles on staggered timers; refresh only after those passes.
+  [250,700,1400,2200,3200,4200].forEach(ms=>setTimeout(()=>{arrangeHome();enhanceGuidelineSeparation();renderCaseBanner();wrapNavigation();},ms));
+}
+function init(){
+  buildGuidelinesView();insertPrimaryNav();buildCaseWorkspace();arrangeHome();enhanceGuidelineSeparation();renderGuidelines();renderCaseBanner();wrapNavigation();attachPersistentCaseBridge();
+  setTimeout(()=>{arrangeHome();enhanceGuidelineSeparation();wrapNavigation();renderCaseBanner();},500);
+  setTimeout(()=>{arrangeHome();enhanceGuidelineSeparation();wrapNavigation();renderCaseBanner();},1600);
+  // Deliberately keep the new default landing position at the top.
+  top();
+}
+window.openUrologyCaseWorkspace=openCase;
+window.openUrologyGuidelines=openGuidelines;
+window.URO_V6_GUIDELINES=guidelineCards;
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
 </script></body>
 </html>
