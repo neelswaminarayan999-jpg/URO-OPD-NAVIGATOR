@@ -398,7 +398,7 @@ header.sticky-top button{background:#173650!important;color:#fff!important;borde
 
   <section id="drugView" class="hidden">
     <div class="flex items-center justify-between mb-4 no-print">
-      <div><div class="section-title text-lg">Protocol / dose library</div><div class="text-xs text-slate-500">Common uro-oncology regimen references.</div></div>
+      <div><div class="section-title text-lg">Drug doses & protocols</div><div class="text-xs text-slate-500">Common uro-oncology regimen references + bedside dose calculation.</div></div>
       <button onclick="showHome()" class="text-xs font-bold px-3 py-2 rounded-lg border bg-white">Back</button>
     </div>
     <div id="drugGrid" class="grid lg:grid-cols-2 gap-4"></div>
@@ -4596,6 +4596,314 @@ if(typeof _finalDiseaseSelector!=='undefined'&&_finalDiseaseSelector)_finalDisea
 
   populateOracleDisease();
 }());
+</script>
+
+<style id="uroDoseCalculatorStyles">
+/* ===== URO DOSE CALCULATOR — 21 SEP 2026 ===== */
+#doseHomeQuick{margin:0 0 16px;padding:16px;border:1px solid #bfd6e2;border-radius:16px;background:linear-gradient(135deg,#eef8fb,#f7fbfd);box-shadow:0 8px 22px rgba(15,23,42,.05)}
+#doseHomeQuick .dq-title{font-weight:900;font-size:15px;color:#0d334a}
+#doseHomeQuick .dq-sub{font-size:12px;color:#527084;margin-top:3px;line-height:1.5}
+#doseHomeQuick button{border:1px solid #8bb6c7;background:#0b3b53;color:#fff;padding:9px 13px;border-radius:10px;font-size:12px;font-weight:900}
+#doseCalculatorCard{grid-column:1/-1!important;background:linear-gradient(180deg,#fff,#f6fbfd)!important;border:1px solid #b9cfdb!important}
+#doseCalculatorCard .dq-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap}
+#doseCalculatorCard .dq-kicker{font-size:10px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#0b6680}
+#doseCalculatorCard h3{margin:3px 0 0;color:#12354b;font-size:18px;line-height:1.3}
+#doseCalculatorCard .dq-note{font-size:11px;color:#587084;line-height:1.55;max-width:900px}
+#doseCalculatorCard .dq-grid{display:grid;grid-template-columns:repeat(4,minmax(180px,1fr));gap:10px;margin-top:14px}
+#doseCalculatorCard .dq-field{display:flex;flex-direction:column;gap:5px}
+#doseCalculatorCard .dq-field label{font-size:11px;font-weight:900;color:#466074}
+#doseCalculatorCard .dq-field input,#doseCalculatorCard .dq-field select{width:100%;padding:9px 10px;border:1px solid #c3d3dc;border-radius:10px;background:#fff;color:#183447;font-size:13px}
+#doseCalculatorCard .dq-field small{font-size:10px;color:#6b8090}
+#doseCalculatorCard .dq-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+#doseCalculatorCard .dq-btn{border:1px solid #b8ced9;background:#fff;color:#183447;padding:9px 12px;border-radius:10px;font-size:12px;font-weight:900}
+#doseCalculatorCard .dq-btn.primary{background:#0b3b53;color:#fff;border-color:#0b3b53}
+#doseCalculatorCard .dq-btn.blue{background:#edf7ff;color:#075985;border-color:#b9dced}
+#doseCalculatorCard .dq-result{margin-top:14px;border:1px solid #c8dae4;border-radius:14px;background:#fff;overflow:hidden}
+#doseCalculatorCard .dq-result-head{padding:11px 13px;background:#f3f8fb;border-bottom:1px solid #dce7ed;font-weight:900;color:#17364d}
+#doseCalculatorCard .dq-result-body{padding:13px}
+#doseCalculatorCard .dq-two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+#doseCalculatorCard .dq-box{border:1px solid #dbe6ec;border-radius:11px;padding:10px;background:#fbfdfe}
+#doseCalculatorCard .dq-box b{color:#17364d}
+#doseCalculatorCard .dq-box .big{font-size:16px;font-weight:900;color:#0b4c67;margin-top:2px}
+#doseCalculatorCard .dq-alert{border-left:4px solid #e2a52b;background:#fff8e9;color:#62430d;padding:10px 12px;border-radius:9px;font-size:11px;line-height:1.55;margin-top:10px}
+#doseCalculatorCard .dq-alert.red{border-left-color:#d14a3d;background:#fff4f2;color:#5d2c27}
+#doseCalculatorCard .dq-alert.green{border-left-color:#3c9a69;background:#eff9f3;color:#24533b}
+#doseCalculatorCard .dq-source{font-size:10px;color:#60788a;margin-top:10px}
+#doseCalculatorCard .dq-source a{color:#075985;text-decoration:underline}
+#doseCalculatorCard .dq-muted{color:#64798a;font-size:10px}
+#doseCalculatorCard .dq-chip{display:inline-flex;padding:4px 7px;border-radius:999px;background:#eef6fa;color:#1d5870;border:1px solid #c8dfe9;font-size:10px;font-weight:900}
+#doseCalculatorCard .dq-footer{margin-top:11px;padding-top:10px;border-top:1px solid #e0e8ed;font-size:10px;color:#607688;line-height:1.5}
+#doseRenalMatrix{margin-top:14px;border:1px solid #d7e4eb;border-radius:14px;background:#fff;overflow:hidden}
+#doseRenalMatrix summary{cursor:pointer;padding:11px 13px;font-weight:900;color:#18384c;background:#f7fafc}
+#doseRenalMatrix .drm-body{padding:12px 13px}
+#doseRenalMatrix .drm-grid{display:grid;grid-template-columns:repeat(4,minmax(150px,1fr));gap:8px}
+#doseRenalMatrix .drm-item{padding:9px;border:1px solid #dce7ec;border-radius:10px;background:#fbfdfe}
+#doseRenalMatrix .drm-item b{display:block;color:#17364c;font-size:11px;margin-bottom:3px}
+#doseRenalMatrix .drm-item span{font-size:10px;color:#5b7182;line-height:1.45}
+@media(max-width:1050px){#doseCalculatorCard .dq-grid{grid-template-columns:repeat(2,minmax(180px,1fr))}#doseRenalMatrix .drm-grid{grid-template-columns:repeat(2,minmax(150px,1fr))}}
+@media(max-width:700px){#doseCalculatorCard .dq-grid,#doseCalculatorCard .dq-two,#doseRenalMatrix .drm-grid{grid-template-columns:1fr}}
+</style>
+<script id="uroDoseCalculatorScript">
+(function(){
+  "use strict";
+
+  var DQ = window.URO_DOSE_LIBRARY = {
+    ceftriaxone:{
+      name:"Ceftriaxone",sourceLabel:"DailyMed ceftriaxone injection",sourceUrl:"https://www.dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=ac03a72c-0e35-40f9-b7fc-081badb5f19c&type=display",
+      forms:[{id:"inj",label:"Injection",kind:"inj",defaultStrength:"",suffix:"mg/mL — enter final prepared concentration"}],
+      indications:[
+        {id:"serious",label:"Serious infection — non-meningitis",adult:{type:"range",min:1000,max:2000,freq:"q24h; may divide q12h"},ped:{type:"rangeDay",min:50,max:75,freq:"q12h",maxDaily:2000,minAgeMo:1}},
+        {id:"meningitis",label:"Meningitis",adult:{type:"fixed",dose:2000,freq:"q12h"},ped:{type:"weightDose",mgkg:100,freq:"q24h",maxDose:4000,minAgeMo:1}}
+      ],
+      renal:{type:"none",metric:"crcl",text:"No routine renal dose adjustment is required solely for renal impairment. Use caution when severe renal and hepatic dysfunction coexist."},
+      safety:["For neonates, bilirubin and calcium-related precautions are product-specific; do not extrapolate the adult calculator to neonates.","Check allergy, biliary complications and exact administration instructions."]
+    },
+    piptaz:{
+      name:"Piperacillin + tazobactam (Piptaz)",sourceLabel:"DailyMed piperacillin/tazobactam",sourceUrl:"https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=19e89f8b-316b-4dd2-9724-bfe0faeba408&type=display",
+      forms:[{id:"inj",label:"Injection",kind:"inj",defaultStrength:"",suffix:"mg/mL — enter final prepared concentration"}],
+      indications:[
+        {id:"adultNonPneumonia",label:"Adult — all indications except nosocomial pneumonia",adult:{type:"fixed",dose:3375,freq:"q6h"}},
+        {id:"adultHAP",label:"Adult — nosocomial pneumonia",adult:{type:"fixed",dose:4500,freq:"q6h"}},
+        {id:"pedPeritonitis",label:"Pediatric ≥2 months — appendicitis/peritonitis",ped:{type:"weightDoseAge",youngMgkg:90,olderMgkg:112.5,cutoffMo:9,freq:"q8h",minAgeMo:2,maxWeightKg:40}},
+        {id:"pedPneumonia",label:"Pediatric ≥2 months — nosocomial pneumonia",ped:{type:"weightDoseAge",youngMgkg:90,olderMgkg:112.5,cutoffMo:9,freq:"q6h",minAgeMo:2,maxWeightKg:40}}
+      ],
+      renal:{type:"tablePiptaz",metric:"crcl",text:"Adult label-based renal adjustment uses creatinine clearance. Pediatric renal dosing has not been established in the cited label."},
+      safety:["Beta-lactam allergy and sodium load matter.","Pediatric renal impairment is not supported for automatic adult-table extrapolation."]
+    },
+    meropenem:{
+      name:"Meropenem",sourceLabel:"DailyMed meropenem injection",sourceUrl:"https://www.dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=e8848f4a-bca9-4978-b0a1-38483fd4d639",
+      forms:[{id:"inj",label:"Injection",kind:"inj",defaultStrength:"",suffix:"mg/mL — enter final prepared concentration"}],
+      indications:[
+        {id:"cSSSI",label:"Adult — complicated skin/skin structure infection",adult:{type:"fixed",dose:500,freq:"q8h"},ped:{type:"weightDose",mgkg:10,freq:"q8h",maxDose:500,minAgeMo:3}},
+        {id:"cIAI",label:"Adult — intra-abdominal infection",adult:{type:"fixed",dose:1000,freq:"q8h"},ped:{type:"weightDose",mgkg:20,freq:"q8h",maxDose:1000,minAgeMo:3}},
+        {id:"meningitis",label:"Meningitis reference",adult:{type:"fixed",dose:2000,freq:"q8h"},ped:{type:"weightDose",mgkg:40,freq:"q8h",maxDose:2000,minAgeMo:3}}
+      ],
+      renal:{type:"tableMero",metric:"crcl",text:"Adult: CrCl >50 usual q8h; 26–50 usual q12h; 10–25 half-dose q12h; <10 half-dose q24h. Pediatric renal impairment has insufficient experience for automatic adjustment."},
+      safety:["Seizure risk and the valproate interaction are clinically important.","Dialysis dosing should follow the current label/local renal-replacement protocol."]
+    },
+    cefosulbactam:{
+      name:"Cefoperazone + sulbactam (Cefosulbactam)",sourceLabel:"JIPMER Antimicrobial Policy 2026",sourceUrl:"https://www.jipmer.edu.in/sites/default/files/JIPMER%20Antibiotic%20Policy%202026.pdf",
+      forms:[{id:"inj",label:"Injection",kind:"inj",defaultStrength:"",suffix:"mg/mL — enter final prepared concentration"}],
+      indications:[{id:"component",label:"Component / combination dose calculator",adult:{type:"combo",minComponent:1000,maxComponent:2000,freq:"q12h"},ped:{type:"comboPed",min:40,max:80,freq:"q6–12h",minAgeMo:1}}],
+      renal:{type:"sulbactamCaps",metric:"crcl",text:"Cefoperazone is generally not the renal-sensitive component; sulbactam is. The calculator reports component exposure/caps rather than inventing a new combination regimen."},
+      safety:["Verify whether the local vial is 1:1 or 2:1 cefoperazone:sulbactam before interpreting total grams.","Use the exact local product label/order set for severe infection and renal replacement therapy."]
+    },
+    pcm:{
+      name:"Paracetamol (PCM)",sourceLabel:"DailyMed acetaminophen",sourceUrl:"https://dailymed.nlm.nih.gov/dailymed/",
+      forms:[{id:"tab",label:"Tablet",kind:"tab",defaultStrength:500,suffix:"mg/tablet"},{id:"syr",label:"Syrup / suspension",kind:"syr",defaultStrength:250,suffix:"mg/5 mL"},{id:"inj",label:"Injection",kind:"inj",defaultStrength:"",suffix:"mg/mL — enter final concentration"}],
+      indications:[{id:"routine",label:"Routine analgesic/antipyretic",adult:{type:"pcmAdult"},ped:{type:"rangeDoseMax",min:10,max:15,freq:"q4–6h",maxDose:750,minAgeMo:24}}],
+      renal:{type:"pcmRenal",metric:"crcl",text:"In severe renal impairment (CrCl ≤30), longer intervals and a lower total daily dose may be needed; the cited label does not give one universal renal regimen."},
+      safety:["Check the total 24-hour paracetamol/acetaminophen exposure across all combination products.","For patients under 2 years, use the age/product-specific pediatric protocol rather than extrapolating this reference entry.","Use the lower end and review liver risk when body weight or hepatic status changes risk."]
+    },
+    pantop:{
+      name:"Pantoprazole (Pantop)",sourceLabel:"DailyMed pantoprazole delayed-release tablets",sourceUrl:"https://dailymed.nlm.nih.gov/dailymed/lookup.cfm?setid=962951c7-1467-49f7-9ada-361e86fdfcb2",
+      forms:[{id:"tab",label:"Tablet",kind:"tab",defaultStrength:40,suffix:"mg/tablet"},{id:"inj",label:"Injection",kind:"inj",defaultStrength:"",suffix:"mg/mL — enter final concentration"}],
+      indications:[{id:"gerd",label:"GERD / erosive esophagitis reference",adult:{type:"fixed",dose:40,freq:"q24h"},ped:{type:"pantopPed",minAgeYr:5}}],
+      renal:{type:"none",metric:"crcl",text:"No routine renal dosage adjustment is required."},
+      safety:["Pediatric injection dosing is product-specific; this reference set supports oral pediatric dosing.","Reassess duration when treatment extends beyond the original indication."]
+    },
+    ondansetron:{
+      name:"Ondansetron",sourceLabel:"Ondansetron SmPC",sourceUrl:"https://www.medicines.org.uk/emc/product/13193/smpc",
+      forms:[{id:"tab",label:"Tablet",kind:"tab",defaultStrength:4,suffix:"mg/tablet"},{id:"syr",label:"Syrup / oral solution",kind:"syr",defaultStrength:4,suffix:"mg/5 mL"},{id:"inj",label:"Injection",kind:"inj",defaultStrength:2,suffix:"mg/mL"}],
+      indications:[{id:"adultPONV",label:"Adult — PONV single dose",adult:{type:"fixed",dose:4,freq:"once"}},{id:"pedPONV",label:"Pediatric — PONV",ped:{type:"rangeDoseMax",min:0.1,max:0.1,freq:"once slow IV",maxDose:4,minAgeMo:1}},{id:"pedCINV",label:"Pediatric ≥6 months — chemotherapy day 1 IV",ped:{type:"rangeDoseMax",min:0.15,max:0.15,freq:"q4h for up to 3 IV doses",maxDose:8,minAgeMo:6}}],
+      renal:{type:"none",metric:"crcl",text:"No renal dose adjustment is required in the cited SmPC."},
+      safety:["Review QT risk factors, electrolytes and other QT-prolonging medicines.","For pediatric chemotherapy, oral follow-on doses are weight/BSA-specific; do not substitute a generic oral dose."]
+    },
+    domperidone:{
+      name:"Domperidone",sourceLabel:"EMA/CMDh domperidone guidance",sourceUrl:"https://www.ema.europa.eu/en/news/cmdh-confirms-recommendations-restricting-use-domperidone-containing-medicines",
+      forms:[{id:"tab",label:"Tablet",kind:"tab",defaultStrength:10,suffix:"mg/tablet"},{id:"syr",label:"Syrup / suspension",kind:"syr",defaultStrength:1,suffix:"mg/mL"}],
+      indications:[{id:"nv",label:"Nausea/vomiting reference",adult:{type:"fixed",dose:10,freq:"up to q8h"},ped:{type:"weightDose",mgkg:0.25,freq:"up to q8h",minAgeMo:1,maxWeightKg:35}}],
+      renal:{type:"domRenal",metric:"crcl",text:"Severe renal impairment: reduce repeat dosing frequency to once or twice daily depending on severity; dose reduction may also be needed."},
+      safety:["QT prolongation/arrhythmia risk is central; avoid relevant QT-prolonging drugs and potent CYP3A4 inhibitors.","For children <35 kg, use an accurate liquid; tablets are unsuitable for precise weight dosing."]
+    },
+    solifenacin:{
+      name:"Solifenacin",sourceLabel:"DailyMed solifenacin",sourceUrl:"https://dailymed.nlm.nih.gov/dailymed/search.cfm?query=solifenacin",
+      forms:[{id:"tab",label:"Tablet",kind:"tab",defaultStrength:5,suffix:"mg/tablet"}],
+      indications:[{id:"oab",label:"Overactive bladder",adult:{type:"rangeFixed",min:5,max:10,freq:"q24h"}}],
+      renal:{type:"max5Severe",metric:"crcl",text:"CrCl <30: do not exceed 5 mg once daily."},
+      safety:["Watch urinary retention, constipation and additive anticholinergic burden.","Pediatric dosing is not supported in this reference set."]
+    },
+    oflox:{
+      name:"Ofloxacin",sourceLabel:"DailyMed ofloxacin",sourceUrl:"https://dailymed.nlm.nih.gov/dailymed/search.cfm?query=ofloxacin",
+      forms:[{id:"tab",label:"Tablet",kind:"tab",defaultStrength:200,suffix:"mg/tablet"},{id:"inj",label:"Injection",kind:"inj",defaultStrength:"",suffix:"mg/mL — enter final concentration"}],
+      indications:[{id:"cystitis",label:"UTI reference",adult:{type:"fixed",dose:200,freq:"q12h"}},{id:"prostatitis",label:"Bacterial prostatitis reference",adult:{type:"fixed",dose:300,freq:"q12h"}}],
+      renal:{type:"ofloxRenal",metric:"crcl",text:"CrCl 20–50: usual unit dose q24h; CrCl <20: half usual unit dose q24h after the initial dose."},
+      safety:["Fluoroquinolone class toxicity and antimicrobial stewardship apply.","Pediatric dosing is not supported in this reference set."]
+    },
+    norflox:{
+      name:"Norfloxacin",sourceLabel:"Norfloxacin product information / renal reference",sourceUrl:"https://www.tga.gov.au/resources/artg/155288",
+      forms:[{id:"tab",label:"Tablet",kind:"tab",defaultStrength:400,suffix:"mg/tablet"}],
+      indications:[{id:"uti",label:"UTI reference",adult:{type:"fixed",dose:400,freq:"q12h"}}],
+      renal:{type:"norfloxRenal",metric:"crcl",text:"CrCl ≤30: 400 mg once daily rather than q12h in the cited renal reference."},
+      safety:["Fluoroquinolone class warnings apply.","Pediatric dosing is not supported in this reference set."]
+    },
+    cipro:{
+      name:"Ciprofloxacin (Ciplox)",sourceLabel:"DailyMed ciprofloxacin",sourceUrl:"https://dailymed.nlm.nih.gov/dailymed/search.cfm?query=ciprofloxacin",
+      forms:[{id:"tab",label:"Tablet",kind:"tab",defaultStrength:500,suffix:"mg/tablet"},{id:"syr",label:"Oral suspension",kind:"syr",defaultStrength:250,suffix:"mg/5 mL"},{id:"inj",label:"Injection",kind:"inj",defaultStrength:2,suffix:"mg/mL"}],
+      indications:[{id:"utiAdult",label:"Adult — UTI reference (oral)",adult:{type:"rangeFixed",min:250,max:500,freq:"q12h"}},{id:"utiAdultIV",label:"Adult — UTI reference (IV)",adult:{type:"rangeDoseMax",min:200,max:400,freq:"q8–12h",maxDose:400}},{id:"pedCuti",label:"Pediatric 1–17 y — cUTI/pyelonephritis (oral)",ped:{type:"rangeDoseMax",min:10,max:20,freq:"q12h",maxDose:750,minAgeMo:12}},{id:"pedCutiIV",label:"Pediatric 1–17 y — cUTI/pyelonephritis (IV)",ped:{type:"rangeDoseMax",min:6,max:10,freq:"q8h",maxDose:400,minAgeMo:12}}],
+      renal:{type:"ciproRenal",metric:"crcl",text:"Adult: >50 usual; 30–50 q12h; 5–29 q18h; HD/PD q24h after dialysis. Pediatric moderate–severe renal impairment has no validated adjustment in the cited label."},
+      safety:["Separate oral doses from multivalent cations such as antacids, iron, zinc and calcium-containing products per label timing.","Pediatric use is restricted here to the cUTI/pyelonephritis reference."]
+    },
+    cefixime:{
+      name:"Cefixime",sourceLabel:"DailyMed cefixime",sourceUrl:"https://dailymed.nlm.nih.gov/dailymed/search.cfm?query=cefixime",
+      forms:[{id:"tab",label:"Tablet",kind:"tab",defaultStrength:400,suffix:"mg/tablet"},{id:"syr",label:"Suspension",kind:"syr",defaultStrength:100,suffix:"mg/5 mL"}],
+      indications:[{id:"uti",label:"UTI / routine oral reference",adult:{type:"fixed",dose:400,freq:"q24h"},ped:{type:"weightDay",mgkg:8,freq:"q24h or 4 mg/kg q12h",maxDaily:400,minAgeMo:6}}],
+      renal:{type:"cefiximeRenal",metric:"crcl",text:"Renal dose reduction is formulation-specific. The calculator reports the renal band and forces verification of the exact liquid/tablet product rather than guessing an equivalent dose."},
+      safety:["Use local susceptibility guidance for complicated UTI and urology-source infection.","Do not infer a renal-adjusted tablet dose from a liquid concentration without checking the exact product label."]
+    },
+    nitrofurantoin:{
+      name:"Nitrofurantoin",sourceLabel:"DailyMed nitrofurantoin oral suspension",sourceUrl:"https://dailymed.nlm.nih.gov/dailymed/lookup.cfm?setid=e9d10eaa-cf9c-469e-82ef-5af7285f2c86",
+      forms:[{id:"cap",label:"Capsule",kind:"tab",defaultStrength:100,suffix:"mg/capsule"},{id:"syr",label:"Suspension",kind:"syr",defaultStrength:25,suffix:"mg/5 mL"}],
+      indications:[{id:"uti",label:"Lower UTI reference",adult:{type:"fixedRange",min:50,max:100,freq:"q6h"},ped:{type:"weightDayDiv4",min:5,max:7,freq:"q6h",minAgeMo:1}}],
+      renal:{type:"nitroRenal",metric:"crcl",text:"The cited current product label lists CrCl <60 mL/min as a contraindication. The calculator uses that label threshold and does not silently substitute a different cutoff."},
+      safety:["For lower urinary-tract infection; do not use this calculator as a pyelonephritis regimen.","Check pregnancy-at-term and pulmonary/hepatic toxicity warnings."]
+    },
+    tolterodine:{
+      name:"Tolterodine",sourceLabel:"DailyMed tolterodine ER",sourceUrl:"https://dailymed.nlm.nih.gov/dailymed/search.cfm?query=tolterodine",
+      forms:[{id:"tab",label:"Extended-release capsule/tablet",kind:"tab",defaultStrength:4,suffix:"mg/unit"}],
+      indications:[{id:"oab",label:"Overactive bladder",adult:{type:"fixed",dose:4,freq:"q24h"}}],
+      renal:{type:"tolterodineRenal",metric:"crcl",text:"CrCl 10–30: 2 mg once daily. CrCl <10 has not been adequately studied / is not recommended in the cited reference."},
+      safety:["Anticholinergic adverse effects and urinary retention are important.","Pediatric dosing is not supported in this reference set."]
+    },
+    tamsulosin:{
+      name:"Tamsulosin",sourceLabel:"DailyMed tamsulosin",sourceUrl:"https://dailymed.nlm.nih.gov/dailymed/search.cfm?query=tamsulosin",
+      forms:[{id:"tab",label:"Tablet/capsule",kind:"tab",defaultStrength:0.4,suffix:"mg/unit"}],
+      indications:[{id:"bph",label:"BPH / LUTS reference",adult:{type:"fixed",dose:0.4,freq:"q24h",alt:"May increase to 0.8 mg q24h after 2–4 weeks if appropriate."}}],
+      renal:{type:"tamsRenal",metric:"crcl",text:"No routine adjustment is generally required; end-stage renal disease was not adequately studied in the cited reference."},
+      safety:["Orthostatic hypotension/syncope can occur.","Pediatric dosing is not supported in this reference set."]
+    },
+    silodosin:{
+      name:"Silodosin",sourceLabel:"DailyMed silodosin",sourceUrl:"https://www.dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=5e5038ea-9214-469b-8174-e5787be7a801",
+      forms:[{id:"cap",label:"Capsule",kind:"tab",defaultStrength:8,suffix:"mg/capsule"}],
+      indications:[{id:"bph",label:"BPH / LUTS reference",adult:{type:"fixed",dose:8,freq:"q24h with meal"}}],
+      renal:{type:"silodosinRenal",metric:"crcl",text:"CrCl 50–80: no adjustment; 30–50: 4 mg q24h with meal; <30: contraindicated."},
+      safety:["Do not split capsule contents unless the exact product label permits it.","Orthostatic effects and ejaculatory changes should be counselled.","Pediatric dosing is not supported in this reference set."]
+    },
+    mirabegron:{
+      name:"Mirabegron",sourceLabel:"DailyMed mirabegron ER tablet",sourceUrl:"https://www.dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=e597023d-6dcc-4d9e-8ce0-2d28a5d862f3",
+      forms:[{id:"tab",label:"Extended-release tablet",kind:"tab",defaultStrength:25,suffix:"mg/tablet"}],
+      indications:[{id:"oab",label:"Adult OAB reference",adult:{type:"fixed",dose:25,freq:"q24h",alt:"May increase to 50 mg q24h after 4–8 weeks as appropriate."}},{id:"pedNDO",label:"Pediatric NDO — age ≥3 y and weight ≥35 kg",ped:{type:"fixed",dose:25,freq:"q24h",alt:"May increase to 50 mg q24h after 4–8 weeks when appropriate",minAgeMo:36,minWeightKg:35}}],
+      renal:{type:"mirabegronRenal",metric:"egfr",text:"Use eGFR: 30–89 → max 50 mg/day; 15–29 → max 25 mg/day; <15 or dialysis → not recommended. Pediatric renal label data apply to patients ≥35 kg."},
+      safety:["Can increase blood pressure; monitor appropriately.","Use caution for urinary retention, especially with bladder outlet obstruction or concomitant antimuscarinic therapy."]
+    }
+  };
+
+  var ORDER=["ceftriaxone","piptaz","meropenem","cefosulbactam","pcm","pantop","ondansetron","domperidone","solifenacin","oflox","norflox","cipro","cefixime","nitrofurantoin","tolterodine","tamsulosin","silodosin","mirabegron"];
+  function esc(v){return String(v==null?"":v).replace(/[&<>\"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];});}
+  function n(v){var x=Number(v);return Number.isFinite(x)?x:null;}
+  function f(nm){if(nm==null||!Number.isFinite(nm))return"—";return Math.abs(nm)>=100?(Math.round(nm*10)/10).toString():(Math.round(nm*100)/100).toString();}
+  function ageMo(){return (Number(document.getElementById("dqYears").value)||0)*12+(Number(document.getElementById("dqMonths").value)||0);}
+  function group(){return document.getElementById("dqGroup").value;}
+  function weight(){return n(document.getElementById("dqWeight").value)||0;}
+  function crcl(){return n(document.getElementById("dqCrCl").value);}
+  function egfr(){return n(document.getElementById("dqEgfr").value);}
+  function dialysis(){return document.getElementById("dqDialysis").value;}
+  function drug(){return DQ[document.getElementById("dqDrug").value];}
+  function regimen(d){var id=document.getElementById("dqIndication").value;return d.indications.find(function(x){return x.id===id;})||d.indications[0];}
+  function form(d){var id=document.getElementById("dqForm").value;return d.forms.find(function(x){return x.id===id;})||d.forms[0];}
+  function dose(min,max,freq,note){return{min:min,max:max==null?min:max,freq:freq,note:note||""};}
+  function cg(){var a=Number(document.getElementById("dqYears").value)||0,w=weight(),s=n(document.getElementById("dqScr").value);if(a<18||!w||!s||s<=0)return null;var c=((140-a)*w)/(72*s);if(document.getElementById("dqSex").value==="female")c*=.85;return c;}
+  function schwartz(){var h=n(document.getElementById("dqHeight").value),s=n(document.getElementById("dqScr").value);return h&&s&&s>0?.413*h/s:null;}
+
+  function base(d,r){
+    var p=group()==="adult"?r.adult:r.ped,w=weight(),am=ageMo();if(!p)return{blocked:true,reason:"No auto-dose is provided for this age group in this reference set."};
+    if(group()==="adult"&&am<216)return{blocked:true,reason:"Adult mode requires age ≥18 years."};
+    if(group()==="pediatric"&&am>=216)return{blocked:true,reason:"Pediatric mode is for patients <18 years."};
+    if(p.minAgeMo!=null&&am<p.minAgeMo)return{blocked:true,reason:"Below the supported pediatric age for this reference."};
+    if(p.minAgeYr!=null&&Number(document.getElementById("dqYears").value)<p.minAgeYr)return{blocked:true,reason:"Below the supported pediatric age for this reference."};
+    if(p.minWeightKg!=null&&w<p.minWeightKg)return{blocked:true,reason:"Below the supported weight for this product reference."};
+    if(p.maxWeightKg!=null&&w>p.maxWeightKg)return{blocked:true,reason:"At this weight the cited reference directs use of the adult regimen; switch to Adult mode or verify the exact pediatric order set."};
+    if(p.type==="fixed")return dose(p.dose,p.dose,p.freq,p.alt||"");
+    if(p.type==="range"||p.type==="fixedRange")return dose(p.min,p.max,p.freq,p.type==="range"?"Reference range; select within indication/local protocol.":"Reference dose range.");
+    if(p.type==="weightDose")return w?dose(w*p.mgkg,w*p.mgkg,p.freq,p.maxDose?"Weight-based dose capped at the cited maximum per dose.":""):{blocked:true,reason:"Enter a valid weight."};
+    if(p.type==="weightDoseAge"){if(!w)return{blocked:true,reason:"Enter a valid weight."};var mgkg=am<p.cutoffMo?p.youngMgkg:p.olderMgkg;return dose(w*mgkg,w*mgkg,p.freq,"Pediatric mg/kg per dose; reference supports children up to 40 kg.");}
+    if(p.type==="rangeDay"){if(!w)return{blocked:true,reason:"Enter a valid weight."};var div=p.freq.indexOf("q12h")>=0?2:1;var dayMin=p.maxDaily!=null?Math.min(w*p.min,p.maxDaily):w*p.min;var dayMax=p.maxDaily!=null?Math.min(w*p.max,p.maxDaily):w*p.max;return dose(dayMin/div,dayMax/div,p.freq,"Calculated from the published mg/kg/day range and capped at the cited daily maximum.");}
+    if(p.type==="weightDay"){if(!w)return{blocked:true,reason:"Enter a valid weight."};var day=Math.min(w*p.mgkg,p.maxDaily!=null?p.maxDaily:w*p.mgkg);return dose(day,day,"q24h","Published pediatric total daily dose; the cited maximum daily dose is applied.");}
+    if(p.type==="weightDayDiv4")return w?dose(w*p.min/4,w*p.max/4,p.freq,"Published mg/kg/day divided into four doses."):{blocked:true,reason:"Enter a valid weight."};
+    if(p.type==="rangeDoseMax")return w?dose(Math.min(w*p.min,p.maxDose),Math.min(w*p.max,p.maxDose),p.freq,"Weight-based dose capped at the cited maximum."):{blocked:true,reason:"Enter a valid weight."};
+    if(p.type==="pantopPed"){if(am<60)return{blocked:true,reason:"Pantoprazole oral pediatric tablet reference starts at 5 years."};if(!w)return{blocked:true,reason:"Enter weight."};if(w<15)return{blocked:true,reason:"Below 15 kg: the cited tablet reference does not supply an auto-dose."};return dose(w<40?20:40,w<40?20:40,"q24h","5 years and older: 15–<40 kg → 20 mg; ≥40 kg → 40 mg.");}
+    if(p.type==="pcmAdult"){if(!w)return dose(650,1000,"q4–6h","Adult reference: 650 mg q4h or 1,000 mg q6h.");if(w<50)return dose(12.5*w,15*w,"q4–6h","Adults/adolescents <50 kg: use weight-based dosing; max 75 mg/kg/day.");return dose(650,1000,"q4–6h","≥50 kg adult reference: 650 mg q4h or 1,000 mg q6h; max 4 g/day.");}
+    if(p.type==="combo")return{combo:true,freq:p.freq};
+    if(p.type==="comboPed")return{comboPed:true,combinedMin:p.min,combinedMax:p.max,freq:p.freq,note:"Published pediatric total combination dose 40–80 mg/kg/day."};
+    return{blocked:true,reason:"Unsupported dose schema."};
+  }
+
+  function renal(d,b){
+    if(b.blocked||b.combo||b.comboPed)return b;
+    var c=crcl(),e=egfr(),di=dialysis(),key=document.getElementById("dqDrug").value,msg="No renal change applied.";
+    if(key==="ceftriaxone"){msg=d.renal.text;}
+    else if(key==="piptaz"){
+      if(group()==="pediatric"){if(c!=null&&c<60)return{blocked:true,reason:"Pediatric renal dosing is not established for piperacillin/tazobactam in the cited label."};msg=d.renal.text;}
+      else{var hap=document.getElementById("dqIndication").value==="adultHAP",o;if(di==="HD")o={min:2250,max:2250,freq:hap?"q8h":"q12h"};else if(c!=null){if(c>40)o={min:hap?4500:3375,max:hap?4500:3375,freq:"q6h"};else if(c>=20)o={min:hap?3375:2250,max:hap?3375:2250,freq:"q6h"};else o={min:2250,max:2250,freq:hap?"q6h":"q8h"};}if(o){b=Object.assign({},b,o);msg=di==="HD"?"HD: cited label adds 0.75 g after each dialysis session on dialysis days.":"Adult renal-adjusted reference.";}}}
+    else if(key==="meropenem"){if(group()==="pediatric"){if(c!=null&&c<=50)return{blocked:true,reason:"Pediatric renal impairment lacks sufficient experience for automatic meropenem adjustment in the cited label."};msg=d.renal.text;}else if(c!=null){var m=c>50?1:(c>=26?1:.5);b=Object.assign({},b,{min:b.min*m,max:b.max*m,freq:c>50?"q8h":(c>=26?"q12h":(c>=10?"q12h":"q24h"))});msg=d.renal.text;if(di!=="None")msg+=" Dialysis-specific dosing requires the current label/local renal-replacement protocol.";}}
+    else if(key==="pcm"){msg=d.renal.text;}
+    else if(key==="pantop"||key==="ondansetron"){msg=d.renal.text;}
+    else if(key==="domperidone"){msg=c!=null&&c<30?d.renal.text:"No renal change applied.";}
+    else if(key==="solifenacin"&&c!=null&&c<30){b.min=Math.min(b.min,5);b.max=Math.min(b.max,5);msg=d.renal.text;}
+    else if(key==="oflox"&&group()==="adult"&&c!=null){if(c<=20){b.min*=.5;b.max*=.5;b.freq="q24h";msg=d.renal.text;}else if(c<=50){b.freq="q24h";msg=d.renal.text;}}
+    else if(key==="norflox"&&c!=null&&c<=30){b.min=400;b.max=400;b.freq="q24h";msg=d.renal.text;}
+    else if(key==="cipro"){if(group()==="pediatric"){if(c!=null&&c<50)return{blocked:true,reason:"Pediatric moderate–severe renal impairment lacks a validated ciprofloxacin adjustment in the cited label."};msg=d.renal.text;}else{if(di!=="None")b.freq="q24h after dialysis";else if(c!=null&&c<=50)b.freq=c>=30?"q12h":(c>=5?"q18h":"q24h");msg=d.renal.text;}}
+    else if(key==="cefixime"&&c!=null&&c<60){msg=d.renal.text;}
+    else if(key==="nitrofurantoin"){if(di!=="None"&&c==null)return{blocked:true,reason:"Enter current renal function for a dialysis patient; the cited product label lists CrCl <60 mL/min as a contraindication."};if(c!=null&&c<60)return{blocked:true,reason:"Current cited nitrofurantoin product label lists CrCl <60 mL/min as a contraindication. Do not auto-dose below that threshold."};}
+    else if(key==="tolterodine"&&c!=null&&c<=30){b.min=2;b.max=2;b.freq="q24h";msg=d.renal.text;}
+    else if(key==="silodosin"){if(di!=="None"&&c==null)return{blocked:true,reason:"Enter a current CrCl before dosing silodosin in a dialysis patient; CrCl <30 mL/min is contraindicated."};if(c!=null&&c<30)return{blocked:true,reason:"Silodosin is contraindicated when CrCl <30 mL/min in the cited label."};if(c!=null&&c<=50){b.min=4;b.max=4;b.freq="q24h with meal";msg=d.renal.text;}}
+    else if(key==="mirabegron"){if(di!=="None")return{blocked:true,reason:"Mirabegron is not recommended in dialysis in the cited label."};if(e!=null&&e<15)return{blocked:true,reason:"eGFR <15 mL/min/1.73 m²: mirabegron is not recommended in the cited label."};if(e!=null&&e<30){b.min=Math.min(b.min,25);b.max=Math.min(b.max,25);msg=d.renal.text;}else if(e!=null&&e<90)msg=d.renal.text;}
+    return{base:b,msg:msg};
+  }
+
+  function conversion(min,max,fo){
+    var s=n(document.getElementById("dqStrength").value);if(!s||s<=0)return"Enter the actual product strength / final concentration.";
+    if(fo.kind==="tab"){var a=min/s,b=max/s,flag=(Math.abs(a-Math.round(a*4)/4)>.001||Math.abs(b-Math.round(b*4)/4)>.001)?" Tablet fraction may not be practically splittable — use the exact formulation or a liquid.":"";return"≈ "+f(a)+"–"+f(b)+" units/dose."+(flag?" "+flag:"");}
+    if(fo.kind==="syr")return"≈ "+f(min*5/s)+"–"+f(max*5/s)+" mL/dose at "+f(s)+" mg/5 mL.";
+    return"≈ "+f(min/s)+"–"+f(max/s)+" mL/dose at "+f(s)+" mg/mL.";
+  }
+  function safety(d){return'<div class="dq-footer"><b>Safety checks</b><ul class="pl-5" style="margin:5px 0 0">'+d.safety.map(function(x){return"<li>"+esc(x)+"</li>";}).join("")+'</ul><div class="dq-source">Source: <a href="'+d.sourceUrl+'" target="_blank" rel="noopener noreferrer">'+esc(d.sourceLabel)+'</a></div></div>';}
+  function comboResult(d,b){
+    var ratio=document.getElementById("dqRatio").value.split(":").map(Number),comp=n(document.getElementById("dqComponentDose").value)||1000,w=weight(),c=crcl(),sulb=comp/ratio[0]*ratio[1],total=comp+sulb;
+    if(group()==="pediatric"){return'<div class="dq-box"><b>Pediatric total combination dose</b><div class="big">'+f(w*40)+"–"+f(w*80)+' mg/day</div><div class="dq-muted">40–80 mg/kg/day total combination, divided q6–12h per reference.</div></div>';}
+    var dailySulb=sulb*2;var r=c!=null?(c<15?(dailySulb>1000?"Entered regimen provides "+f(dailySulb)+" mg/day sulbactam, exceeding the 1 g/day renal reference cap. Re-design the combination regimen.":"Sulbactam renal reference cap: 1 g/day."):(c<=30?(dailySulb>2000?"Entered regimen provides "+f(dailySulb)+" mg/day sulbactam, exceeding the 2 g/day renal reference cap. Re-design the combination regimen.":"Sulbactam renal reference cap: 2 g/day."):"No sulbactam renal cap triggered in this band.")):d.renal.text;
+    return'<div class="dq-two"><div class="dq-box"><b>Cefoperazone</b><div class="big">'+f(comp)+' mg/dose</div></div><div class="dq-box"><b>Sulbactam</b><div class="big">'+f(sulb)+' mg/dose</div></div><div class="dq-box"><b>Total combination</b><div class="big">'+f(total)+' mg/dose</div><div class="dq-muted">Ratio '+esc(document.getElementById("dqRatio").value)+" • "+esc(b.freq)+'</div></div><div class="dq-box"><b>Administration volume</b><div class="big">'+(n(document.getElementById("dqStrength").value)>0?f(total/n(document.getElementById("dqStrength").value))+" mL":"Enter final mg/mL")+'</div></div></div><div class="dq-alert">'+esc(r)+'</div>';
+  }
+
+  function formCompatibility(d){
+    var key=document.getElementById("dqDrug").value, rid=document.getElementById("dqIndication").value, fo=form(d).id, g=group();
+    if(key==="pantop" && g==="pediatric" && fo==="inj")return "The cited pediatric pantoprazole reference is oral; this calculator blocks automatic pediatric injection dosing.";
+    if(key==="ondansetron" && g==="pediatric" && (rid==="pedPONV"||rid==="pedCINV") && fo!=="inj")return "This pediatric reference regimen is an IV regimen. Use the separate oral follow-on schedule from the product SmPC rather than converting the IV dose to a tablet/syrup.";
+    if(key==="cipro" && rid==="pedCuti" && fo==="inj")return "Selected regimen is the oral pediatric cUTI/pyelonephritis schedule. Select the IV pediatric indication for injection dosing.";
+    if(key==="cipro" && rid==="pedCutiIV" && fo!=="inj")return "Selected regimen is the IV pediatric cUTI/pyelonephritis schedule. Select the oral pediatric indication for tablet/suspension dosing.";    if(key==="oflox" && fo==="inj")return "Ofloxacin injection is not auto-dosed in this reference set. Use the current local injectable product label/order set rather than converting the oral regimen.";
+    return "";
+  }
+
+  function calculate(){
+    var d=drug(),compat=formCompatibility(d);if(compat){document.getElementById("dqResult").innerHTML='<div class="dq-result-head">Route check</div><div class="dq-result-body"><div class="dq-alert red">'+esc(compat)+'</div>'+safety(d)+"</div>";return;}var r=regimen(d),fo=form(d),b0=base(d,r),rr=renal(d,b0);if(rr.blocked){document.getElementById("dqResult").innerHTML='<div class="dq-result-head">Result blocked</div><div class="dq-result-body"><div class="dq-alert red">'+esc(rr.reason)+'</div>'+safety(d)+"</div>";return;}
+    var b=rr.base||rr;if(b.blocked){document.getElementById("dqResult").innerHTML='<div class="dq-result-head">Result blocked</div><div class="dq-result-body"><div class="dq-alert red">'+esc(b.reason)+'</div>'+safety(d)+"</div>";return;}
+    if(b.combo||b.comboPed){document.getElementById("dqResult").innerHTML='<div class="dq-result-head">'+esc(d.name)+" — component check</div><div class=\"dq-result-body\">"+comboResult(d,b)+safety(d)+"</div>";return;}
+    var daily=null;if(b.freq.indexOf("q6h")>=0)daily=[b.min*4,b.max*4];else if(b.freq.indexOf("q8h")>=0)daily=[b.min*3,b.max*3];else if(b.freq.indexOf("q12h")>=0)daily=[b.min*2,b.max*2];else if(b.freq.indexOf("q24h")>=0)daily=[b.min,b.max];
+    var html='<div class="dq-result-head">'+esc(d.name)+" — calculated reference</div><div class=\"dq-result-body\"><div class=\"dq-two\"><div class=\"dq-box\"><b>Reference dose</b><div class=\"big\">"+f(b.min)+"–"+f(b.max)+" mg/dose</div><div class=\"dq-muted\">"+esc(b.freq)+"</div></div><div class=\"dq-box\"><b>Formulation conversion</b><div class=\"big\">"+esc(conversion(b.min,b.max,fo))+"</div></div>"+(daily?'<div class="dq-box"><b>Approx. 24-hour amount</b><div class="big">'+f(daily[0])+"–"+f(daily[1])+" mg/day</div></div>":"")+'<div class="dq-box"><b>Patient</b><div class="big">'+esc(group()==="adult"?"Adult":"Pediatric")+"</div><div class=\"dq-muted\">Age "+esc(document.getElementById("dqYears").value)+" y "+esc(document.getElementById("dqMonths").value)+" mo • "+esc(weight())+" kg</div></div></div><div class=\"dq-alert green\"><b>Renal / special population:</b> "+esc(rr.msg||d.renal.text)+"</div>"+(b.note?'<div class="dq-alert">'+esc(b.note)+"</div>":"")+safety(d)+"</div>";
+    document.getElementById("dqResult").innerHTML=html;
+  }
+
+  function renderOptions(){
+    var dsel=document.getElementById("dqDrug"),old=dsel.value;dsel.innerHTML=ORDER.map(function(k){return'<option value="'+k+'">'+esc(DQ[k].name)+"</option>"}).join("");if(DQ[old])dsel.value=old;
+    var d=drug(),is=d.indications,isel=document.getElementById("dqIndication"),io=isel.value;isel.innerHTML=is.map(function(x){return'<option value="'+x.id+'">'+esc(x.label)+"</option>"}).join("");if(is.some(function(x){return x.id===io}))isel.value=io;
+    pickSupportedIndication();
+    var fs=d.forms, fsel=document.getElementById("dqForm"),fo=fsel.value;fsel.innerHTML=fs.map(function(x){return'<option value="'+x.id+'">'+esc(x.label)+"</option>"}).join("");if(fs.some(function(x){return x.id===fo}))fsel.value=fo;
+    updateStrength();updateSpecial();updateRenalFields();
+  }
+  function updateStrength(){var d=drug(),fo=form(d),s=document.getElementById("dqStrength");s.value=fo.defaultStrength==null?"":fo.defaultStrength;document.getElementById("dqStrengthHint").textContent=fo.suffix;document.getElementById("dqStrengthLabel").textContent=fo.suffix.indexOf("mg/mL")>=0?"Final concentration":"Product strength";}
+  function updateRenalFields(){var d=drug(),cr=d.renal.metric==="crcl",eg=d.renal.metric==="egfr";document.getElementById("dqCrClWrap").classList.toggle("hidden",!cr);document.getElementById("dqEgfrWrap").classList.toggle("hidden",!eg);document.getElementById("dqCalcCrCl").classList.toggle("hidden",!(cr&&group()==="adult"));document.getElementById("dqCalcEgfr").classList.toggle("hidden",!(eg&&group()==="pediatric"));}
+  function updateSpecial(){var c=document.getElementById("dqDrug").value==="cefosulbactam";document.getElementById("dqRatioWrap").classList.toggle("hidden",!c);document.getElementById("dqComponentWrap").classList.toggle("hidden",!c);}
+  function pickSupportedIndication(){var d=drug(),sel=document.getElementById("dqIndication"),g=group();if(!d||!sel)return;var cur=d.indications.find(function(x){return x.id===sel.value;});if(cur&&cur[g])return;var first=d.indications.find(function(x){return x[g];});if(first)sel.value=first.id;}
+  function renalMatrix(){var a=[["Ceftriaxone","Generally no renal adjustment"],["Piptaz","Adult CrCl table; pediatric renal not established"],["Meropenem","Adult CrCl-based dose/interval reduction"],["Cefoperazone+sulbactam","Sulbactam is renal-sensitive"],["PCM","CrCl ≤30: consider longer interval/lower total"],["Pantoprazole","No routine renal adjustment"],["Ondansetron","No renal adjustment"],["Domperidone","Severe renal: reduce repeat frequency ± dose"],["Solifenacin","CrCl <30: max 5 mg/day"],["Ofloxacin","CrCl 20–50 q24h; <20 half unit dose q24h"],["Norfloxacin","CrCl ≤30: 400 mg q24h"],["Ciprofloxacin",">50 usual; 30–50 q12h; 5–29 q18h; dialysis q24h after dialysis"],["Cefixime","Renal dose is formulation-specific"],["Nitrofurantoin","Current cited label: CrCl <60 contraindicated"],["Tolterodine ER","CrCl 10–30: 2 mg q24h"],["Tamsulosin","Usually no adjustment; ESRD data limited"],["Silodosin","30–50: 4 mg q24h; <30 contraindicated"],["Mirabegron","eGFR 15–29 max 25; <15/dialysis not recommended"]];return'<details id="doseRenalMatrix"><summary>Renal quick-view matrix</summary><div class="drm-body"><div class="drm-grid">'+a.map(function(x){return'<div class="drm-item"><b>'+esc(x[0])+"</b><span>"+esc(x[1])+"</span></div>"}).join("")+'</div><div class="dq-muted" style="margin-top:9px">Use Cockcroft–Gault CrCl where the cited dose source is CrCl-based. Mirabegron is handled with eGFR. Do not silently substitute one metric for the other.</div></div></details>';}
+  function injectHome(){var g=document.getElementById("diseaseGrid");if(!g||document.getElementById("doseHomeQuick"))return;var x=document.createElement("div");x.id="doseHomeQuick";x.innerHTML='<div class="flex items-center justify-between gap-3" style="flex-wrap:wrap"><div><div class="dq-title">💊 Bedside drug-dose calculator</div><div class="dq-sub">18 common drugs • adult + pediatric • tablet / syrup / injection conversion • renal dose adjustment</div></div><button type="button" id="doseHomeBtn">Open dose calculator</button></div>';g.parentNode.insertBefore(x,g);document.getElementById("doseHomeBtn").addEventListener("click",window.openDoseCalculator);}
+  function inject(){var g=document.getElementById("drugGrid");if(!g)return;if(document.getElementById("doseCalculatorCard")){bind();return;}var x=document.createElement("div");x.id="doseCalculatorCard";x.className="card p-4";x.innerHTML='<div class="dq-head"><div><div class="dq-kicker">Bedside medication tool</div><h3>Adult + Pediatric Drug Dose Calculator</h3><div class="dq-note">Reference dosing only. Enter the actual local product strength or final injectable concentration. Unsupported pediatric or renal extrapolations are blocked rather than guessed.</div></div><span class="dq-chip">18 drugs</span></div><div class="dq-grid"><div class="dq-field"><label for="dqDrug">Drug</label><select id="dqDrug"></select></div><div class="dq-field"><label for="dqIndication">Reference indication</label><select id="dqIndication"></select></div><div class="dq-field"><label for="dqGroup">Patient group</label><select id="dqGroup"><option value="adult">Adult</option><option value="pediatric">Pediatric</option></select></div><div class="dq-field"><label for="dqForm">Formulation / route</label><select id="dqForm"></select></div><div class="dq-field"><label for="dqYears">Age — years</label><input id="dqYears" type="number" min="0" step="1" value="40"></div><div class="dq-field"><label for="dqMonths">Additional months</label><input id="dqMonths" type="number" min="0" max="11" step="1" value="0"></div><div class="dq-field"><label for="dqWeight">Weight (kg)</label><input id="dqWeight" type="number" min="0.5" step="0.1" value="70"></div><div class="dq-field"><label for="dqSex">Sex for Cockcroft–Gault</label><select id="dqSex"><option value="male">Male</option><option value="female">Female</option></select></div><div class="dq-field"><label for="dqHeight">Height (cm)</label><input id="dqHeight" type="number" min="20" step="0.1" value="175"><small>Used for pediatric Schwartz eGFR helper.</small></div><div class="dq-field"><label for="dqScr">Serum creatinine (mg/dL)</label><input id="dqScr" type="number" min="0" step="0.01"></div><div class="dq-field" id="dqCrClWrap"><label for="dqCrCl">CrCl (mL/min)</label><input id="dqCrCl" type="number" min="0" step="0.1"></div><div class="dq-field hidden" id="dqEgfrWrap"><label for="dqEgfr">eGFR (mL/min/1.73m²)</label><input id="dqEgfr" type="number" min="0" step="0.1"></div><div class="dq-field"><label for="dqDialysis">Dialysis</label><select id="dqDialysis"><option>None</option><option value="HD">Hemodialysis</option><option value="PD">Peritoneal dialysis</option></select></div><div class="dq-field"><label id="dqStrengthLabel" for="dqStrength">Product strength</label><input id="dqStrength" type="number" min="0" step="0.01"><small id="dqStrengthHint"></small></div><div class="dq-field hidden" id="dqRatioWrap"><label for="dqRatio">Cefoperazone : sulbactam</label><select id="dqRatio"><option>1:1</option><option>2:1</option></select></div><div class="dq-field hidden" id="dqComponentWrap"><label for="dqComponentDose">Cefoperazone component (mg/dose)</label><input id="dqComponentDose" type="number" min="0" step="25" value="1000"></div></div><div class="dq-actions"><button class="dq-btn primary" type="button" id="dqCalcBtn">Calculate dose</button><button class="dq-btn blue hidden" type="button" id="dqCalcCrCl">Calculate Cockcroft–Gault CrCl</button><button class="dq-btn blue hidden" type="button" id="dqCalcEgfr">Calculate pediatric Schwartz eGFR</button><button class="dq-btn" type="button" id="dqResetBtn">Reset</button></div><div id="dqResult" class="dq-result"><div class="dq-result-head">Ready</div><div class="dq-result-body"><div class="dq-muted">Enter patient details, select the local formulation strength, then calculate.</div></div></div>'+renalMatrix()+'<div class="dq-footer"><b>Renal-preservation guardrail:</b> this module flags dose adjustment/avoidance where reference data exist. It does not replace source control, culture review, interaction review, fluid/electrolyte assessment or the institution’s renal-replacement protocol.</div>';g.insertBefore(x,g.firstChild);bind();}
+  function reset(){document.getElementById("dqGroup").value="adult";document.getElementById("dqYears").value=40;document.getElementById("dqMonths").value=0;document.getElementById("dqWeight").value=70;document.getElementById("dqSex").value="male";document.getElementById("dqHeight").value=175;document.getElementById("dqScr").value="";document.getElementById("dqCrCl").value="";document.getElementById("dqEgfr").value="";document.getElementById("dqDialysis").value="None";document.getElementById("dqDrug").value="ceftriaxone";renderOptions();document.getElementById("dqResult").innerHTML='<div class="dq-result-head">Ready</div><div class="dq-result-body"><div class="dq-muted">Enter patient details, select the local formulation strength, then calculate.</div></div>';}
+  function bind(){if(window.__uroDoseBound)return;window.__uroDoseBound=true;renderOptions();document.getElementById("dqDrug").addEventListener("change",renderOptions);document.getElementById("dqGroup").addEventListener("change",function(){pickSupportedIndication();updateRenalFields();});document.getElementById("dqForm").addEventListener("change",updateStrength);document.getElementById("dqCalcBtn").addEventListener("click",calculate);document.getElementById("dqCalcCrCl").addEventListener("click",function(){var c=cg();if(c!=null)document.getElementById("dqCrCl").value=f(c);});document.getElementById("dqCalcEgfr").addEventListener("click",function(){var e=schwartz();if(e!=null)document.getElementById("dqEgfr").value=f(e);});document.getElementById("dqResetBtn").addEventListener("click",reset);}
+  var oldOpenDrugs=window.openDrugs;window.openDrugs=function(){var r=typeof oldOpenDrugs==="function"?oldOpenDrugs.apply(this,arguments):undefined;setTimeout(inject,0);return r;};
+  var oldShowHome=window.showHome;window.showHome=function(){var r=typeof oldShowHome==="function"?oldShowHome.apply(this,arguments):undefined;setTimeout(injectHome,0);return r;};
+  window.openDoseCalculator=function(){openDrugs();setTimeout(function(){var e=document.getElementById("doseCalculatorCard");if(e)e.scrollIntoView({behavior:"smooth",block:"start"});},80);};
+  document.addEventListener("DOMContentLoaded",function(){injectHome();});
+})();
 </script>
 </body>
 </html>
