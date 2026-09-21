@@ -318,6 +318,23 @@ header.sticky-top button{background:#173650!important;color:#fff!important;borde
 @media(max-width:1280px){#oracleView .oracle-grid{height:auto!important;min-height:0!important;overflow:visible!important}#oracleView #oracleForm,#oracleView #oracleRiskPanel{height:680px!important;max-height:none!important}#oracleView #oracleOutput{height:620px!important}}
 @media(max-width:900px){#oracleView .oracle-grid{height:auto!important;min-height:0!important}#oracleView #oracleForm,#oracleView #oracleRiskPanel,#oracleView #oracleOutput{height:auto!important;overflow:visible!important}}
 </style>
+<style id="coreHomeGuidelineIndexStyles">
+/* ===== CORE UROLOGY HOME GUIDELINE INDEX ===== */
+#coreHomeGuidelineIndex{border-color:#bfd5df!important;background:linear-gradient(135deg,#ffffff 0%,#f6fbfd 100%)!important;box-shadow:0 10px 28px rgba(15,23,42,.06)!important}
+#coreHomeGuidelineIndex .section-title{color:#11344a!important;font-size:16px}
+#coreHomeGuidelineIndex .text-xs{color:#587183!important}
+.core-home-guideline-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.core-home-guideline-card{display:flex;flex-direction:column;justify-content:space-between;gap:12px;min-height:154px;padding:13px;border:1px solid #d2e1e8;border-radius:13px;background:#fff;box-shadow:0 5px 16px rgba(15,23,42,.04)}
+.core-home-guideline-card h3{margin:7px 0 4px;color:#17364c;font-size:13px;line-height:1.3}
+.core-home-guideline-card p{margin:0;color:#5a7180;font-size:10.5px;line-height:1.48}
+.core-home-guideline-actions{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+.core-home-guideline-actions a{font-size:10px;font-weight:900;color:#056b95;text-decoration:underline}
+.core-home-guideline-actions button{border:1px solid #bcd2dc;border-radius:8px;padding:6px 8px;background:#f7fbfd;color:#17364c;font-size:10px;font-weight:900;cursor:pointer}
+.core-home-guideline-actions button:hover{background:#edf7fb}
+#coreHomeGuidelineIndex .badge{margin-right:4px}
+@media(max-width:1200px){.core-home-guideline-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:680px){.core-home-guideline-grid{grid-template-columns:1fr}}
+</style>
 </head>
 <body>
 <div class="max-w-7xl mx-auto min-h-screen">
@@ -347,6 +364,50 @@ header.sticky-top button{background:#173650!important;color:#fff!important;borde
       <p class="text-sm text-slate-600 leading-6">Use the Oracle to derive a management plan from the entered clinical criteria. Use Calculators for scores/metrics only. The app intentionally summarizes guideline recommendations; it does not reproduce copyrighted guideline books verbatim.</p>
       <div class="warn mt-4 text-xs leading-5"><b>Clinical safety:</b> Drug doses and algorithms are reference protocols, not patient-specific prescriptions. Confirm current product label, renal/hepatic function, interactions, laboratory criteria, institutional chemotherapy order set, MDT decision and the latest live NCCN/EAU version before treatment.</div>
     </div>
+
+    <section id="coreHomeGuidelineIndex" class="card p-4 mb-4">
+      <div class="flex items-center justify-between gap-3 flex-wrap">
+        <div>
+          <div class="section-title">Core Urology Guidelines + Clinical Oracle</div>
+          <div class="text-xs text-slate-500 mt-1">EAU 2026 guideline-linked pathways for common non-oncology urology diagnoses. Open the guideline or launch the corresponding Oracle pathway.</div>
+        </div>
+        <button type="button" onclick="openCoreUrology()" class="v4-btn dark rounded-xl px-3 py-2 text-xs font-black">Open Core Urology Oracle</button>
+      </div>
+      <div class="core-home-guideline-grid mt-3">
+        <article class="core-home-guideline-card">
+          <div><span class="badge badge-blue">EAU 2026</span><h3>Hypospadias</h3><p>Classification • curvature • DSD • repair pathway • complications</p></div>
+          <div class="core-home-guideline-actions"><a href="https://uroweb.org/guidelines/paediatric-urology/chapter/hypospadias" target="_blank" rel="noopener noreferrer">Guideline ↗</a><button type="button" onclick="openCoreUrology('Hypospadias')">Open Oracle</button></div>
+        </article>
+        <article class="core-home-guideline-card">
+          <div><span class="badge badge-blue">EAU 2026</span><h3>Urethral Stricture</h3><p>Site • length • recurrence • DVIU/dilatation • urethroplasty</p></div>
+          <div class="core-home-guideline-actions"><a href="https://uroweb.org/guidelines/urethral-strictures" target="_blank" rel="noopener noreferrer">Guideline ↗</a><button type="button" onclick="openCoreUrology('Urethral Stricture')">Open Oracle</button></div>
+        </article>
+        <article class="core-home-guideline-card">
+          <div><span class="badge badge-blue">EAU 2026</span><h3>Nocturnal Enuresis</h3><p>Monosymptomatic • daytime LUTS • constipation • alarm • DDAVP</p></div>
+          <div class="core-home-guideline-actions"><a href="https://uroweb.org/guidelines/paediatric-urology/chapter/monosymptomatic-nocturnal-enuresis-bedwetting" target="_blank" rel="noopener noreferrer">Guideline ↗</a><button type="button" onclick="openCoreUrology('Nocturnal Enuresis')">Open Oracle</button></div>
+        </article>
+        <article class="core-home-guideline-card">
+          <div><span class="badge badge-blue">EAU 2026</span><span class="badge badge-slate">AUA</span><h3>BPH / Male LUTS</h3><p>IPSS • PVR • prostate size • medical therapy • surgery</p></div>
+          <div class="core-home-guideline-actions"><a href="https://uroweb.org/guidelines/management-of-non-neurogenic-male-luts" target="_blank" rel="noopener noreferrer">Guideline ↗</a><button type="button" onclick="openCoreUrology('BPH / Male LUTS')">Open Oracle</button></div>
+        </article>
+        <article class="core-home-guideline-card">
+          <div><span class="badge badge-blue">EAU 2026</span><span class="badge badge-slate">AUA/SUFU</span><h3>Female LUTS + Incontinence</h3><p>UUI • SUI • MUI • PVR • PFMT • surgery • Botox/SNM</p></div>
+          <div class="core-home-guideline-actions"><a href="https://uroweb.org/guidelines/non-neurogenic-female-luts" target="_blank" rel="noopener noreferrer">Guideline ↗</a><button type="button" onclick="openCoreUrology('Female LUTS + Urinary Incontinence')">Open Oracle</button></div>
+        </article>
+        <article class="core-home-guideline-card">
+          <div><span class="badge badge-blue">EAU 2026</span><span class="badge badge-slate">AUA</span><h3>UTI / Urological Infection</h3><p>Cystitis • systemic UTI • recurrent UTI • obstruction • sepsis</p></div>
+          <div class="core-home-guideline-actions"><a href="https://uroweb.org/guidelines/urological-infections" target="_blank" rel="noopener noreferrer">Guideline ↗</a><button type="button" onclick="openCoreUrology('UTI / Urological Infection')">Open Oracle</button></div>
+        </article>
+        <article class="core-home-guideline-card">
+          <div><span class="badge badge-blue">EAU 2026</span><span class="badge badge-slate">AUA</span><h3>Urolithiasis</h3><p>MET • URS/RIRS • SWL • PCNL • staghorn • infected obstruction</p></div>
+          <div class="core-home-guideline-actions"><a href="https://uroweb.org/guidelines/urolithiasis" target="_blank" rel="noopener noreferrer">Guideline ↗</a><button type="button" onclick="openCoreUrology('Urolithiasis')">Open Oracle</button></div>
+        </article>
+        <article class="core-home-guideline-card">
+          <div><span class="badge badge-blue">EAU 2026</span><h3>Neurogenic Bladder</h3><p>Risk stratification • CIC • NDO • Botox • DSD • upper-tract preservation</p></div>
+          <div class="core-home-guideline-actions"><a href="https://uroweb.org/guidelines/neuro-urology" target="_blank" rel="noopener noreferrer">Guideline ↗</a><button type="button" onclick="openCoreUrology('Neurogenic Bladder')">Open Oracle</button></div>
+        </article>
+      </div>
+    </section>
 
     <div id="diseaseGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3"></div>
 
@@ -6163,5 +6224,135 @@ out.appendChild(w);w.querySelector('#coreOpenDoseFromOracle').onclick=function()
 }());
 </script>
 
+
+<style id="coreUroExplicitStyles">
+.core-explicit-card{margin-top:14px;border:1px solid #bfd7e1;border-radius:16px;background:#fff;box-shadow:0 10px 28px rgba(15,23,42,.07);overflow:visible}
+.core-explicit-head{padding:14px 16px;background:linear-gradient(115deg,#06263a,#0b6179);color:#fff;display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}.core-explicit-head h3{margin:2px 0 0;font-size:16px;color:#fff}.core-explicit-kicker{font-size:9px;font-weight:900;letter-spacing:.09em;text-transform:uppercase;color:#c5eaf1}.core-explicit-pill{font-size:9px;font-weight:900;border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:4px 8px;background:rgba(255,255,255,.09);color:#fff}
+.core-explicit-body{padding:14px 16px}.core-explicit-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.core-explicit-panel{border:1px solid #d8e5ea;border-radius:12px;padding:11px;background:#fbfdfe}.core-explicit-panel h4{margin:0 0 7px;font-size:12px;color:#173c50}.core-explicit-panel p,.core-explicit-panel li{font-size:10.5px;line-height:1.55;color:#496472}.core-explicit-panel ul{margin:6px 0 0;padding-left:17px}.core-explicit-panel li+li{margin-top:5px}.core-explicit-panel strong{color:#15394c}
+.core-explicit-dose{border-left:4px solid #0c7892;background:#f0f8fb;border-radius:8px;padding:9px 10px;margin-top:7px}.core-explicit-dose b{display:block;font-size:11px;color:#123d50}.core-explicit-dose span{display:block;margin-top:2px;font-size:10px;line-height:1.5;color:#456472}.core-explicit-dose .dose-note{color:#6c511b;background:#fff8ea;border-radius:6px;padding:6px 7px;margin-top:6px;border:1px solid #ecd39d}
+.core-explicit-alert{border-left:4px solid #c94640;background:#fff3f1;color:#67302d;border-radius:8px;padding:9px 10px;margin-top:8px;font-size:10px;line-height:1.5}.core-explicit-ok{border-left:4px solid #1c9a62;background:#f0faf5;color:#28563f;border-radius:8px;padding:9px 10px;margin-top:8px;font-size:10px;line-height:1.5}
+.core-explicit-table{width:100%;border-collapse:collapse;font-size:9.5px;margin-top:6px}.core-explicit-table th,.core-explicit-table td{border:1px solid #d8e4e9;padding:6px;vertical-align:top;text-align:left}.core-explicit-table th{background:#eff7fa;color:#285263;font-size:8.5px;text-transform:uppercase;letter-spacing:.04em}.core-explicit-table td{color:#4a6472}.core-explicit-table td b{color:#173d50}
+.core-explicit-source{margin-top:9px;padding-top:8px;border-top:1px solid #e1ebef;font-size:9.5px;color:#5d7280}.core-explicit-source a{color:#056b95;font-weight:900;text-decoration:underline;margin-right:10px}
+.core-explicit-branch{margin-top:10px;border:1px solid #c8dfe8;border-radius:10px;background:#f7fbfc;padding:9px 10px}.core-explicit-branch b{font-size:10px;color:#123b4e}.core-explicit-branch div{font-size:10.5px;color:#405f6d;line-height:1.55;margin-top:3px}
+@media(max-width:900px){.core-explicit-grid{grid-template-columns:1fr}}
+</style>
+<script id="coreUroExplicitLayerV2">
+(function(){
+  'use strict';
+  if(window.__CORE_URO_EXPLICIT_V2)return;
+  window.__CORE_URO_EXPLICIT_V2=true;
+  const SRC={
+    hypo:['EAU Paediatric Urology — Hypospadias 2026','https://uroweb.org/guidelines/paediatric-urology/chapter/hypospadias'],
+    enur:['EAU Paediatric Urology — Nocturnal Enuresis 2026','https://uroweb.org/guidelines/paediatric-urology/chapter/monosymptomatic-nocturnal-enuresis-bedwetting'],
+    str:['EAU Urethral Strictures 2026','https://uroweb.org/guidelines/urethral-strictures'],
+    bph:['EAU Male LUTS 2026','https://uroweb.org/guidelines/management-of-non-neurogenic-male-luts'],
+    fl:['EAU Female LUTS','https://uroweb.org/guidelines/non-neurogenic-female-luts'],
+    uti:['EAU Urological Infections 2026','https://uroweb.org/guidelines/urological-infections'],
+    stone:['EAU Urolithiasis 2026','https://uroweb.org/guidelines/urolithiasis'],
+    neuro:['EAU Neuro-urology 2026','https://uroweb.org/guidelines/neuro-urology'],
+    dailymedDDAVP:['DailyMed — desmopressin tablets','https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=c01048e8-d28f-4085-9c37-3d5d48395a77'],
+    dailymedSilo:['DailyMed — silodosin','https://www.dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=43f83422-680f-411e-bbc3-2b092e64a017'],
+    dailymedTams:['DailyMed — tamsulosin','https://dailymed.nlm.nih.gov/dailymed/lookup.cfm?setid=4ef1a932-b5b2-4ea7-a625-388dd78f9058'],
+    dailymedOxy:['DailyMed — oxybutynin','https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=4574b227-9726-4798-bac2-83bfb9616f09'],
+    dailymedDuta:['DailyMed — dutasteride','https://www.dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=c78d18cf-05df-4154-b2f9-39cc374ca9e3'],
+    dailymedFin:['DailyMed — finasteride','https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=cc9709ce-2d29-48bd-b46b-3f72114f2527'],
+    dailymedBotox:['DailyMed — onabotulinumtoxinA','https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=33d066a9-34ff-4a1a-b38b-d10983df3300']
+  };
+  const INFO={
+    'Hypospadias':{
+      branch:'Classify severity by meatal location + penile curvature + plate quality + testes/DSD features. Significant curvature >30° should be corrected.',
+      principle:'Primary repair is usually undertaken at 6–18 months when feasible. The operative aim is a straight penis, adequate-calibre neourethra, glanular meatus and acceptable function/cosmesis.',
+      tests:['Focused genital examination with stretched penile length, meatus, glans, plate, torsion and curvature.','Differentiate isolated hypospadias from DSD at birth; bilateral undescended testes or atypical genital findings warrant DSD evaluation.'],
+      meds:[['No routine disease-modifying drug','No standard chronic medication treats hypospadias.','Peri-operative analgesia and antibiotic prophylaxis are surgeon/order-set specific; do not auto-generate a generic antibiotic regimen.']],
+      surgery:[['Reconstructive — distal','Selected distal anatomy','TIP/Snodgrass; MAGPI/meatal advancement; Mathieu','Single-stage'],['Reconstructive — proximal','Poor plate/complex anatomy','Onlay/preputial or flap-based reconstruction according to anatomy','Single-stage'],['Reconstructive — staged','Severe proximal/poor plate/failed repair','Bracka-type staged urethroplasty','Two-stage'],['Curvature correction','Significant chordee','Dorsal plication or ventral lengthening/grafting according to degree/anatomy','Adjunctive'],['Revision','Fistula/stenosis/diverticulum/recurrent curvature','Fistula repair, meatoplasty, urethral revision','Secondary reconstruction']]
+    },
+    'Urethral Stricture':{
+      branch:'Define location, length and spongiofibrosis before choosing repeat endoscopic treatment versus urethroplasty. Penile strictures should not be treated with DVIU as routine definitive therapy.',
+      principle:'A primary, single, short (<2 cm), non-obliterative bulbar stricture may be treated with DVIU/dilatation in selected patients. Long strictures should not be managed with repeated DVIU/dilatation as sole definitive treatment.',
+      tests:['RUG ± VCUG and/or cystoscopy to define location and length.','Uroflowmetry + PVR; investigate lichen sclerosus, trauma, instrumentation, radiation and previous surgery.'],
+      meds:[['Disease-specific medication','None','No drug reverses established urethral spongiofibrosis. Alpha-blockers do not treat the stricture itself.','Definitive management is procedural/reconstructive.']],
+      surgery:[['Endoluminal','Primary short bulbar <2 cm, non-obliterative','Visual internal urethrotomy (DVIU) or dilation','Endoscopic'],['Reconstructive','Short bulbar amenable to tension-free repair','Excision and primary anastomosis / EPA','Anastomotic urethroplasty'],['Reconstructive','Longer bulbar/penile selected anatomy','Buccal mucosal graft urethroplasty','Substitution'],['Staged reconstruction','Complex/poor tissue/failed repairs','Staged urethroplasty','Two-stage'],['Diversion','Selected complex recurrent disease','Perineal urethrostomy','Definitive diversion'],['Drainage','Acute retention/unsafe reconstruction timing','Suprapubic catheter','Temporising']]
+    },
+    'Nocturnal Enuresis':{
+      branch:'First decide monosymptomatic vs non-monosymptomatic enuresis. Treat daytime LUTS/constipation/UTI/polyuria before labelling therapy failure.',
+      principle:'For motivated families with monosymptomatic enuresis, alarm therapy and/or desmopressin are major treatment options. EAU 2026 recommends no routine active treatment below age 5.',
+      tests:['Micturition diary/questionnaire; identify daytime LUTS and nocturnal polyuria.','Urinalysis when indicated; assess constipation, polydipsia/polyuria and sleep-disordered breathing.'],
+      meds:[['Desmopressin tablet — child ≥6 years','0.2 mg (200 µg) at bedtime initially; titrate according to response up to 0.6 mg (600 µg) nightly','EAU 2026: 200–400 µg tablet; DailyMed label: initial 0.2 mg HS, titrate to 0.6 mg.','Strict evening/night fluid restriction; hyponatraemia/water intoxication is the key toxicity.'],['Sublingual/oral lyophilisate','120–240 µg at bedtime when that formulation is used','EAU 2026 reference range.','Do not interchange microgram doses between tablet and lyophilisate formulations without checking the product.'],['Alarm therapy','No drug dose','8–12 weeks is a common starting treatment window; continue/adjust according to response and family participation.','Child must participate actively; regular follow-up improves success.']],
+      surgery:[['Non-operative','Primary monosymptomatic enuresis','No routine surgery','Medical/behavioural'],['Underlying pathology','Structural/functional diagnosis found','Treat the identified condition rather than enuresis itself','Diagnosis-specific']]
+    },
+    'BPH / Male LUTS':{
+      branch:'Assess bother + phenotype + PVR + prostate size + complications. Refractory retention, recurrent UTI, stones/diverticula, refractory haematuria or upper-tract/renal deterioration trigger surgical consideration.',
+      principle:'α1-blockers are first-line pharmacological treatment for moderate-to-severe male LUTS. 5-ARIs are useful in men with enlarged prostates/progression risk and act slowly. Surgery is selected primarily by complications, prostate anatomy/size, patient priorities and local expertise.',
+      tests:['IPSS/QoL + history/medication review; urinalysis and PSA when indicated.','PVR/uroflow; prostate volume and median lobe assessment where procedure selection depends on anatomy.'],
+      meds:[['Tamsulosin','0.4 mg PO once daily; if inadequate response after 2–4 weeks, may increase to 0.8 mg once daily','BPH label regimen.','Take ~30 minutes after the same meal each day; counsel re orthostasis/EjD and IFIS.'],['Silodosin','8 mg PO once daily with a meal','BPH label regimen.','CrCl 30–50 mL/min: 4 mg once daily; CrCl <30 mL/min: contraindicated in the cited label.'],['Finasteride','5 mg PO once daily','For appropriate men with enlarged prostate/progression risk.','PSA falls substantially on therapy; interpret follow-up PSA in treatment context.'],['Dutasteride','0.5 mg PO once daily','For symptomatic BPH with enlarged prostate; can combine with tamsulosin 0.4 mg once daily.','Swallow capsule whole; pregnancy exposure is contraindicated.'],['Storage-symptom add-on','Antimuscarinic or β3-agonist according to OAB phenotype','Only after considering PVR/retention risk.','Use the full drug calculator for the selected agent.']],
+      surgery:[['Incision','<30 mL without middle lobe','TUIP','Endoscopic incision'],['Resection','30–80 mL','Bipolar/monopolar TURP','Endoscopic resection'],['Enucleation','Broad size range, especially large glands','HoLEP / other laser or bipolar enucleation','Endoscopic enucleation'],['Waterjet','30–80 mL selected patients','Aquablation','Minimally invasive'],['Tissue-sparing','Selected anatomy/ejaculatory-priority patients','Prostatic urethral lift (PUL)','Minimally invasive'],['Thermal','Selected patients','Water-vapour therapy','Minimally invasive'],['Large gland','Large prostate / selected anatomy','Simple prostatectomy (open/laparoscopic/robotic)','Simple prostatectomy'],['Endovascular','Selected patients','Prostatic artery embolisation','IR/endovascular']]
+    },
+    'Female LUTS + Urinary Incontinence':{
+      branch:'Classify UUI/OAB, SUI or MUI. For MUI, identify stress- vs urgency-predominant and treat the most bothersome component first. Elevated PVR/voiding dysfunction changes the pathway.',
+      principle:'Bladder training is first-line for OAB/UUI. Supervised intensive PFMT for at least 3 months is first-line for SUI/MUI. Urodynamics is selective, particularly before invasive treatment when diagnosis is uncertain or voiding dysfunction is present.',
+      tests:['History, pelvic examination/prolapse assessment, urinalysis and PVR as indicated.','Bladder diary for urgency/frequency/nocturia or mixed symptoms.','Selective urodynamics/cystoscopy for complex or uncertain cases.'],
+      meds:[['Mirabegron — OAB/UUI','25 mg PO once daily; may increase to 50 mg once daily when appropriate','Adult OAB reference.','Monitor BP and urinary retention; use renal/hepatic limits from current product label.'],['Solifenacin — OAB/UUI','5 mg PO once daily; may increase to 10 mg once daily','Adult OAB reference.','Review PVR, constipation, glaucoma risk and anticholinergic burden.'],['Oxybutynin IR — OAB/UUI','5 mg PO 2–3 times daily; max 5 mg four times daily in adults','Current label; children >5 years: 5 mg twice daily, max 5 mg three times daily.','Use cautiously with high PVR, constipation and cognitive/anticholinergic burden.'],['Pure SUI','No routine effective oral pharmacological substitute for definitive SUI treatment','PFMT is the first-line intervention.','Do not substitute OAB drugs for stress-leakage treatment.']],
+      surgery:[['Conservative first','SUI/MUI','Supervised PFMT ≥3 months','Rehabilitation'],['SUI surgery','Uncomplicated SUI after conservative discussion','Mid-urethral sling','Synthetic sling'],['SUI surgery','Selected primary SUI','Burch colposuspension','Suspension'],['SUI surgery','Selected patients','Autologous fascial sling','Autologous reconstruction'],['SUI minimally invasive','Selected patients','Urethral bulking agent','Injection'],['Refractory UUI/OAB','Persistent after conservative/pharmacological treatment','Intradetrusor onabotulinumtoxinA','Injection'],['Refractory OAB','Selected patients','Sacral neuromodulation / PTNS','Neuromodulation']]
+    },
+    'UTI / Urological Infection':{
+      branch:'First distinguish localised cystitis from systemic UTI and identify obstruction/sepsis, pregnancy, male prostate involvement, paediatric status and recurrence.',
+      principle:'Antibiotics should be syndrome-, susceptibility-, renal-function- and local-resistance guided. Do not treat every urgency/frequency presentation as cystitis.',
+      tests:['Urinalysis and urine culture according to syndrome/risk.','Systemic infection: assess severity/organ dysfunction; image early if obstruction is suspected.','Recurrent/complicated UTI: identify stone, retention, catheter/device or anatomic/functional source.'],
+      meds:[['Female localised cystitis — nitrofurantoin','100 mg PO twice daily for 5 days (monohydrate/macrocrystal example)','EAU 2026 first-line regimen when appropriate and available.','Use renal-function restrictions from current product label/local guideline; do not use for suspected pyelonephritis/prostatitis.'],['Female localised cystitis — fosfomycin trometamol','3 g PO single dose','EAU first-line option for women.','Culture/clinical context and local availability still matter.'],['Selected alternative — TMP-SMX','160/800 mg PO twice daily for 3 days when local resistance/eligibility criteria permit','EAU table lists this as an alternative.','Avoid in settings where contraindicated; pregnancy requires a separate pathway.'],['Systemic UTI — ceftriaxone','Adult 1–2 g IV once daily; paediatric serious infection commonly 50–75 mg/kg/day divided q12h, max 2 g/day (meningitis dosing differs)','Product-label dosing reference; indication/severity and local protocol determine exact regimen.','Not a substitute for drainage of an infected obstruction.']],
+      surgery:[['Emergency source control','Sepsis + obstructed infected collecting system','Ureteric stent','Endourological decompression'],['Emergency source control','Sepsis + obstructed infected collecting system','Percutaneous nephrostomy','Percutaneous decompression'],['Device management','Catheter-associated infection','Remove/replace catheter when indicated','Source control'],['Definitive source control','Stone/device/anatomic source','Definitive correction after infection control','Disease-specific']]
+    },
+    'Urolithiasis':{
+      branch:'Stone site + size + obstruction + infection + pain + renal reserve determine the pathway. Infected obstruction is an emergency.',
+      principle:'Sepsis with an obstructing stone requires urgent drainage, immediate antibiotics and delayed definitive stone treatment until sepsis resolves. For distal ureteral stones >5 mm, α-blocker MET can be considered in selected adults; this is off-label.',
+      tests:['US/NCCT according to scenario; urine testing and renal function in acute obstruction.','Stone analysis for first-time stone formers and metabolic evaluation for recurrent/high-risk disease.'],
+      meds:[['Renal colic — diclofenac','100–150 mg/day PO/rectal total dose for 3–10 days is an EAU example','Use the lowest effective dose for the shortest duration.','NSAIDs can impair renal function; avoid/modify with significant renal dysfunction and relevant cardiovascular/GI/pregnancy risks.'],['Selected distal ureteral MET — tamsulosin','0.4 mg PO once daily','Adult off-label MET option; best evidence is distal stones >5 mm, commonly 5–10 mm.','Stop/escalate if fever, sepsis, uncontrolled pain, deteriorating renal function or another indication for removal develops.'],['Selected distal ureteral MET — silodosin','8 mg PO once daily in adults when chosen for MET; renal dosing follows product label','Off-label; some studies suggest greater expulsive effect than tamsulosin.','CrCl 30–50: 4 mg/day; CrCl <30: contraindicated by label.']],
+      surgery:[['Shock-wave','Selected renal/ureteral stones','SWL/ESWL','Non-invasive'],['Ureteroscopic','Ureteral stones','URS + laser lithotripsy/extraction','Endoscopic'],['Retrograde intrarenal','Selected renal stones','RIRS/flexible ureteroscopy','Endoscopic'],['Percutaneous','Renal stones >2 cm/large complex burden','PCNL','Percutaneous'],['Combined','Complex/staghorn burden','ECIRS','Combined endourology'],['Open/laparoscopic selected','Failed/unsuitable endourology or selected complex anatomy','Ureterolithotomy/pyelolithotomy','Laparoscopic/open'],['Emergency','Infected obstruction','DJ stent or PCN','Decompression first']]
+    },
+    'Neurogenic Bladder':{
+      branch:'The primary endpoint is safe storage/emptying with upper-tract preservation. Risk is defined by pressures/compliance, renal function, hydronephrosis/scarring, PVR and recurrent infection.',
+      principle:'Intermittent catheterisation is central when emptying is unsafe/incomplete and feasible. Antimuscarinic and β3 strategies are used for storage dysfunction; refractory neurogenic detrusor overactivity can progress to intradetrusor botulinum toxin A.',
+      tests:['Neurological diagnosis + functional status + bowel/bladder review.','PVR, renal function and upper-tract imaging according to risk.','Urodynamics for high-risk, refractory or uncertain cases.'],
+      meds:[['Oxybutynin IR','Adults: 5 mg PO 2–3 times daily; max 5 mg four times daily. Children >5 years: 5 mg twice daily; max 5 mg three times daily.','Current product-label reference.','Monitor constipation, cognition/anticholinergic burden and retention/PVR.'],['Mirabegron','Adults: 25 mg PO once daily; may increase to 50 mg once daily where appropriate.','Used as a β3-agonist storage strategy; paediatric NDO dosing is product-specific.','Monitor BP and urinary retention.'],['OnabotulinumtoxinA — adult NDO','200 Units intradetrusor, divided across 30 sites in the cited label','DailyMed neurogenic detrusor overactivity regimen.','Confirm ability/willingness to catheterise because retention can occur.'],['OnabotulinumtoxinA — paediatric NDO','≥34 kg: 200 Units; <34 kg: 6 Units/kg in the cited label','DailyMed paediatric neurogenic detrusor overactivity regimen.','Specialist use only; exact product dilution/site protocol must be followed.'],['Desmopressin for neurogenic nocturnal polyuria','No universal numeric neuro-urology dose is inserted here','EAU neuro-urology notes efficacy is possible but optimal dosing is not clearly defined and hyponatraemia is a concern.','Use the separate DDAVP/enuresis-nocturia calculator only when its specific indication and formulation are established.']],
+      surgery:[['Injection','Refractory neurogenic detrusor overactivity','Intradetrusor onabotulinumtoxinA','Endoscopic injection'],['Neuromodulation','Selected neurological populations','Sacral neuromodulation','Neuromodulation'],['Reconstructive','Refractory high-pressure/low-capacity bladder','Augmentation cystoplasty','Reconstructive'],['Catheterisable channel','Selected patients unable to catheterise via native urethra','Mitrofanoff/Monti channel','Reconstructive'],['Outlet surgery','Selected DSD/outlet dysfunction','Tailored bladder-neck/outlet procedure','Outlet surgery'],['Diversion','Severe refractory high-risk disease','Urinary diversion','Diversion']]
+    }
+  };
+  const CORE=Object.keys(INFO);
+  function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+  function currentDisease(){return document.getElementById('oracleDisease')?.value||'';}
+  function vals(){const d=currentDisease(),o={};const schema=window.CORE_UROLOGY_SCHEMAS?.[d]||[];schema.forEach(f=>{const e=document.getElementById('o-'+f[0]);o[f[0]]=e?e.value:'';});return o;}
+  function source(key){const x=SRC[key];return x?'<a href="'+x[1]+'" target="_blank" rel="noopener noreferrer">'+esc(x[0])+' ↗</a>':'';}
+  function doseRows(arr){return arr.map(r=>'<div class="core-explicit-dose"><b>'+esc(r[0])+'</b><span><strong>Dose:</strong> '+esc(r[1])+'</span><span><strong>Use:</strong> '+esc(r[2])+'</span><div class="dose-note"><strong>Safety:</strong> '+esc(r[3])+'</div></div>').join('');}
+  function surgeryTable(rows){return '<table class="core-explicit-table"><thead><tr><th>Classification</th><th>When</th><th>Procedure</th><th>Type</th></tr></thead><tbody>'+rows.map(r=>'<tr><td>'+esc(r[0])+'</td><td>'+esc(r[1])+'</td><td><b>'+esc(r[2])+'</b></td><td>'+esc(r[3])+'</td></tr>').join('')+'</tbody></table>';}
+  function selectedBranch(d,v){let s=INFO[d]?.branch||'';
+    if(d==='Nocturnal Enuresis'&&Number(v.age)>=0&&Number(v.age)<5)s='Age <5 years: supportive/education pathway; do not enter routine active DDAVP treatment branch.';
+    if(d==='Nocturnal Enuresis'&&v.day==='Present — non-monosymptomatic')s='Non-monosymptomatic enuresis: treat daytime LUT dysfunction/constipation and associated causes first or concurrently.';
+    if(d==='Nocturnal Enuresis'&&v.day==='Absent — monosymptomatic'&&v.nightpoly==='Yes/proven')s='Monosymptomatic + proven nocturnal polyuria: alarm and/or oral desmopressin pathway when family/child can comply with fluid restriction.';
+    if(d==='BPH / Male LUTS'&&(v.retention==='Yes'||v.uti==='Yes'||v.stones==='Yes'||v.hematuria==='Yes'||v.upper==='Yes'))s='Surgical-indication branch: evaluate promptly for operative treatment rather than prolonged medical-only management.';
+    if(d==='Urolithiasis'&&v.obstruct==='Yes'&&v.infection==='Yes/possible')s='EMERGENCY: infected obstructed system → urgent DJ stent or PCN + immediate antibiotics; definitive stone treatment after sepsis resolution.';
+    if(d==='UTI / Urological Infection'&&(v.sepsis==='Yes'||(v.systemic==='Yes'&&v.obstruction==='Yes/possible')))s='EMERGENCY: systemic infection with obstruction → drainage/source control + immediate antibiotics; do not delay decompression for definitive stone treatment.';
+    if(d==='Neurogenic Bladder'&&(v.upper==='Hydronephrosis/scarring/other risk'||v.uds==='High-pressure NDO/poor compliance'))s='HIGH-RISK bladder: pressure reduction and renal/upper-tract preservation take priority over symptom relief.';
+    return s;
+  }
+  function render(d){const g=INFO[d];if(!g)return;const v=vals();let medTitle='Relevant medications / explicit dosing';
+    const alert=(d==='Nocturnal Enuresis'&&Number(v.age)>=0&&Number(v.age)<5)?'<div class="core-explicit-alert"><b>Age gate:</b> EAU 2026 recommends education/support rather than routine active treatment below 5 years.</div>':'';
+    const urgent=(d==='Urolithiasis'&&v.obstruct==='Yes'&&v.infection==='Yes/possible')||(d==='UTI / Urological Infection'&&(v.sepsis==='Yes'||(v.systemic==='Yes'&&v.obstruction==='Yes/possible')));
+    const urgentBox=urgent?'<div class="core-explicit-alert"><b>URGENT SOURCE CONTROL:</b> The obstruction/infection combination entered is a decompression-first emergency branch. Do not proceed directly to elective definitive stone treatment.</div>':'';
+    const panel=document.getElementById('oracleOutput');if(!panel)return;let old=document.getElementById('coreExplicitOracle');if(old)old.remove();
+    const el=document.createElement('section');el.id='coreExplicitOracle';el.className='core-explicit-card';
+    el.innerHTML='<div class="core-explicit-head"><div><div class="core-explicit-kicker">Explicit bedside pathway</div><h3>'+esc(d)+'</h3></div><span class="core-explicit-pill">Guideline + dose + surgery</span></div><div class="core-explicit-body">'+
+      '<div class="core-explicit-branch"><b>What branch is the Oracle using?</b><div>'+esc(selectedBranch(d,v))+'</div></div>'+urgentBox+alert+
+      '<div class="core-explicit-grid" style="margin-top:10px"><div class="core-explicit-panel"><h4>Guideline pathway</h4><div>'+esc(g.principle)+'</div><ul>'+g.tests.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul></div><div class="core-explicit-panel"><h4>'+esc(medTitle)+'</h4>'+doseRows(g.meds)+'</div></div>'+      '<div class="core-explicit-panel" style="margin-top:10px"><h4>Surgery / procedure classification</h4>'+surgeryTable(g.surgery)+'</div>'+      '<div class="core-explicit-source"><b>Guidelines / labels:</b> '+g.guideKeys?.map(source).join(' • ')+' '+source('dailymedDDAVP')+' '+source('dailymedSilo')+' '+source('dailymedTams')+' '+source('dailymedOxy')+' '+source('dailymedDuta')+' '+source('dailymedFin')+' '+source('dailymedBotox')+'</div>'+      '<div class="core-explicit-ok"><b>Prescribing boundary:</b> Numeric doses shown here are reference regimens tied to the displayed indication/formulation. Confirm current local formulary, product label, renal/hepatic function, interactions, culture/antibiogram, age/weight and institutional order set before prescribing.</div></div>';
+    panel.appendChild(el);
+  }
+  // Add source-key metadata without changing the existing global Core schema.
+  INFO['Hypospadias'].guideKeys=['hypo'];INFO['Urethral Stricture'].guideKeys=['str'];INFO['Nocturnal Enuresis'].guideKeys=['enur'];INFO['BPH / Male LUTS'].guideKeys=['bph'];INFO['Female LUTS + Urinary Incontinence'].guideKeys=['fl'];INFO['UTI / Urological Infection'].guideKeys=['uti'];INFO['Urolithiasis'].guideKeys=['stone'];INFO['Neurogenic Bladder'].guideKeys=['neuro'];
+  function hook(){const sel=document.getElementById('oracleDisease');if(sel&&!sel.dataset.explicitHook){sel.dataset.explicitHook='1';sel.addEventListener('change',()=>setTimeout(()=>render(currentDisease()),20));}const d=currentDisease();if(INFO[d])setTimeout(()=>render(d),20);}
+  const prevRender=window.renderOracleForm;window.renderOracleForm=function(){const r=typeof prevRender==='function'?prevRender.apply(this,arguments):undefined;setTimeout(hook,30);return r;};
+  const prevRun=window.runOracle;window.runOracle=function(){const r=typeof prevRun==='function'?prevRun.apply(this,arguments):undefined;setTimeout(()=>render(currentDisease()),60);return r;};
+  const prevOpen=window.openOracle;window.openOracle=function(){const r=typeof prevOpen==='function'?prevOpen.apply(this,arguments):undefined;setTimeout(hook,50);return r;};
+  hook();
+  window.CORE_UROLOGY_EXPLICIT_V2=INFO;
+}());
+</script>
 </body>
 </html>
