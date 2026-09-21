@@ -24,6 +24,18 @@ html{scroll-behavior:smooth}.hidden{display:none!important}
 input,select,textarea{outline:none} input:focus,select:focus,textarea:focus{box-shadow:0 0 0 3px rgba(14,165,233,.15);border-color:#38bdf8}
 .sticky-top{position:sticky;top:0;z-index:50}
 @media print{.no-print{display:none!important}.card{box-shadow:none}.sticky-top{position:static}}
+/* Calculator navigation / native-select clipping repair — 21 Sep 2026 */
+#calcView{overflow:visible!important;min-height:0!important}
+#calcGrid{overflow:visible!important;min-height:0!important;align-items:start!important}
+#calcGrid .calc-card{overflow:visible!important;position:relative!important;scroll-margin-top:90px}
+#calcGrid select{appearance:auto!important;-webkit-appearance:auto!important;position:relative;z-index:3}
+#calcIndexBar{position:sticky;top:78px;z-index:20;background:#fff!important;border-color:#cbd8e2!important}
+#calcIndexButtons{display:flex;flex-wrap:wrap;gap:7px;padding-right:3px}
+.calc-index-btn{border:1px solid #bfd2dc;border-radius:999px;background:#f8fbfd;color:#17364b;padding:7px 10px;font:800 11px/1.2 system-ui;cursor:pointer}
+.calc-index-btn:hover{background:#edf7fb;border-color:#8fb6c8}
+.calc-index-btn:focus{outline:none;box-shadow:0 0 0 3px rgba(15,107,134,.12)}
+@media(max-width:700px){#calcIndexBar{position:static}}
+
 
 .oracle-grid{grid-template-columns:minmax(280px,1.1fr) minmax(260px,.85fr) minmax(300px,1.2fr)}
 .risk-panel{position:sticky;top:92px;max-height:calc(100vh - 110px);overflow:auto}
@@ -1050,10 +1062,33 @@ function renderHome(){
     `<button onclick="openTrials()" class="card p-4 text-left"><div class="text-2xl">📚</div><div class="font-black text-sm mt-2">Trial map</div><div class="text-xs text-slate-500 mt-1">Named landmark trials by cancer and stage</div></button>`
   ].join("");
 }
-function openCalculators(){
-  ["homeView","diseaseView","oracleView","drugView","trialView","searchView"].forEach(id=>document.getElementById(id).classList.add("hidden"));document.getElementById("calcView").classList.remove("hidden");
-  document.getElementById("calcGrid").innerHTML=Object.entries(CALCULATORS).map(([k,v])=>`<article class="card p-4"><h3 class="font-black text-sm">${esc(v.title)}</h3><p class="text-xs text-slate-500 mt-1 mb-3">${esc(v.desc)}</p>${v.html()}</article>`).join("");
+function renderCalculatorIndex(){
+  const grid=document.getElementById("calcGrid");
+  if(!grid) return;
+  let bar=document.getElementById("calcIndexBar");
+  if(!bar){
+    bar=document.createElement("div");
+    bar.id="calcIndexBar";
+    bar.className="card p-3 mb-4 no-print";
+    bar.innerHTML='<div class="section-title mb-2">Calculator index</div><div id="calcIndexButtons" class="calc-index-buttons"></div>';
+    grid.parentNode.insertBefore(bar,grid);
+  }
+  const host=document.getElementById("calcIndexButtons");
+  if(!host) return;
+  host.innerHTML=Object.entries(CALCULATORS).map(([k,v])=>`<button type="button" class="calc-index-btn" data-calc-target="calc-card-${esc(k)}">${esc(v.title)}</button>`).join("");
+  host.querySelectorAll("[data-calc-target]").forEach(btn=>btn.addEventListener("click",()=>{
+    const target=document.getElementById(btn.getAttribute("data-calc-target"));
+    if(target) target.scrollIntoView({behavior:"smooth",block:"start"});
+  }));
 }
+function openCalculators(){
+  ["homeView","diseaseView","oracleView","drugView","trialView","searchView"].forEach(id=>document.getElementById(id).classList.add("hidden"));
+  document.getElementById("calcView").classList.remove("hidden");
+  document.getElementById("calcGrid").innerHTML=Object.entries(CALCULATORS).map(([k,v])=>`<article id="calc-card-${esc(k)}" class="card p-4 calc-card"><h3 class="font-black text-sm">${esc(v.title)}</h3><p class="text-xs text-slate-500 mt-1 mb-3">${esc(v.desc)}</p>${v.html()}</article>`).join("");
+  renderCalculatorIndex();
+}
+// Backward-compatible alias used by the cockpit button in the current build.
+function openCalc(){openCalculators();}
 function openDrugs(){
   ["homeView","diseaseView","oracleView","calcView","trialView","searchView"].forEach(id=>document.getElementById(id).classList.add("hidden"));document.getElementById("drugView").classList.remove("hidden");
   document.getElementById("drugGrid").innerHTML=DRUGS.map(d=>`<article class="card p-4"><span class="badge badge-blue">${esc(d[0])}</span><h3 class="font-black text-sm mt-2">${esc(d[1])}</h3><div class="text-xs text-slate-600 leading-5 mt-1">${esc(d[2])}</div></article>`).join("");
